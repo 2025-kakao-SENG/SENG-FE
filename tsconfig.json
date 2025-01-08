@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "types": ["vitest/globals"],
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "esModuleInterop": true, // CommonJS 모듈과 ES6 모듈을 호환되게 처리할 수 있도록 설정. import/export 문법을 사용할 때 모듈 간의 호환성을 높여줍니다.
+    "jsx": "react-jsx", // React 17 이상에서 JSX를 변환하는 방식을 설정. 'react-jsx'는 새로운 JSX 변환 방식을 사용하여 React를 자동으로 import 하지 않아도 됩니다.
+    "baseUrl": ".", // 상대 경로를 기준으로 하는 기본 경로를 '.'(현재 디렉토리)로 설정하여, 다른 파일을 참조할 때 명확한 기준을 제공합니다.
+    "paths": {
+      "@/*": ["./src/*"] // '@'를 'src' 폴더로 매핑하여, 코드에서 '@'를 사용해 src 폴더 내 파일들을 쉽게 참조할 수 있게 만듭니다.
+    },
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
+}
