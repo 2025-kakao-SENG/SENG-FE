@@ -7,7 +7,21 @@ module.exports = {
       laptop: "1024px",
       desktop: "1280px",
     },
-    extend: {},
+    extend: {
+      dropShadow: {
+        'glow-yellow': '0 0 10px #FFD06D', // 바깥쪽 빛 효과
+      },
+      keyframes: {
+        wiggle: {
+          '0%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' },
+          '100%': { transform: 'rotate(0deg)' },
+        },
+      },
+      animation: {
+        wiggle: 'wiggle 0.7s ease-in-out', // 반복 제거
+      },
+    },
   },
   plugins: [],
 };
