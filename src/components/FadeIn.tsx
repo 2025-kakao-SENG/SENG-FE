@@ -25,7 +25,7 @@ const FadeIn: React.FC<FadeInProps> = ({ text }) => {
   const letters = text.split('');
 
   return (
-    <div className="text-2xl font-semibold flex space-x-1">
+    <div className="text-2xl font-semibold flex">
       {letters.map((letter, index) => (
         <span key={index} className="letter">
           {letter === ' ' ? '\u00A0' : letter} {/* 공백 처리 */}
