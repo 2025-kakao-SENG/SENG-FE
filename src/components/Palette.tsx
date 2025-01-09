@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import hightlight from '../assets/images/palette/hightlight.svg';
+import highlight from '../assets/images/palette/highlight.svg';
 import downArrow from '../assets/images/palette/downArrow.svg';
 import grid from '../assets/images/palette/grid.svg';
 import checkBox from '../assets/images/palette/checkBox.svg';
@@ -17,7 +17,7 @@ export default function Palette() {
 
                 <div className="flex items-center pl-[0.2875rem] py-[0.2875rem] pr-[0.43125rem] gap-[0.43125rem]">
                     <div className="flex">
-                        <img src={hightlight} alt="" className="p-[0.43125rem]" />
+                        <img src={highlight} alt="" className="p-[0.43125rem]" />
                         <img src={downArrow} alt="" className="" />
                     </div>
 
