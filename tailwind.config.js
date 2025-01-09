@@ -21,6 +21,9 @@ module.exports = {
       animation: {
         wiggle: 'wiggle 0.7s ease-in-out', // 반복 제거
       },
+      boxShadow: {
+        'right': '1px 0 #292929', // 오른쪽 그림자
+      },
     },
   },
   plugins: [],
