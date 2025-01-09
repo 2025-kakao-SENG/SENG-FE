@@ -9,13 +9,13 @@ const books = [
     id: 1,
     title: '오늘하루도, 소심한 야옹이',
     cover: bookTest,
-    link: '#',
+    link: '/read/cat/',
   },
   {
     id: 2,
     title: '오늘하루도, 소심한 야옹이',
     cover: bookTest,
-    link: '#',
+    link: '/read/cat/',
   },
 ];
 

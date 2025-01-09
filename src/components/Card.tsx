@@ -9,13 +9,13 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ title, cover, onRead }) => {
   return (
     <div
-      className="w-36 h-56 cursor-pointer transform transition-transform duration-200 hover:drop-shadow-glow-yellow hover:animate-wiggle rounded-[15px] overflow-hidden"
+      className="w-[10.5rem] h-[16.5rem] cursor-pointer transform transition-transform duration-200 hover:drop-shadow-glow-yellow hover:animate-wiggle rounded-[15px] overflow-hidden"
       onClick={onRead}
     >
       <img
         src={cover}
-        alt={`${title} cover`}
-        className="transition-opacity duration-300 opacity-80 hover:opacity-100"
+        alt={`${title} cover`} // 템플릿 리터럴을 올바르게 작성
+        className="w-full h-full object-cover transition-opacity duration-300 opacity-80 hover:opacity-100"
       />
     </div>
   );
