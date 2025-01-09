@@ -2,9 +2,9 @@ import React from 'react';
 import { CircleLoader } from 'react-spinners';
 
 interface LoadingSpinnerProps {
-  loading: boolean; // 로딩 상태를 제어
-  size?: number; // 스피너 크기 (기본값: 50)
-  color?: string; // 스피너 색상 (기본값: "#DBAC4A")
+  loading: boolean;
+  size?: number;
+  color?: string;
 }
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
@@ -13,12 +13,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   color = '#DBAC4A',
 }) => {
   return (
-    <div
-      className={`${
-        loading ? 'visible' : 'hidden'
-      }`}
-      style={{ }}
-    >
+    <div className={`${loading ? 'visible' : 'hidden'}`}>
       <CircleLoader color={color} loading={loading} size={size} />
     </div>
   );
