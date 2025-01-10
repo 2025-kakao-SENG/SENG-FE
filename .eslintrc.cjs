@@ -4,6 +4,13 @@ module.exports = {
         es2021: true,
         node: true,
     },
+    settings: {
+        'import/resolver': {
+            typescript: {
+                alwaysTryTypes: true,
+            },
+        },
+    },
     extends: [
         'eslint:recommended',
         'airbnb',
@@ -35,17 +42,17 @@ module.exports = {
         'import',
     ],
     rules: {
-        '@typescript-eslint/lines-between-class-members': [
-            'off',
-            {
-                exceptAfterSingleLine: true, // 단일 라인 클래스 멤버 사이에 공백을 두지 않도록 설정
-            },
-        ],
-        '@typescript-eslint/no-throw-literal': 'off', // 원시 값 던지기를 방지하는 규칙 활성화
-        'import/no-unresolved': 'off', // import 경로를 검사하지 않도록 설정
+        // 뭔지 몰라서 제거한 규칙
+        '@typescript-eslint/lines-between-class-members': 'off', // 클래스 멤버 사이에 빈 줄을 요구하는 규칙 비활성화
+        '@typescript-eslint/no-throw-literal': 'off', // 원시 값 던지기를 방지하는 규칙 비활성화
+
+        // 의도적으로 제거한 규칙
         'import/extensions': 'off', // import 시 확장자를 검사하지 않도록 설정
         'import/no-extraneous-dependencies': 'off', // devDependencies 에서 import 하는 것을 허용
+
+        // 필요없는 규칙
         'react/react-in-jsx-scope': 'off', // React 17 이상에서는 더 이상 필요하지 않습니다.
         'react/jsx-uses-react': 'off', // React 17 이상에서는 더 이상 필요하지 않습니다.
+        'react/prop-types': 'off', // TypeScript 를 사용하므로 prop-types 를 사용하지 않습니다."
     },
 };
