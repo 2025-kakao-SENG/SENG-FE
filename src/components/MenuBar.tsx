@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, {useState} from 'react';
+import {Link} from 'react-router-dom';
 import logo from '../assets/images/logo.svg';
 import home from '../assets/images/menuBar/home.svg';
 import user from '../assets/images/menuBar/user.svg';
@@ -10,49 +11,132 @@ import leaf from '../assets/images/menuBar/leaf.svg';
 import goldenLeaf from '../assets/images/menuBar/goldenLeaf.svg';
 import logout from '../assets/images/menuBar/logout.svg';
 import leftArrow from '../assets/images/menuBar/leftArrow.svg';
+import rightArrow from '../assets/images/menuBar/rightArrow.svg';
 
 export default function MenuBar() {
+    const [activeMenu, setActiveMenu] = useState('/home');
+    const [isOpen, setIsOpen] = useState(true); // MenuBar 상태 관리
+
+    const handleMenuClick = menu => {
+        setActiveMenu(menu);
+    };
+
+    const getMenuClass = menu =>
+        `rounded-lg px-3 py-2.5 ${
+            activeMenu === menu ? 'bg-[#2D2F39]' : 'hover:bg-[#4a4a4a]'
+        }`;
+
+    const toggleMenu = () => {
+        setIsOpen(!isOpen);
+    };
 
     return (
-        <>
-            <div className="flex flex-col justify-items-center p-6 bg-[#111111] rounded-xl shadow-right relative">
-
+        <div
+            className={`relative min-h-screen transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+            <ul className="relative flex flex-col justify-items-center rounded-xl bg-[#111111] p-6 shadow-right">
                 {/* 로고 */}
-                <div className="">
+                <div>
                     <img src={logo} alt="SENG logo" className="w-11" />
                 </div>
 
-                {/* 닫기 버튼 */}
-                <div className="absolute bg-[#282318] p-1.5 rounded-lg border border-[#292929] top-8 right-[-1rem]">
-                    <img src={leftArrow} alt="Close Menu Bar Button" className="" />
-                </div>
+                {/* 닫기/열기 버튼 */}
+                <button
+                    onClick={toggleMenu}
+                    className="absolute right-[-1.1rem] top-8 rounded-lg border border-[#292929] bg-[#282318] p-1.5 hover:bg-[#4a4a4a] active:bg-[#2D2F39]">
+                    <img
+                        src={isOpen ? leftArrow : rightArrow}
+                        alt="Toggle Menu Bar"
+                        className=""
+                    />
+                </button>
 
                 {/* 메인 */}
-                <div className="border-y-2 border-[#2D2F39] my-6 py-6 flex flex-col items-center gap-6">
-                    <p className="text-[#888888] text-[0.625rem] font-medium">MAIN</p>
-                    <img src={home} alt="home" className="" />
-                    <img src={user} alt="user" className="" />
-                    <img src={bookshelf} alt="bookshelf" className="" />
-                    <img src={aiGray} alt="ai" className="" />
-                    <img src={community} alt="community" className="bg-[#2D2F39] py-2.5 px-3 rounded-lg" />
-                </div>
+                <li className="my-6 flex flex-col items-center gap-2 border-y-2 border-[#2D2F39] py-6">
+                    <p className="text-[0.625rem] font-medium text-[#888888]">
+                        MAIN
+                    </p>
+                    <Link to="/home" onClick={() => handleMenuClick('/home')}>
+                        <img
+                            src={home}
+                            alt="home"
+                            className={getMenuClass('/home')}
+                        />
+                    </Link>
+                    <Link
+                        to="/settings/myPage"
+                        onClick={() => handleMenuClick('/settings/myPage')}>
+                        <img
+                            src={user}
+                            alt="user"
+                            className={getMenuClass('/settings/myPage')}
+                        />
+                    </Link>
+                    <Link
+                        to="/library"
+                        onClick={() => handleMenuClick('/library')}>
+                        <img
+                            src={bookshelf}
+                            alt="bookshelf"
+                            className={getMenuClass('/library')}
+                        />
+                    </Link>
+                    <Link
+                        to="/home/ai"
+                        onClick={() => handleMenuClick('/home/ai')}>
+                        <img
+                            src={aiGray}
+                            alt="ai"
+                            className={getMenuClass('/home/ai')}
+                        />
+                    </Link>
+                    <Link
+                        to="/settings/community"
+                        onClick={() => handleMenuClick('/settings/community')}>
+                        <img
+                            src={community}
+                            alt="community"
+                            className={getMenuClass('/settings/community')}
+                        />
+                    </Link>
+                </li>
 
                 {/* 세팅 */}
-                <div className="flex flex-col items-center gap-[1.125rem] pb-[19.5rem]">
-                    <p className="text-[#888888] text-[0.625rem] font-medium">SETTINGS</p>
-                    <img src={setting} alt="" className="" />
-                </div>
+                <li className="flex flex-col items-center gap-[0.5rem] pb-[19.5rem]">
+                    <p className="text-[0.625rem] font-medium text-[#888888]">
+                        SETTINGS
+                    </p>
+                    <Link
+                        to="/settings/display"
+                        onClick={() => handleMenuClick('/settings/display')}>
+                        <img
+                            src={setting}
+                            alt="settings"
+                            className={getMenuClass('/settings/display')}
+                        />
+                    </Link>
+                </li>
 
                 {/* 리프와 로그아웃 */}
-                <div className="flex flex-col items-center mt-6 gap-3">
-                    <img src={leaf} alt="" className="" />
-                    <p className="text-white text-[0.6875rem]">47</p>
-                    <img src={goldenLeaf} alt="" className="" />
-                    <p className="text-[#FAC453] text-[0.6875rem]">2</p>
-                    <img src={logout} alt="" className="" />
-                </div>
-            </div>
-        </>
-    )
+                <li className="mt-6 flex flex-col items-center gap-1">
+                    <img
+                        src={leaf}
+                        alt="leaf"
+                        className="rounded-lg px-3 py-2.5 hover:bg-[#4a4a4a] active:bg-[#2D2F39]"
+                    />
+                    <p className="text-[0.6875rem] text-white">47</p>
+                    <img
+                        src={goldenLeaf}
+                        alt="goldenLeaf"
+                        className="rounded-lg px-3 py-2.5 hover:bg-[#4a4a4a] active:bg-[#2D2F39]"
+                    />
+                    <p className="text-[0.6875rem] text-[#FAC453]">2</p>
+                    <img
+                        src={logout}
+                        alt="logout"
+                        className="rounded-lg px-3 py-2.5 hover:bg-[#4a4a4a] active:bg-[#2D2F39]"
+                    />
+                </li>
+            </ul>
+        </div>
+    );
 }
-
