@@ -32,7 +32,7 @@ export default function MenuBar() {
 
     return (
         <div
-            className={`relative min-h-screen transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+            className={`relative min-h-screen transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-[6.4rem]'}`}>
             <ul className="relative flex flex-col justify-items-center rounded-xl bg-[#111111] p-6 shadow-right">
                 {/* 로고 */}
                 <div>
