@@ -1,30 +1,12 @@
-import {Outlet, Link} from 'react-router-dom';
+import {Outlet} from 'react-router-dom';
+import MenuBar from '../components/MenuBar';
 
 function Layout() {
     return (
-        <div className="flex">
-            <header>
+        <div className="flex bg-black text-white">
+            <header className="mb-[1.75rem] ml-[1rem] mt-[2.375rem]">
                 <nav>
-                    <ul>
-                        <li>
-                            <Link to="/home">홈</Link>
-                        </li>
-                        <li>
-                            <Link to="/settings/myPage">마이 페이지</Link>
-                        </li>
-                        <li>
-                            <Link to="/library">라이브러리</Link>
-                        </li>
-                        <li>
-                            <Link to="/home/ai">AI</Link>
-                        </li>
-                        <li>
-                            <Link to="/settings/community">커뮤니티</Link>
-                        </li>
-                        <li>
-                            <Link to="/settings/display">설정</Link>
-                        </li>
-                    </ul>
+                    <MenuBar />
                 </nav>
             </header>
             <main>
