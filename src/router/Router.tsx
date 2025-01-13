@@ -1,63 +1,78 @@
 import {createBrowserRouter, Navigate} from 'react-router-dom';
-import LandingPage from '@/pages/randing/LandingPage';
-import Register from '@/pages/auth/Register';
-import Login from '@/pages/auth/Login';
-import MainPageLayout from '@/layouts/MainPageLayout'; // 컴포넌트 값으로 사용
-import Home from '@/pages/main/Home';
-import MyPage from '@/pages/settingModal/MyPage';
-import Library from '@/pages/main/Library';
-import AI from '@/pages/main/AI';
-import Community from '@/pages/main/Community';
-import SettingLayout from '@/layouts/SettingLayout';
+import LandingPage from '@/pages/LandingPage';
+import Layout from '@/layouts/Layout.tsx';
+import LoginPage from '@/pages/auth/LoginPage.tsx';
+import RegisterLayout from '@/layouts/RegisterLayout.tsx';
+import HomePage from '@/pages/HomePage.tsx';
+import AISideBar from '@/components/homePage/AISideBar.tsx';
+import LibraryPage from '@/pages/LibraryPage.tsx';
+import SettingsLayout from '@/layouts/SettingsLayout';
+import MyPage from '@/pages/settings/MyPage.tsx';
+import CommunityPage from '@/pages/settings/CommunityPage.tsx';
+import LibraryManagementPage from '@/pages/settings/LibraryManagementPage';
+import NotificationPage from '@/pages/settings/NotificationPage.tsx';
+import DisplayPage from '@/pages/settings/DisplayPage.tsx';
 
 const router = createBrowserRouter([
     {
-        path: '/',
-        element: <Navigate to="/main/home" replace />,
-    },
-    {
-        path: '/landing',
+        path: 'landing',
         element: <LandingPage />,
     },
     {
-        path: '/auth/register',
-        element: <Register />,
-    },
-    {
-        path: '/auth/login',
-        element: <Login />,
-    },
-    {
-        path: '/main',
-        element: <MainPageLayout />,
+        path: '/',
+        element: <Layout />,
         children: [
             {
+                path: 'auth',
+                element: <Navigate to="login" replace />,
+                children: [
+                    {
+                        path: 'login',
+                        element: <LoginPage />,
+                    },
+                    {
+                        path: 'register',
+                        element: <RegisterLayout />,
+                    },
+                ],
+            },
+            {
                 path: 'home',
-                element: <Home />,
+                element: <HomePage />,
+                children: [
+                    {
+                        path: 'ai',
+                        element: <AISideBar />,
+                    },
+                ],
             },
             {
                 path: 'library',
-                element: <Library />,
+                element: <LibraryPage />,
             },
             {
-                path: 'AI',
-                element: <AI />,
-            },
-            {
-                path: 'community',
-                element: <Community />,
-            },
-            {
-                path: 'setting',
-                element: <SettingLayout />,
+                path: 'settings',
+                element: <SettingsLayout />,
                 children: [
-                    {
-                        index: true,
-                        element: <Navigate to="myPage" replace />, // 기본적으로 myPage로 이동
-                    },
                     {
                         path: 'myPage',
                         element: <MyPage />,
+                    },
+                    {
+                        path: 'community',
+                        element: <CommunityPage />,
+                    },
+                    {
+                        path: 'libraryManagement',
+                        element: <LibraryManagementPage />,
+                    },
+                    {
+                        path: 'notification',
+                        element: <NotificationPage />,
+                    },
+                    {
+                        path: 'display',
+                        element: <DisplayPage />,
                     },
                 ],
             },
