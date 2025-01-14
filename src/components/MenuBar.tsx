@@ -10,7 +10,7 @@ import setting from '../assets/images/menuBar/setting.svg';
 import leaf from '../assets/images/menuBar/leaf.svg';
 import goldenLeaf from '../assets/images/menuBar/goldenLeaf.svg';
 import logout from '../assets/images/menuBar/logout.svg';
-import leftArrow from '../assets/images/menuBar/leftArrow.svg';
+import leftArrow2 from '../assets/images/menuBar/leftArrow2.svg';
 import rightArrow from '../assets/images/menuBar/rightArrow.svg';
 
 export default function MenuBar() {
@@ -32,7 +32,7 @@ export default function MenuBar() {
 
     return (
         <div
-            className={`relative min-h-screen transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-[6.4rem]'}`}>
+            className={`relative mr-[6rem] min-h-screen pt-[2.375rem] transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-[6.4rem]'}`}>
             <ul className="relative flex flex-col justify-items-center rounded-xl bg-[#111111] p-6 shadow-right">
                 {/* 로고 */}
                 <div>
@@ -44,7 +44,7 @@ export default function MenuBar() {
                     onClick={toggleMenu}
                     className="absolute right-[-1.1rem] top-8 rounded-lg border border-[#292929] bg-[#282318] p-1.5 hover:bg-[#4a4a4a] active:bg-[#2D2F39]">
                     <img
-                        src={isOpen ? leftArrow : rightArrow}
+                        src={isOpen ? leftArrow2 : rightArrow}
                         alt="Toggle Menu Bar"
                         className=""
                     />
@@ -101,7 +101,7 @@ export default function MenuBar() {
                 </li>
 
                 {/* 세팅 */}
-                <li className="flex flex-col items-center gap-[0.5rem] pb-[19.5rem]">
+                <li className="flex flex-col items-center gap-[0.5rem] pb-[13.8rem]">
                     <p className="text-[0.625rem] font-medium text-[#888888]">
                         SETTINGS
                     </p>
