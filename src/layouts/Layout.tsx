@@ -4,7 +4,7 @@ import MenuBar from '../components/MenuBar';
 function Layout() {
     return (
         <div className="flex bg-black text-white">
-            <header className="mb-[1.75rem] ml-[1rem] mt-[2.375rem]">
+            <header className="pb-[1.75rem] pl-[1rem]">
                 <nav>
                     <MenuBar />
                 </nav>
