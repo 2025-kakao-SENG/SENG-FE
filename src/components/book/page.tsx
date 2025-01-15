@@ -1,72 +1,83 @@
-import {useEffect, useRef} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 
-// 텍스트 객체 타입 정의
-interface TextData {
-    contents: string[];
-    fontSize: string;
-    fontFamily: string;
-    textColor: string;
-}
+// PageProps 타입 정의
+type PageProps = React.PropsWithChildren<{
+    number: number;
+}>;
 
-interface PageProps {
-    pageData: TextData;
-}
+function Page({number, children}: PageProps, ref: React.Ref<HTMLDivElement>) {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [clicks, setClicks] = useState<{x: number; y: number}[]>([]); // 클릭한 지점 저장
 
-function Page({pageData}: PageProps) {
-    // 캔버스 변수
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
-
-    // 투명도 변수
-    const alpha = useRef<number>(1);
-
-    // 텍스트 변수
-    const [renderedTexts, setRenderedTexts] = useState<string[]>([]);
-
+    // 캔버스를 초기화하고 데모 작업을 수행하는 함수
     useEffect(() => {
         const canvas = canvasRef.current;
         if (canvas) {
-            ctxRef.current = canvas.getContext('2d');
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // 캔버스를 초기화
+                if (clicks.length === 2) {
+                    const [firstClick, secondClick] = clicks;
+                    ctx.strokeStyle = '#4682b4'; // 선 색상
+                    ctx.lineWidth = 2; // 선 두께
+                    ctx.beginPath();
+                    ctx.moveTo(firstClick.x, firstClick.y); // 첫 번째 클릭 지점
+                    ctx.lineTo(secondClick.x, secondClick.y); // 두 번째 클릭 지점
+                    ctx.stroke(); // 선 그리기
+                }
+            }
         }
-    }, []);
+    }, [clicks]); // 클릭이 발생할 때마다 캔버스를 다시 그리기
 
-    // 애니메이션 함수
-    const animateText = () => {
-        const ctx = ctxRef.current;
+    // 캔버스 클릭 이벤트 핸들러
+    const handleCanvasClick = (e: React.MouseEvent) => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        let animationFrameId: number;
+        // 클릭한 위치 계산
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
-        // 애니메이션 반복적으로 실행
-        const animate = () => {
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // 화면 지우기
-
-            // 텍스트 스타일 설정
-            ctx.font = `${pageData.fontSize} ${pageData.fontFamily}`;
-            ctx.fillStyle = pageData.textColor;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-
-            ctx.globalAlpha = alpha.current;
-            ctx.fillText(
-                pageData.contents.join(' '),
-                canvas.width / 2,
-                canvas.height / 2,
-            );
-            alpha.current -= 0.01; // 투명도 감소
-            if (alpha.current <= 0) {
-                alpha.current = 1; // 투명도 리셋
-            }
-
-            animationFrameId = requestAnimationFrame(animate); // 다음 프레임에 호출
-        };
-
-        animate(); // 애니메이션 시작
-
-        return () => cancelAnimationFrame(animationFrameId); // 컴포넌트 언마운트 시 애니메이션 취소
+        // 두 번의 클릭을 감지
+        if (clicks.length < 2) {
+            setClicks(prevClicks => [...prevClicks, {x, y}]);
+        } else {
+            // 클릭이 두 번째일 경우 다시 클릭 리스트를 초기화하고 선을 그린 후 초기화
+            setClicks([{x, y}]);
+        }
     };
 
-    return <canvas ref={canvasRef} width={500} height={200} />;
+    return (
+        <div className="demoPage" ref={ref}>
+            <h1>Page Header</h1>
+            <p>{children}</p>
+            <p>Page number: {number}</p>
+            <canvas
+                ref={canvasRef}
+                width={500}
+                height={300}
+                style={{
+                    border: '1px solid black',
+                    marginTop: '20px',
+                    cursor: 'pointer',
+                }}
+                onClick={handleCanvasClick}
+            />
+            {clicks.length === 2 && (
+                <p>
+                    두 번 클릭하여 선을 그렸습니다.{' '}
+                    <button type="button" onClick={() => setClicks([])}>
+                        초기화
+                    </button>
+                </p>
+            )}
+        </div>
+    );
 }
 
-export default Page;
+// React.forwardRef로 감싸기
+export default React.forwardRef(Page);
