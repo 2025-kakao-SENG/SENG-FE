@@ -35,13 +35,10 @@ const KakaoLogin: React.FC = () => (
 );
 
 // 로그인 컴포넌트
-const Login: React.FC = () => {
-    const [isVisible, setIsVisible] = useState(true);
-
-    const handleClose = () => setIsVisible(false);
-
-    if (!isVisible) return null;
-
+const Login: React.FC<{onClose: () => void; onLogin: () => void}> = ({
+    onClose,
+    onLogin,
+}) => {
     return (
         <div className="relative flex h-[30.9375rem] w-[25.8125rem] flex-col items-center bg-[#1B1B1B] text-[#9C9C9C]">
             {/* 로고 */}
@@ -54,12 +51,17 @@ const Login: React.FC = () => {
             {/* 닫기 버튼 */}
             <button
                 className="absolute right-[1.9375rem] top-[1.9375rem]"
-                onClick={handleClose}>
+                onClick={onClose}>
                 <img src={close} alt="Close Button" />
             </button>
 
             {/* 입력 폼 */}
-            <form className="mt-7 flex flex-col gap-[0.6875rem]">
+            <form
+                className="mt-7 flex flex-col gap-[0.6875rem]"
+                onSubmit={e => {
+                    e.preventDefault();
+                    onLogin();
+                }}>
                 <input
                     id="email"
                     name="email"
@@ -70,7 +72,7 @@ const Login: React.FC = () => {
                 <input
                     id="password"
                     name="password"
-                    type="text"
+                    type="password"
                     placeholder="비밀번호"
                     className="h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] border-[#9C9C9C] bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none"
                 />

@@ -1,9 +1,11 @@
-function Login() {
+import Login from '../../components/Login';
+
+function LoginPage() {
     return (
         <div>
-            <h1>로그인</h1>
+            <Login />
         </div>
     );
 }
 
-export default Login;
+export default LoginPage;
