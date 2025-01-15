@@ -1,6 +1,6 @@
 import SideBar from '../SideBar';
 
-function AI() {
+function AISideBar() {
     return (
         <div className="">
             <SideBar />
@@ -8,4 +8,4 @@ function AI() {
     );
 }
 
-export default AI;
+export default AISideBar;
