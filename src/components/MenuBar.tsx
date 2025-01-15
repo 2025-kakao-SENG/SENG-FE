@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import logo from '../assets/images/logo.svg';
 import home from '../assets/images/menuBar/home.svg';
 import user from '../assets/images/menuBar/user.svg';
@@ -13,18 +13,20 @@ import logout from '../assets/images/menuBar/logout.svg';
 import leftArrow2 from '../assets/images/menuBar/leftArrow2.svg';
 import rightArrow2 from '../assets/images/menuBar/rightArrow2.svg';
 import Login from '../components/Login';
+import Logout from '../components/Logout';
 
 export default function MenuBar() {
     const [activeMenu, setActiveMenu] = useState('/home');
     const [isOpen, setIsOpen] = useState(true); // MenuBar 상태 관리
     const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
     const [showLoginModal, setShowLoginModal] = useState(false); // 로그인 모달 상태 관리
+    const [showLogoutModal, setShowLogoutModal] = useState(false); // 로그아웃 모달 상태 관리
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
 
-    const handleMenuClick = menu => {
+    const handleMenuClick = (menu: string) => {
         if (menu === '/settings/myPage' && !isLoggedIn) {
             setShowLoginModal(true); // 로그인 모달 표시
             return; // MyPage로 이동하지 않음
@@ -32,10 +34,15 @@ export default function MenuBar() {
         setActiveMenu(menu);
     };
 
-    const getMenuClass = menu =>
+    const getMenuClass = (menu: string) =>
         `rounded-lg px-3 py-2.5 ${
             activeMenu === menu ? 'bg-[#2D2F39]' : 'hover:bg-[#4a4a4a]'
         }`;
+
+    const handleLogout = () => {
+        setIsLoggedIn(false);
+        setShowLogoutModal(false);
+    };
 
     return (
         <>
@@ -148,6 +155,7 @@ export default function MenuBar() {
                             src={logout}
                             alt="logout"
                             className="rounded-lg px-3 py-2.5 hover:bg-[#4a4a4a] active:bg-[#2D2F39]"
+                            onClick={() => setShowLogoutModal(true)} // 로그아웃 모달 표시
                         />
                     </li>
                 </ul>
@@ -162,6 +170,16 @@ export default function MenuBar() {
                             setIsLoggedIn(true);
                             setShowLoginModal(false);
                         }}
+                    />
+                </div>
+            )}
+
+            {/* Logout 모달 */}
+            {showLogoutModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <Logout
+                        onLogout={handleLogout}
+                        onCancel={() => setShowLogoutModal(false)}
                     />
                 </div>
             )}

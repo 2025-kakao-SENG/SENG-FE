@@ -1,6 +1,5 @@
 import React from 'react';
 
-// 공통 버튼 컴포넌트
 const Button: React.FC<{
     text: string;
     onClick?: () => void;
@@ -13,17 +12,10 @@ const Button: React.FC<{
     </button>
 );
 
-const Logout: React.FC = () => {
-    const handleCancel = () => {
-        // 돌아가기 버튼 클릭 시 실행할 로직
-        console.log('돌아가기 클릭');
-    };
-
-    const handleLogout = () => {
-        // 로그아웃 버튼 클릭 시 실행할 로직
-        console.log('로그아웃 클릭');
-    };
-
+const Logout: React.FC<{onLogout: () => void; onCancel: () => void}> = ({
+    onLogout,
+    onCancel,
+}) => {
     return (
         <div className="flex h-[9.75rem] w-[27.75rem] flex-col items-center rounded-2xl bg-[#1B1B1B]">
             {/* 로그아웃 확인 메시지 */}
@@ -35,13 +27,13 @@ const Logout: React.FC = () => {
             <div className="flex gap-3">
                 <Button
                     text="돌아가기"
-                    onClick={handleCancel}
-                    className="bg-[#2D2D2D] text-[#C8C8C8]"
+                    onClick={onCancel}
+                    className="bg-[#2D2D2D] text-[#C8C8C8] hover:bg-[#4c4c4c]"
                 />
                 <Button
                     text="로그아웃"
-                    onClick={handleLogout}
-                    className="bg-[#FAC453] text-black"
+                    onClick={onLogout}
+                    className="bg-[#FAC453] text-black hover:bg-[#d3776d]"
                 />
             </div>
         </div>
