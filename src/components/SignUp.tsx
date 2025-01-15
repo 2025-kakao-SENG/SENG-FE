@@ -1,7 +1,18 @@
+import React, {useState} from 'react';
 import logoCircle from '../assets/images/login/logoCircle.svg';
+import calendar from '../assets/images/calendar.svg';
 import close from '../assets/images/login/close.svg';
 
-function SignUp() {
+function SignUp({onClose}: {onClose?: () => void}) {
+    const [isVisible, setIsVisible] = useState(true);
+
+    const handleClose = () => {
+        setIsVisible(false); // SignUp 닫기
+        onClose(); // Service 모달로 돌아감
+    };
+
+    if (!isVisible) return null; // 컴포넌트 숨기기
+
     return (
         <div className="flex h-[34.5rem] w-[51.9375rem] items-start justify-between bg-[#1B1B1B]">
             {/* 로고 */}
@@ -28,7 +39,7 @@ function SignUp() {
                         <input
                             type="text"
                             placeholder="이메일을 입력해주세요."
-                            className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#DBAC4A] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#DBAC4A]"
+                            className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                         />
                     </div>
 
@@ -41,7 +52,7 @@ function SignUp() {
                             <input
                                 type="password"
                                 placeholder="비밀번호를 입력해주세요."
-                                className="h-[2.633125rem] w-[14.67125rem] rounded-sm border border-[#DBAC4A] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C]"
+                                className="h-[2.633125rem] w-[14.67125rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                             />
                         </div>
                         <div className="flex items-center justify-between gap-[1.6425rem]">
@@ -51,7 +62,7 @@ function SignUp() {
                             <input
                                 type="password"
                                 placeholder="비밀번호를 한번 더 입력해주세요."
-                                className="h-[2.633125rem] w-[14.629375rem] rounded-sm border border-[#DBAC4A] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C]"
+                                className="h-[2.633125rem] w-[14.629375rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                             />
                         </div>
                     </div>
@@ -62,19 +73,24 @@ function SignUp() {
                         <input
                             type="text"
                             placeholder="이름을 입력해주세요."
-                            className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#DBAC4A] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C]"
+                            className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                         />
                     </div>
 
                     {/* 생년월일 */}
-                    <div className="flex items-center justify-between">
+                    <div className="relative flex items-center justify-between">
                         <p className="text-[0.66875rem] text-[#F5F5F5]">
                             생년월일
                         </p>
                         <input
                             type="text"
                             placeholder="연도-월-일"
-                            className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#DBAC4A] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C]"
+                            className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
+                        />
+                        <img
+                            src={calendar}
+                            alt="Calendar"
+                            className="focus:placeholder:img-[#DBAC4A] absolute right-[1.46875rem] top-[0.9375rem]"
                         />
                     </div>
 
@@ -86,7 +102,7 @@ function SignUp() {
                         <input
                             type="text"
                             placeholder="010 1234 1234"
-                            className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#DBAC4A] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C]"
+                            className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                         />
                     </div>
 
@@ -97,7 +113,7 @@ function SignUp() {
                             <input
                                 type="text"
                                 placeholder="주소를 입력해주세요."
-                                className="h-[2.633125rem] w-[28.965625rem] rounded-sm border border-[#DBAC4A] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C]"
+                                className="h-[2.633125rem] w-[28.965625rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                             />
                             <button
                                 type="button"
@@ -117,11 +133,14 @@ function SignUp() {
             </div>
 
             {/* 닫기 버튼 */}
-            <img
-                src={close}
-                alt="Close Button"
-                className="pr-[1.875rem] pt-[1.875rem] text-[0.83625rem] font-medium text-black"
-            />
+            <button type="button" className="">
+                <img
+                    src={close}
+                    alt="Close Button"
+                    onClick={handleClose}
+                    className="pr-[1.875rem] pt-[1.875rem] text-[0.83625rem] font-medium text-black"
+                />
+            </button>
         </div>
     );
 }
