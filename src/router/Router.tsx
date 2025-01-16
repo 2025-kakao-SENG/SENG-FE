@@ -12,9 +12,7 @@ import CommunityPage from '@/pages/settings/CommunityPage.tsx';
 import LibraryManagementPage from '@/pages/settings/LibraryManagementPage';
 import NotificationPage from '@/pages/settings/NotificationPage.tsx';
 import DisplayPage from '@/pages/settings/DisplayPage.tsx';
-import DeregisterTest from '@/pages/auth/DeregiterPage';
 import LogoutPage from '@/pages/auth/LogoutPage';
-import BookComponent from '@/components/book/Book';
 
 const router = createBrowserRouter([
     {
@@ -36,6 +34,10 @@ const router = createBrowserRouter([
                     {
                         path: 'login',
                         element: <LoginPage />,
+                    },
+                    {
+                        path: 'logout',
+                        element: <LogoutPage />,
                     },
                     {
                         path: 'register',
@@ -83,19 +85,6 @@ const router = createBrowserRouter([
                     },
                 ],
             },
-            // test page
-            {
-                path: 'deregister',
-                element: <DeregisterTest />,
-            },
-            {
-                path: 'logout',
-                element: <LogoutPage />,
-            },
-            {
-                path: 'page',
-                element: <BookComponent />,
-            }
         ],
     },
 ]);

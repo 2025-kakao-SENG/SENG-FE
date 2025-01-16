@@ -3,13 +3,11 @@ import MenuBar from '../components/MenuBar';
 
 function Layout() {
     return (
-        <div className="flex min-h-screen bg-black text-white">
-            <header className="h-screen pb-[1.75rem] pl-[1rem]">
-                <nav>
-                    <MenuBar />
-                </nav>
+        <div className="flex h-screen w-screen bg-black text-white">
+            <header className="h-full w-[12.5rem] items-center justify-center">
+                <MenuBar />
             </header>
-            <main className="h-screen overflow-hidden">
+            <main className="h-full overflow-hidden">
                 <Outlet />
             </main>
         </div>

@@ -11,10 +11,6 @@ module.exports = {
             },
         },
     },
-    globals: {
-        ...globals.browser, // 브라우저 전역 변수 추가
-        ...globals.node, // Node.js 전역 변수 추가
-    },
     extends: [
         'eslint:recommended',
         'airbnb',
