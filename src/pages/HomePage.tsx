@@ -6,12 +6,10 @@ function Home() {
     return (
         <div className="flex gap-[2.125rem] pt-[2.375rem]">
             <div className="flex flex-col">
-                <div className='w-[30rem] h-[5rem]'>
+                <div className="h-[5rem] w-[30rem]">
                     <Palette />
                 </div>
-                <div className="h-auto w-auto">
-                    <Book />
-                </div>
+                <Book />
             </div>
             <Outlet />
         </div>

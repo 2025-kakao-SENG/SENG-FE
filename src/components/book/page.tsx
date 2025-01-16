@@ -1,151 +1,107 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useEffect} from 'react';
 
-import defaultCanvasConfig from '@/constants/canvasConfig';
 import {CanvasConfig} from '@/types/bookType';
 
 type PageProps = React.PropsWithChildren<{
-    number: number;
-    data: {
+    pageNumber: number;
+    pageData: {
         title: string;
         content: string[];
     };
+    canvasConfig: CanvasConfig;
 }>;
 
-function Page({number, data}: PageProps, ref: React.Ref<HTMLCanvasElement>) {
+function Page(
+    {pageNumber, pageData, canvasConfig}: PageProps,
+    ref: React.Ref<HTMLDivElement>,
+) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [canvasConfig, setCanvasConfig] = useState(defaultCanvasConfig);
 
-    const updateCanvasSize = (canvas: HTMLCanvasElement) => {
-        const newWidth = Math.floor(window.innerWidth * 0.3); // 뷰포트의 30% 너비
-        const aspectRatio = 1.414; // 세로/가로 비율
-        const newHeight = Math.floor(newWidth * aspectRatio); // 세로 계산
-
-        // 캔버스 DOM 요소의 크기 업데이트
-        if (canvas) {
-            canvas.width = newWidth; // 픽셀 해상도 설정
-            canvas.height = newHeight; // 픽셀 해상도 설정
-            canvas.style.width = `${newWidth}px`; // 렌더링 크기 설정
-            canvas.style.height = `${newHeight}px`; // 렌더링 크기 설정
-        }
-    };
-
-    const updateCanvasConfig = (canvas: HTMLCanvasElement) => {
-        const newCanvasConfig: CanvasConfig = {
-            ...canvasConfig,
-            canvas: {
-                ...canvasConfig.canvas,
-                width: canvas.width,
-                height: canvas.height,
-            },
-            text: {
-                ...canvasConfig.text,
-                font: `${canvas.width * 0.04}px Arial`,
-                fillStyle: '#FAC453',
-                textAlign: 'start',
-                textBaseline: 'alphabetic',
-                direction: 'ltr',
-                strokeStyle: '#FAC453',
-                lineWidth: 2,
-            },
-            textLocation: {
-                ...canvasConfig.textLocation,
-                x: canvas.width * 0.1,
-                y: canvas.height * 0.05,
-                maxWidth: canvas.width * 0.8,
-            },
-        };
-
-        setCanvasConfig(newCanvasConfig);
-    };
-
-    const renderText = (
-        canvas: HTMLCanvasElement,
-        ctx: CanvasRenderingContext2D,
-    ) => {
-        // 캔버스 초기화
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // 배경색 설정
-        ctx.fillStyle = canvasConfig.canvas.backgroundColor;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // 텍스트 스타일 설정
-        ctx.font = canvasConfig.text.font;
-        ctx.fillStyle = canvasConfig.text.fillStyle;
-        ctx.textAlign = canvasConfig.text.textAlign;
-        ctx.textBaseline = canvasConfig.text.textBaseline;
-        ctx.direction = canvasConfig.text.direction;
-        ctx.strokeStyle = canvasConfig.text.strokeStyle;
-        ctx.lineWidth = canvasConfig.text.lineWidth;
-
-        // 텍스트 그리기
-        for (let i = 0; i < data.content.length; i++) {
-            ctx.fillText(
-                data.content[i],
-                canvasConfig.textLocation.x,
-                canvasConfig.textLocation.y * (i + 1), // 줄 간격 조정
-                canvasConfig.textLocation.maxWidth,
-            );
-        }
-    };
-
+    // 캔버스 렌더링
     useEffect(() => {
-        // 초기 크기 설정
+        renderCanvas();
+    });
+
+    const renderCanvas = () => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        updateCanvasSize(canvas);
-        updateCanvasConfig(canvas);
-        renderText(canvas, ctx);
+        // 캔버스 초기화
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = canvasConfig.canvas.backgroundColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 뷰포트 크기 변경 이벤트 등록
-        const handleResize = () => {
-            const canvas = canvasRef.current;
-            if (canvas && ctx) {
-                updateCanvasSize(canvas);
-                updateCanvasConfig(canvas);
-                renderText(canvas, ctx); // 리사이즈 후 텍스트 다시 그리기
-            }
-        };
+        // 캔버스 공통 설정
+        ctx.textAlign = canvasConfig.contents.textAlign;
+        ctx.textBaseline = canvasConfig.contents.textBaseline;
+        ctx.direction = canvasConfig.contents.direction;
 
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, [data.content]); // data.content 변경 시 렌더링
+        // 개별 영역 그리기
+        renderHeader(ctx);
+        renderContents(ctx);
+        renderPageNumber(ctx);
+    };
 
-    // 데이터 변경시 텍스트 그리기
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
+    const renderHeader = (ctx: CanvasRenderingContext2D) => {
+        const {header} = canvasConfig.contents;
+        ctx.font = header.font;
+        ctx.fillStyle = header.fillStyle;
 
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-            renderText(canvas, ctx);
-        }
-    }, [canvasConfig, data.content]); // canvasConfig와 data.content 변경 시 다시 그리기
+        ctx.fillText(
+            pageData.title,
+            canvasConfig.coordinateCriteria.xRatio * canvasConfig.canvas.width, // 좌측에서 10% 위치
+            canvasConfig.coordinateCriteria.yRatio * canvasConfig.canvas.height, // 상단에서 10% 위치
+        );
+    };
 
-    useEffect(() => {
-        if (typeof ref === 'function') {
-            ref(canvasRef.current);
-        } else if (ref) {
-            (ref as React.MutableRefObject<HTMLCanvasElement | null>).current =
-                canvasRef.current;
-        }
-    }, [ref]);
+    const renderContents = (ctx: CanvasRenderingContext2D) => {
+        const {body} = canvasConfig.contents;
+        ctx.font = body.font;
+        ctx.fillStyle = body.fillStyle;
+
+        pageData.content.forEach((line, index) => {
+            ctx.fillText(
+                line,
+                canvasConfig.canvas.width * canvasConfig.coordinateCriteria.xRatio, // 좌측에서 10% 위치
+                canvasConfig.canvas.height * canvasConfig.coordinateCriteria.yRatio + // 상단에서 10% 위치
+                (index + 1) * canvasConfig.canvas.height * canvasConfig.coordinateCriteria.lineSpaceingRatio, // 줄 간격
+                canvasConfig.canvas.width * canvasConfig.coordinateCriteria.maxWidthRatio, // 최대 너비
+            );
+        });
+    };
+
+    const renderPageNumber = (ctx: CanvasRenderingContext2D) => {
+        const {pageNumber: pageStyle} = canvasConfig.contents;
+        ctx.font = pageStyle.font;
+        ctx.fillStyle = pageStyle.fillStyle;
+    
+        const isEven = pageNumber % 2 === 0; // 짝수 페이지 여부
+    
+        ctx.fillText(
+            `${pageNumber}`,
+            canvasConfig.canvas.width * (isEven ? 0.1 : 0.9), // 짝수면 왼쪽(10%), 홀수면 오른쪽(90%)
+            canvasConfig.canvas.height * 0.95, // 하단에서 5% 위치
+        );
+    };
 
     return (
-        <div className="h-auto w-auto">
+        <div
+            ref={ref}
+            style={{
+                width: '100%',
+                height: '100%',
+            }}>
             <canvas
                 ref={canvasRef}
                 width={canvasConfig.canvas.width}
                 height={canvasConfig.canvas.height}
                 data-testid="canvas"
                 style={{
-                    width: canvasConfig.canvas.width,
-                    height: canvasConfig.canvas.height,
+                    width: '100%',
+                    height: '100%',
                     backgroundColor: canvasConfig.canvas.backgroundColor,
                 }}
             />
