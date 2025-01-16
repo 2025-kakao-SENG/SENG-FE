@@ -1,4 +1,4 @@
-import {useRef, useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import Page from './Page';
 import bookMockData from '@/__test__/mocks/bookMockData';
