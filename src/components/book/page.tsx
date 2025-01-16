@@ -78,11 +78,11 @@ function Page(
         ctx.font = pageStyle.font;
         ctx.fillStyle = pageStyle.fillStyle;
     
-        const isEven = pageNumber % 2 === 0; // 짝수 페이지 여부
+        const isOdd = pageNumber % 2 === 1; // 홀수 페이지 여부
     
         ctx.fillText(
             `${pageNumber}`,
-            canvasConfig.canvas.width * (isEven ? 0.1 : 0.9), // 짝수면 왼쪽(10%), 홀수면 오른쪽(90%)
+            canvasConfig.canvas.width * (isOdd ? 0.1 : 0.9), // 홀수 페이지는 좌측에서 10%, 짝수 페이지는 우측에서 90%
             canvasConfig.canvas.height * 0.95, // 하단에서 5% 위치
         );
     };
@@ -90,10 +90,7 @@ function Page(
     return (
         <div
             ref={ref}
-            style={{
-                width: '100%',
-                height: '100%',
-            }}>
+            className='w-full h-full'>
             <canvas
                 ref={canvasRef}
                 width={canvasConfig.canvas.width}

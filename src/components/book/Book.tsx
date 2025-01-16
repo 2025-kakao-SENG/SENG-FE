@@ -8,8 +8,6 @@ import {CanvasConfig} from '@/types/bookType';
 function Book() {
     const [bookData] = useState(bookMockData);
     const [canvasConfig, setCanvasConfig] = useState(defaultCanvasConfig);
-    // useMemo 효과 없애고 강제 렌더링
-    const [keyForDynamicsSize, setKeyForDynamicsSize] = useState(Math.random());
 
     // window 크기를 저장할 state
     const [windowSize, setWindowSize] = useState({
@@ -36,7 +34,6 @@ function Book() {
     // 캔버스 설정 업데이트
     useEffect(() => {
         updateCanvasConfig(windowSize.width * 0.3);
-        setKeyForDynamicsSize(Math.random());
     }, [windowSize]);
 
     const updateCanvasConfig = (newWidth: number) => {
@@ -73,7 +70,6 @@ function Book() {
     return (
         <div style={{width: `${canvasConfig.canvas.width * 2}px`, height: `${canvasConfig.canvas.height}px`}}>
             <HTMLFlipBook
-                key={keyForDynamicsSize}
                 width={canvasConfig.canvas.width}
                 height={canvasConfig.canvas.height}
                 startPage={0}
@@ -88,7 +84,7 @@ function Book() {
                 startZIndex={0}
                 autoSize={false}
                 maxShadowOpacity={1}
-                showCover
+                showCover={false}
                 mobileScrollSupport
                 clickEventForward
                 useMouseEvents
