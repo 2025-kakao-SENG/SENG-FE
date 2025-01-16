@@ -1,11 +1,23 @@
-export interface CanvasTextConfig {
+export interface CanvasTextStyle {
     font: string;
     fillStyle: string;
     strokeStyle: string;
     lineWidth: number;
+}
+
+export interface CanvasTextConfig extends CanvasTextStyle {
     textAlign: CanvasTextAlign;
     textBaseline: CanvasTextBaseline;
     direction: CanvasDirection;
+}
+
+export interface CanvasContentsConfig {
+    textAlign: CanvasTextAlign;
+    textBaseline: CanvasTextBaseline;
+    direction: CanvasDirection;
+    header: CanvasTextStyle;
+    body: CanvasTextStyle;
+    pageNumber: CanvasTextStyle;
 }
 
 export interface CanvasTagConfig {
@@ -14,14 +26,15 @@ export interface CanvasTagConfig {
     backgroundColor: string;
 }
 
-export interface CanvasTextLocation {
-    x: number;
-    y: number;
-    maxWidth: number;
+export interface CanvasCoordinateCriteria {
+    xRatio: number;
+    yRatio: number;
+    maxWidthRatio: number;
+    lineSpaceingRatio: number;
 }
 
 export interface CanvasConfig {
     canvas: CanvasTagConfig;
-    text: CanvasTextConfig;
-    textLocation: CanvasTextLocation
+    contents: CanvasContentsConfig;
+    coordinateCriteria: CanvasCoordinateCriteria;
 }
