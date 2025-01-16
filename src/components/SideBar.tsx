@@ -56,7 +56,7 @@ export default function SideBar({isModalOpen}) {
     return (
         <>
             <div
-                className={`absolute right-0 flex h-[57.125rem] w-[23.75rem] transform flex-col rounded-[0.6875rem] bg-[#111111] transition-transform duration-300 ${
+                className={`fixed right-0 flex h-[57.125rem] w-[23.75rem] transform flex-col rounded-[0.6875rem] bg-[#111111] transition-transform duration-300 ${
                     isSidebarPartiallyOpen
                         ? 'translate-x-0'
                         : 'translate-x-[90%]'
@@ -66,7 +66,7 @@ export default function SideBar({isModalOpen}) {
                 }}>
                 <div className="pl-[0.5625rem] pt-[0.9375rem]">
                     <button
-                        className="rounded-lg px-2 py-2.5 hover:bg-[#1C1C1C]"
+                        className="rounded-lg px-2 py-2.5 hover:bg-[#4a4a4a]"
                         onClick={() =>
                             setIsSidebarPartiallyOpen(!isSidebarPartiallyOpen)
                         }>
