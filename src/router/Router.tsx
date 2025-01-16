@@ -14,6 +14,7 @@ import NotificationPage from '@/pages/settings/NotificationPage.tsx';
 import DisplayPage from '@/pages/settings/DisplayPage.tsx';
 import DeregisterTest from '@/pages/auth/DeregiterPage';
 import LogoutPage from '@/pages/auth/LogoutPage';
+import BookComponent from '@/components/book/Book';
 
 const router = createBrowserRouter([
     {
@@ -82,6 +83,7 @@ const router = createBrowserRouter([
                     },
                 ],
             },
+            // test page
             {
                 path: 'deregister',
                 element: <DeregisterTest />,
@@ -90,6 +92,10 @@ const router = createBrowserRouter([
                 path: 'logout',
                 element: <LogoutPage />,
             },
+            {
+                path: 'page',
+                element: <BookComponent />,
+            }
         ],
     },
 ]);
