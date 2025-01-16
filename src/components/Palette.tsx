@@ -18,14 +18,14 @@ export default function Palette() {
 
     const getButtonClass = buttonName => {
         if (buttonName === 'aiYellow') {
-            return `rounded-[0.575rem] pb-[0.3875rem] pl-[0.4rem] pr-2 pt-[0.1rem] ${
+            return `cursor-pointer rounded-[0.575rem] pb-[0.3875rem] pl-[0.4rem] pr-2 pt-[0.1rem] ${
                 activeButton === 'aiYellow'
                     ? 'bg-[#2D2F39]'
                     : 'hover:bg-[#888888]'
             }`;
         }
-        return `rounded-[0.575rem] p-[0.43125rem] ${
-            activeButton === buttonName ? 'bg-[#DBAC4A]' : 'hover:bg-[#888888]'
+        return `cursor-pointer rounded-[0.575rem] p-[0.43125rem] ${
+            activeButton === buttonName ? 'bg-[#DBAC4A]' : 'hover:bg-[#4a4a4a]'
         }`;
     };
 

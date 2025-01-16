@@ -142,19 +142,19 @@ export default function MenuBar() {
                         <img
                             src={leaf}
                             alt="leaf"
-                            className="rounded-lg px-3 py-2.5 hover:bg-[#4a4a4a] active:bg-[#2D2F39]"
+                            className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-[#4a4a4a] active:bg-[#2D2F39]"
                         />
                         <p className="text-[0.6875rem] text-white">47</p>
                         <img
                             src={goldenLeaf}
                             alt="goldenLeaf"
-                            className="rounded-lg px-3 py-2.5 hover:bg-[#4a4a4a] active:bg-[#2D2F39]"
+                            className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-[#4a4a4a] active:bg-[#2D2F39]"
                         />
                         <p className="text-[0.6875rem] text-[#FAC453]">2</p>
                         <img
                             src={logout}
                             alt="logout"
-                            className="rounded-lg px-3 py-2.5 hover:bg-[#4a4a4a] active:bg-[#2D2F39]"
+                            className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-[#4a4a4a] active:bg-[#2D2F39]"
                             onClick={() => setShowLogoutModal(true)} // 로그아웃 모달 표시
                         />
                     </li>
