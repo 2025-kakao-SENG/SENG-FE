@@ -14,6 +14,8 @@ export default function SideBar({isModalOpen}) {
         '프론트엔드',
         'JavaScript',
     ]);
+    const [categories, setCategories] = useState([]);
+
     const [isSidebarPartiallyOpen, setIsSidebarPartiallyOpen] = useState(true);
 
     const handleCategoryClick = category => {
@@ -37,21 +39,7 @@ export default function SideBar({isModalOpen}) {
         }
     };
 
-    const categories = [
-        '카테고리',
-        '시/에세이',
-        '인문',
-        '경제/경영',
-        '컴퓨터/IT',
-        '청소년',
-        '정치/사회',
-        '역사/문화',
-        '예술/대중문화',
-        '중/고등참고서',
-        '기술/공학',
-        '외국어',
-        '과학',
-    ];
+
 
     return (
         <>
