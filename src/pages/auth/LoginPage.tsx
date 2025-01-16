@@ -1,4 +1,4 @@
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {useState} from 'react';
 import {
     AuthLoginApiRequest,
@@ -9,6 +9,9 @@ import useAuthKaKaoLoginApi from '@/hooks/apis/auth/useAuthKakaoLoginApi';
 import {useDispatch} from 'react-redux';
 import {AuthKakaoLoginApiResponse} from '@/types/auth/kakaoLoginApiTypes';
 import {setUserInfoByLogin, UserSliceState} from '@/redux/slice/userSlice';
+import logoCircle from '@/assets/images/login/logoCircle.svg';
+import close from '@/assets/images/login/close.svg';
+import kakao from '@/assets/images/login/kakao.svg';
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -19,16 +22,10 @@ function LoginPage() {
 
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
-
-    const [isSuccess, setIsSuccess] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     function successLogin() {
-        setIsSuccess(true);
-        setTimeout(() => {
-            setIsSuccess(false);
-            navigate('/home');
-        }, 500);
+        navigate('/home');
     }
 
     async function handleLoginSubmit() {
@@ -107,66 +104,103 @@ function LoginPage() {
     }
 
     return (
-        <div className="flex h-screen items-center justify-center bg-gray-50">
-            <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
-                <h1 className="mb-6 text-center text-2xl font-bold">로그인</h1>
-
-                {/* 성공 모달 */}
-                {isSuccess && (
-                    <div className="mb-4 rounded bg-green-100 p-4 text-green-800">
-                        <p>로그인에 성공했습니다!</p>
-                    </div>
-                )}
-
-                {/* 이메일 입력 */}
-                <div className="mb-4">
+        <div className="flex h-screen items-center justify-center">
+            <div className="relative flex h-[30.9375rem] w-[25.8125rem] flex-col items-center bg-[#1B1B1B] text-[#9C9C9C]">
+                <img
+                    src={logoCircle}
+                    alt="StoryBreeze Logo"
+                    className="mt-[1.375rem]"
+                />
+                <button
+                    type="button"
+                    className="absolute right-[1.9375rem] top-[1.9375rem]"
+                    onClick={() => navigate(-1)}>
+                    <img src={close} alt="Close Button" />
+                </button>
+                <form
+                    className="mt-7 flex flex-col gap-[0.6875rem]"
+                    onSubmit={e => {
+                        e.preventDefault();
+                        handleLoginSubmit();
+                    }}>
                     <input
+                        id="email"
+                        name="email"
                         type="text"
                         placeholder="이메일"
-                        value={emailInput}
                         onChange={handleEmailChange}
-                        className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] border-[#9C9C9C] bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none"
                     />
-                </div>
-
-                {/* 비밀번호 입력 */}
-                <div className="mb-4">
                     <input
+                        id="password"
+                        name="password"
                         type="password"
                         placeholder="비밀번호"
-                        value={passwordInput}
                         onChange={handlePasswordChange}
-                        className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] border-[#9C9C9C] bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none"
                     />
-                </div>
-
-                {/* 에러 메시지 */}
-                {errorMessage && (
-                    <p className="mb-4 text-sm text-red-600">{errorMessage}</p>
-                )}
-
-                {/* 로그인 버튼 */}
+                    {errorMessage && (
+                        <p className="mt-2 text-sm text-red-500">
+                            {errorMessage}
+                        </p>
+                    )}
+                </form>
                 <button
                     type="button"
                     onClick={handleLoginSubmit}
                     disabled={isLoginLoading}
-                    className={`w-full rounded-lg px-4 py-2 font-semibold text-white ${
-                        isLoginLoading
-                            ? 'cursor-not-allowed bg-blue-300'
-                            : 'bg-blue-500 hover:bg-blue-600'
-                    }`}>
-                    {isLoginLoading ? '로그인 중...' : '로그인'}
+                    className={`mt-[1.5625rem] h-[3rem] w-[19.5rem] rounded-[0.1875rem] ${
+                        isLoginLoading ? 'bg-gray-500' : 'bg-[#EEB02F]'
+                    } text-[0.875rem] text-black`}>
+                    {isLoginLoading ? '로딩 중...' : '로그인'}
                 </button>
+                <div className="mb-[1.625rem] mt-[0.875rem] flex items-center">
+                    <button type="button" className="px-1 text-xs">
+                        아이디 찾기
+                    </button>
+                    <button
+                        type="button"
+                        className="border-[1px] border-black border-x-[#9C9C9C] px-1 text-xs">
+                        비밀번호 찾기
+                    </button>
+                    <Link to="/auth/register">
+                        <button type="button" className="px-1 text-xs">
+                            회원가입
+                        </button>
+                    </Link>
+                </div>
 
-                {/* 카카오 로그인 버튼 */}
-                <button
-                    type="button"
-                    onClick={handleKaKaoLoginSubmit}
-                    className="mt-4 w-full rounded-lg bg-yellow-500 px-4 py-2 font-semibold text-white hover:bg-yellow-600">
-                    {isKakaoLoginLoading
-                        ? '카카오 로그인 중...'
-                        : '카카오 로그인'}
-                </button>
+                {/* 카카오 로그인 */}
+                <div className="flex w-full flex-col items-center justify-center">
+                    <div className="mb-[0.8125rem] flex w-[19.5rem] items-center">
+                        <div className="flex-grow border-t-[1px] border-[#9C9C9C]" />
+                        <p className="px-2 text-[0.6875rem] text-[#9C9C9C]">
+                            간편 로그인
+                        </p>
+                        <div className="flex-grow border-t-[1px] border-[#9C9C9C]" />
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={handleKaKaoLoginSubmit}
+                        disabled={isKakaoLoginLoading}
+                        className={`flex h-[3rem] w-[19.5rem] items-center justify-center gap-3 rounded-[0.1875rem] ${
+                            isKakaoLoginLoading ? 'bg-gray-500' : 'bg-[#EEB02F]'
+                        }`}>
+                        {isKakaoLoginLoading ? (
+                            <p className="text-[0.875rem] font-medium text-black">
+                                로딩 중...
+                            </p>
+                        ) : (
+                            <>
+                                <img src={kakao} alt="kakao" />
+                                <p className="text-[0.875rem] font-medium text-black">
+                                    카카오 로그인
+                                </p>
+                            </>
+                        )}
+                    </button>
+                </div>
             </div>
         </div>
     );
