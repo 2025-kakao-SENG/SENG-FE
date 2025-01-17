@@ -1,6 +1,6 @@
 function MyPage() {
     return (
-        <div className="flex flex-col gap-[1.125rem] pl-[1.125rem] pr-[18.4375rem]">
+        <div className="flex flex-col gap-[1.125rem] pr-[18.4374rem]">
             <div className="flex flex-col gap-[0.5625rem]">
                 <h2 className="text-sm font-semibold text-[#F5F5F5]">
                     닉네임 변경하기
@@ -74,7 +74,7 @@ function MyPage() {
                     </div>
                     <button
                         type="button"
-                        className="ml-[4.6875rem] h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#482323] text-xs text-[#CACACA] hover:bg-[#813a3a]">
+                        className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#482323] text-xs text-[#CACACA] hover:bg-[#813a3a]">
                         회원탈퇴
                     </button>
                 </div>
