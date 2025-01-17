@@ -3,10 +3,13 @@ module.exports = {
     content: ['./src/**/*.{ts,tsx}'],
     theme: {
         screens: {
-            tablet: '640px',
-            laptop: '1024px',
-            desktop: '1280px',
+            MB: '767px',
+            TB: '1024px',
+            PC: '1920px',
         },
+        // colors: {
+        //     primary: '#DBAC4A',
+        // },
         extend: {
             dropShadow: {
                 'glow-yellow': '0 0 10px #FFD06D', // 바깥쪽 빛 효과
