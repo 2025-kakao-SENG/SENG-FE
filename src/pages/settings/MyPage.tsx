@@ -13,7 +13,7 @@ function MyPage() {
                     />
                     <button
                         type="button"
-                        className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs text-[#CACACA0] hover:bg-[#292929]">
+                        className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs text-[#CACACA0] hover:bg-[#4a4a4a]">
                         저장
                     </button>
                 </div>
@@ -46,7 +46,7 @@ function MyPage() {
                 </h2>
                 <button
                     type="button"
-                    className="h-[1.5625rem] w-[7.6875rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs font-medium text-[#CACACA] hover:bg-[#292929]">
+                    className="h-[1.5625rem] w-[7.6875rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs font-medium text-[#CACACA] hover:bg-[#4a4a4a]">
                     비밀번호 변경하기
                 </button>
             </div>
@@ -59,7 +59,7 @@ function MyPage() {
                     </div>
                     <button
                         type="button"
-                        className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs text-[#CACACA] hover:bg-[#292929]">
+                        className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs text-[#CACACA] hover:bg-[#4a4a4a]">
                         로그아웃
                     </button>
                 </div>
