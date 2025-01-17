@@ -114,7 +114,7 @@ export default function MenuBar() {
                         SETTINGS
                     </p>
                     <Link
-                        to="/settings/display"
+                        to="/settings/myPage"
                         onClick={() => setActiveMenu('display')}>
                         <img
                             src={setting}
