@@ -57,7 +57,7 @@ function SettingLayout() {
 
     return (
         <div className="flex items-start justify-between rounded-2xl bg-[#111111] pl-5 pr-[1.9375rem]">
-            <div className="flex justify-between pb-[17.5rem] pt-[2.8125rem]">
+            <div className="flex justify-between pt-[3.25rem]">
                 {/* 탭 */}
                 <div className="flex flex-col">
                     <div className="mb-2.5 flex items-center gap-[0.8125rem]">
@@ -100,7 +100,9 @@ function SettingLayout() {
                     </h1>
 
                     <div className="my-5 border-[0.5px] border-[#535353]" />
-                    <Outlet />
+                    <div className="h-[41.875rem] w-[53.75rem] pb-5 pl-[1.125rem]">
+                        <Outlet />
+                    </div>
                 </div>
             </div>
 
