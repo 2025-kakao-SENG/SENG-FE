@@ -98,7 +98,7 @@ export default function MenuBar() {
                         />
                     </Link>
                     <Link
-                        to="/settings/community"
+                        to="/settings/myPage"
                         onClick={() => setActiveMenu('community')}>
                         <img
                             src={community}
@@ -114,7 +114,7 @@ export default function MenuBar() {
                         SETTINGS
                     </p>
                     <Link
-                        to="/settings/myPage"
+                        to="/settings/display"
                         onClick={() => setActiveMenu('display')}>
                         <img
                             src={setting}
