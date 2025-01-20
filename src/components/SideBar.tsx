@@ -123,12 +123,7 @@ export default function SideBar({isModalOpen}: SideBarProps) {
 
     const handlePreviousClick = () => {
         if (currentCategoryNamePath.length > 1) {
-            setCurrentCategoryNamePath(
-                currentCategoryNamePath.slice(
-                    0,
-                    currentCategoryNamePath.length - 1,
-                ),
-            );
+            setCurrentCategoryNamePath(currentCategoryNamePath.slice(1));
         }
     };
 
