@@ -33,7 +33,7 @@ function Book() {
 
     // 캔버스 설정 업데이트
     useEffect(() => {
-        updateCanvasConfig(windowSize.width * 0.3);
+        updateCanvasConfig(windowSize.width * 0.33);
     }, [windowSize]);
 
     const updateCanvasConfig = (newWidth: number) => {
@@ -68,7 +68,11 @@ function Book() {
     };
 
     return (
-        <div style={{width: `${canvasConfig.canvas.width * 2}px`, height: `${canvasConfig.canvas.height}px`}}>
+        <div
+            style={{
+                width: `${canvasConfig.canvas.width * 2}px`,
+                height: `${canvasConfig.canvas.height}px`,
+            }}>
             <HTMLFlipBook
                 width={canvasConfig.canvas.width}
                 height={canvasConfig.canvas.height}
@@ -82,7 +86,7 @@ function Book() {
                 flippingTime={1500}
                 usePortrait={false}
                 startZIndex={0}
-                autoSize={false}
+                autoSize={true}
                 maxShadowOpacity={1}
                 showCover={false}
                 mobileScrollSupport

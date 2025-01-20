@@ -57,7 +57,7 @@ export default function MenuBar() {
 
     return (
         <div
-            className={`relative mr-[6rem] min-h-screen pt-[2.375rem] transition-transform duration-300 ${
+            className={`relative h-full min-h-screen w-full py-[2.375rem] transition-transform duration-300 ${
                 isOpen ? 'translate-x-0' : '-translate-x-[6.4rem]'
             }`}>
             <ul className="relative flex h-full w-full flex-col justify-items-center rounded-xl bg-[#111111] p-6 shadow-right">
@@ -122,7 +122,7 @@ export default function MenuBar() {
                 </li>
 
                 {/* 세팅 메뉴 */}
-                <li className="flex flex-col items-center gap-[0.5rem] pb-[13.8rem]">
+                <li className="flex flex-col items-center gap-[0.5rem]">
                     <p className="text-[0.625rem] font-medium text-[#888888]">
                         SETTINGS
                     </p>
@@ -136,7 +136,7 @@ export default function MenuBar() {
                 </li>
 
                 {/* 리프와 로그아웃 */}
-                <li className="mt-6 flex flex-col items-center gap-1">
+                <li className="mt-auto flex flex-col items-center gap-1">
                     <img
                         src={leaf}
                         alt="leaf"

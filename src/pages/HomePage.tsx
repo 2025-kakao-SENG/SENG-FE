@@ -4,9 +4,9 @@ import Palette from '@/components/Palette';
 
 function Home() {
     return (
-        <div className="flex gap-[2.125rem] pt-[2.375rem]">
+        <div className="flex">
             <div className="flex flex-col">
-                <div className="h-[5rem] w-[30rem]">
+                <div className="h-[5rem] w-[30.5vw]">
                     <Palette />
                 </div>
                 <Book />
