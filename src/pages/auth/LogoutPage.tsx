@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 import useLogout from '@/hooks/useLogout';
 import {getUserLoginData} from '@/redux/selector';
 
-function LogoutPage() {
+function Logout() {
     const navigate = useNavigate();
     const logout = useLogout();
     const userLoginDate = useSelector(getUserLoginData);
@@ -18,29 +18,29 @@ function LogoutPage() {
     };
 
     return (
-        <div className="flex h-screen items-center justify-center bg-gray-50">
-            <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
-                <h1 className="mb-6 text-center text-2xl font-bold">
-                    로그아웃
-                </h1>
-                <p className="mb-4 text-center text-gray-700">
-                    로그아웃하시겠습니까?
-                </p>
+        <div className="flex h-[9.75rem] w-[27.75rem] flex-col items-center rounded-2xl bg-[#1B1B1B]">
+            {/* 로그아웃 확인 메시지 */}
+            <p className="mb-[2rem] mt-[2.2rem] text-[0.98rem] font-medium text-white">
+                로그아웃을 진행하시겠습니까?
+            </p>
+
+            {/* 버튼 그룹 */}
+            <div className="flex gap-3">
                 <button
                     type="button"
-                    onClick={handleLogout}
-                    className="w-full rounded-lg bg-red-500 px-4 py-2 font-semibold text-white hover:bg-red-600">
-                    로그아웃
+                    className="h-[3.125rem] w-[12.4375rem] rounded-[0.625rem] bg-[#2D2D2D] text-[#C8C8C8] hover:bg-[#4c4c4c]"
+                    onClick={() => navigate('/home')}>
+                    돌아가기
                 </button>
                 <button
                     type="button"
-                    onClick={() => navigate('/home')}
-                    className="mt-4 w-full rounded-lg bg-gray-300 px-4 py-2 font-semibold text-gray-700 hover:bg-gray-400">
-                    취소
+                    className="h-[3.125rem] w-[12.4375rem] rounded-[0.625rem] bg-[#FAC453] text-black hover:bg-[#d3776d]"
+                    onClick={handleLogout}>
+                    로그아웃
                 </button>
             </div>
         </div>
     );
 }
 
-export default LogoutPage;
+export default Logout;

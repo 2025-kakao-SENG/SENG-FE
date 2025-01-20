@@ -12,16 +12,11 @@ export interface Category {
 }
 
 // 성공 응답 타입
-export interface CategoriesApiSuccessResponse {
-    status: 'success'; // 요청 처리 상태 (항상 'success')
-    message: string; // 처리 결과 메시지
-    data: Category[]; // 카테고리 데이터
-}
+export type CategoriesApiSuccessResponse = Category[];
 
 // 실패 응답 타입
 export interface CategoriesApiErrorResponse {
-    status: 'error'; // 요청 처리 상태 (항상 'error')
-    message: string; // 에러 메시지
+    error: string; // 에러 메시지
 }
 
 // 통합 응답 타입 (성공 또는 실패)

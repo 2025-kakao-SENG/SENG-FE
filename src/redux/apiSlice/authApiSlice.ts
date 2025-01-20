@@ -18,8 +18,8 @@ import {
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
-export const authLoginApi = createApi({
-    reducerPath: 'authLoginApi',
+export const authApi = createApi({
+    reducerPath: 'authApi',
     baseQuery: fetchBaseQuery({
         baseUrl: `${SERVER_URL}`,
         credentials: 'include',
@@ -101,4 +101,4 @@ export const {
     useAuthRegisterApiMutation,
     useAuthKakaoLoginApiMutation,
     useAuthDeregisterApiMutation,
-} = authLoginApi;
+} = authApi;

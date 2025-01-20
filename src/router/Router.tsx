@@ -2,7 +2,7 @@ import {createBrowserRouter, Navigate, Outlet} from 'react-router-dom';
 import LandingPage from '@/pages/LandingPage';
 import Layout from '@/layouts/Layout.tsx';
 import LoginPage from '@/pages/auth/LoginPage';
-import RegisterLayout from '@/layouts/RegisterLayout.tsx';
+import RegisterPage from '@/pages/auth/RegisterPage';
 import HomePage from '@/pages/HomePage.tsx';
 import AISideBar from '@/components/homePage/AISideBar.tsx';
 import LibraryPage from '@/pages/LibraryPage.tsx';
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
                     },
                     {
                         path: 'register',
-                        element: <RegisterLayout />,
+                        element: <RegisterPage />,
                     },
                 ],
             },
