@@ -9,7 +9,9 @@ function LibraryManagementPage() {
                 <p className="text-[#DBAC4A]">@Noah</p>
                 <p className="text-[#C9C9C9]">의 책장</p>
             </h2>
-            <div className="mt-[2.375rem] flex h-[38rem] flex-wrap gap-[2.625rem] overflow-y-scroll pl-[0.5625rem]">
+            <div
+                className="mt-[2.375rem] flex h-[32vw] flex-wrap gap-[2.625rem] overflow-y-scroll pl-[0.5625rem]"
+                style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
                 <div className="flex cursor-pointer flex-col items-center text-xs font-medium text-[#999999]">
                     <div className="group relative">
                         <img

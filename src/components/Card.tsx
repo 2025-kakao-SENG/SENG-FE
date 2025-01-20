@@ -156,7 +156,9 @@ const Card: React.FC = () => {
     };
 
     return (
-        <div className="bookshelf flex h-screen flex-wrap justify-center gap-[2.3125rem] overflow-y-scroll py-[4.8125rem] pl-5">
+        <div
+            className="bookshelf flex h-screen flex-wrap justify-center gap-[2.3125rem] overflow-y-scroll py-[4.8125rem] pl-5"
+            style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
             {books.map(book => (
                 <div
                     key={book.id}

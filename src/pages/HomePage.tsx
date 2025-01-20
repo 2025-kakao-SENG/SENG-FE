@@ -6,7 +6,7 @@ function Home() {
     return (
         <div className="flex">
             <div className="flex flex-col">
-                <div className="h-[5rem] w-[30.5vw]">
+                <div className="h-[5rem] w-[30vw]">
                     <Palette />
                 </div>
                 <Book />

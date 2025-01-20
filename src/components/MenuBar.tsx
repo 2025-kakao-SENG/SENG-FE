@@ -58,7 +58,7 @@ export default function MenuBar() {
     return (
         <div
             className={`relative h-full min-h-screen w-full py-[2.375rem] transition-transform duration-300 ${
-                isOpen ? 'translate-x-0' : '-translate-x-[6.4rem]'
+                isOpen ? 'translate-x-0' : '-translate-x-[6rem]'
             }`}>
             <ul className="relative flex h-full w-full flex-col justify-items-center rounded-xl bg-[#111111] p-6 shadow-right">
                 {/* 로고 */}

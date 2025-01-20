@@ -199,7 +199,7 @@ export default function SideBar({isModalOpen}: SideBarProps) {
                     </p>
                 </div>
 
-                <div className="mb-7 w-[20.5rem]">
+                <div className="mb-7 w-[19vw]">
                     <div className="flex items-center justify-start gap-2 rounded-[0.25rem] bg-[#1C1C1C] px-2.5 py-[0.875rem] text-[0.6875rem] font-medium text-[#F6F6F6]">
                         {[...currentCategoryNamePath]
                             .reverse()
@@ -247,7 +247,7 @@ export default function SideBar({isModalOpen}: SideBarProps) {
                 </div>
             )}
 
-            <div className="ml-20">
+            <div className="ml-20 mt-5">
                 <img src={logoTransparent} alt="" className="" />
             </div>
         </div>
