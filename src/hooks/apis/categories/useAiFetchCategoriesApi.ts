@@ -1,16 +1,25 @@
-import {useFetchCategoriesQuery} from '@/redux/apiSlice/aiApiSlice';
+import {useLazyFetchCategoriesQuery} from '@/redux/apiSlice/categoreisApiSlice';
 import {FetchBaseQueryError} from '@reduxjs/toolkit/query/react';
-import {CategoriesApiResponse} from '@/types/ai/categoriesTypes';
+import {CategoriesApiResponse} from '@/types/category/categoriesTypes';
 
-const useFetchCategories = () => {
-    const {data, error, isLoading} = useFetchCategoriesQuery();
+const useFetchCategoriesApi = () => {
+    const [lazyFetchCategoriesQuery, {isLoading}] =
+        useLazyFetchCategoriesQuery();
 
-    const fetchCategories = async (): Promise<CategoriesApiResponse> => {
+    const fetchCategoriesApi = async (): Promise<CategoriesApiResponse> => {
         if (isLoading) {
             throw new Error('데이터를 불러오는 중입니다. 잠시만 기다려주세요.');
         }
 
-        if (error) {
+        try {
+            const response = await lazyFetchCategoriesQuery().unwrap();
+
+            if (!response) {
+                throw new Error('카테고리 데이터를 불러오지 못했습니다.');
+            }
+
+            return response;
+        } catch (error: unknown) {
             if (error && typeof error === 'object' && 'status' in error) {
                 const fetchError = error as FetchBaseQueryError;
                 switch (fetchError.status) {
@@ -33,15 +42,9 @@ const useFetchCategories = () => {
                 throw new Error('알 수 없는 타입의 오류가 발생했습니다.');
             }
         }
-
-        if (!data) {
-            throw new Error('카테고리 데이터를 불러오지 못했습니다.');
-        }
-
-        return data;
     };
 
-    return {fetchCategories, isLoading};
+    return {fetchCategoriesApi, isLoading};
 };
 
-export default useFetchCategories;
+export default useFetchCategoriesApi;

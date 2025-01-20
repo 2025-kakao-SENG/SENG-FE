@@ -1,22 +1,26 @@
-import React, {useState} from 'react';
-import logoCircle from '../assets/images/login/logoCircle.svg';
-import close from '../assets/images/login/close.svg';
-import SignUp from './SignUp';
+import {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import logoCircle from '@/assets/images/login/logoCircle.svg';
+import close from '@/assets/images/login/close.svg';
 
-function Service({onClose}: {onClose: () => void}) {
-    const [showSignUp, setShowSignUp] = useState(false);
+function Service({renderSignUp}: {renderSignUp: () => void}) {
+    const navigate = useNavigate();
     const [isChecked1, setIsChecked1] = useState(false); // 첫 번째 체크박스 상태
     const [isChecked2, setIsChecked2] = useState(false); // 두 번째 체크박스 상태
 
-    const handleSignUpClose = () => {
-        setShowSignUp(false); // SignUp 닫기 시 Service로 돌아옴
+    const [checked1Error, setChecked1Error] = useState(''); // 첫 번째 체크박스 에러 상태
+    const [checked2Error, setChecked2Error] = useState(''); // 두 번째 체크박스 에러 상태
+
+    // 회원가입 버튼 클릭 시
+    const handleNextButton = () => {
+        if (isChecked1 && isChecked2) {
+            renderSignUp();
+        } else if (!isChecked1) {
+            setChecked1Error('이용약관에 동의해주세요.');
+        } else {
+            setChecked2Error('개인정보처리방침에 동의해주세요.');
+        }
     };
-
-    const areBothChecked = isChecked1 && isChecked2; // 두 체크박스가 모두 체크되었는지 확인
-
-    if (showSignUp) {
-        return <SignUp onClose={handleSignUpClose} />;
-    }
 
     return (
         <div className="flex h-[53.5625rem] w-[64.4375rem] items-start justify-between gap-6 bg-[#1B1B1B]">
@@ -136,6 +140,11 @@ function Service({onClose}: {onClose: () => void}) {
                     <p className="text-[0.6875rem] font-medium text-[#D1D1D1]">
                         위 내용에 동의합니다.
                     </p>
+                    {checked1Error && (
+                        <p className="text-[0.6875rem] font-medium text-[#FF0000]">
+                            {checked1Error}
+                        </p>
+                    )}
                 </div>
 
                 {/* 개인정보처리방침 섹션 */}
@@ -244,18 +253,23 @@ function Service({onClose}: {onClose: () => void}) {
                     <p className="text-[0.6875rem] font-medium text-[#D1D1D1]">
                         위 내용에 동의합니다.
                     </p>
+                    {checked2Error && (
+                        <p className="text-[0.6875rem] font-medium text-[#FF0000]">
+                            {checked2Error}
+                        </p>
+                    )}
                 </div>
 
                 {/* 회원가입 버튼 */}
                 <button
                     type="button"
                     className={`mt-2 h-12 w-[19.5rem] self-center rounded-[0.1875rem] ${
-                        areBothChecked
+                        isChecked1 && isChecked2
                             ? 'bg-[#EEB02F] text-black'
                             : 'bg-[#B0B0B0] text-[#6D6D6D]'
                     }`}
-                    onClick={() => setShowSignUp(true)}
-                    disabled={!areBothChecked}>
+                    onClick={handleNextButton}
+                    disabled={!(isChecked1 && isChecked2)}>
                     회원가입
                 </button>
             </div>
@@ -263,7 +277,7 @@ function Service({onClose}: {onClose: () => void}) {
             {/* 닫기 버튼 */}
             <button
                 type="button"
-                onClick={onClose}
+                onClick={() => navigate(-1)}
                 className="mr-[1.9375rem] mt-[1.9375rem]">
                 <img src={close} alt="Close Button" className="" />
             </button>

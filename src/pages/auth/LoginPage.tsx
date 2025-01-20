@@ -104,103 +104,99 @@ function LoginPage() {
     }
 
     return (
-        <div className="flex h-screen items-center justify-center">
-            <div className="relative flex h-[30.9375rem] w-[25.8125rem] flex-col items-center bg-[#1B1B1B] text-[#9C9C9C]">
-                <img
-                    src={logoCircle}
-                    alt="StoryBreeze Logo"
-                    className="mt-[1.375rem]"
+        <div className="relative flex h-[30.9375rem] w-[25.8125rem] flex-col items-center bg-[#1B1B1B] text-[#9C9C9C]">
+            <img
+                src={logoCircle}
+                alt="StoryBreeze Logo"
+                className="mt-[1.375rem]"
+            />
+            <button
+                type="button"
+                className="absolute right-[1.9375rem] top-[1.9375rem]"
+                onClick={() => navigate(-1)}>
+                <img src={close} alt="Close Button" />
+            </button>
+            <form
+                className="mt-7 flex flex-col gap-[0.6875rem]"
+                onSubmit={e => {
+                    e.preventDefault();
+                    handleLoginSubmit();
+                }}>
+                <input
+                    id="email"
+                    name="email"
+                    type="text"
+                    placeholder="이메일"
+                    onChange={handleEmailChange}
+                    className="h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] border-[#9C9C9C] bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none"
                 />
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="비밀번호"
+                    onChange={handlePasswordChange}
+                    className="h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] border-[#9C9C9C] bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none"
+                />
+                {errorMessage && (
+                    <p className="mt-2 text-sm text-red-500">{errorMessage}</p>
+                )}
+            </form>
+            <button
+                type="button"
+                onClick={handleLoginSubmit}
+                disabled={isLoginLoading}
+                className={`mt-[1.5625rem] h-[3rem] w-[19.5rem] rounded-[0.1875rem] ${
+                    isLoginLoading ? 'bg-gray-500' : 'bg-[#EEB02F]'
+                } text-[0.875rem] text-black`}>
+                {isLoginLoading ? '로딩 중...' : '로그인'}
+            </button>
+            <div className="mb-[1.625rem] mt-[0.875rem] flex items-center">
+                <button type="button" className="px-1 text-xs">
+                    아이디 찾기
+                </button>
                 <button
                     type="button"
-                    className="absolute right-[1.9375rem] top-[1.9375rem]"
-                    onClick={() => navigate(-1)}>
-                    <img src={close} alt="Close Button" />
+                    className="border-[1px] border-black border-x-[#9C9C9C] px-1 text-xs">
+                    비밀번호 찾기
                 </button>
-                <form
-                    className="mt-7 flex flex-col gap-[0.6875rem]"
-                    onSubmit={e => {
-                        e.preventDefault();
-                        handleLoginSubmit();
-                    }}>
-                    <input
-                        id="email"
-                        name="email"
-                        type="text"
-                        placeholder="이메일"
-                        onChange={handleEmailChange}
-                        className="h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] border-[#9C9C9C] bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none"
-                    />
-                    <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        placeholder="비밀번호"
-                        onChange={handlePasswordChange}
-                        className="h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] border-[#9C9C9C] bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none"
-                    />
-                    {errorMessage && (
-                        <p className="mt-2 text-sm text-red-500">
-                            {errorMessage}
-                        </p>
-                    )}
-                </form>
-                <button
-                    type="button"
-                    onClick={handleLoginSubmit}
-                    disabled={isLoginLoading}
-                    className={`mt-[1.5625rem] h-[3rem] w-[19.5rem] rounded-[0.1875rem] ${
-                        isLoginLoading ? 'bg-gray-500' : 'bg-[#EEB02F]'
-                    } text-[0.875rem] text-black`}>
-                    {isLoginLoading ? '로딩 중...' : '로그인'}
-                </button>
-                <div className="mb-[1.625rem] mt-[0.875rem] flex items-center">
+                <Link to="/auth/register">
                     <button type="button" className="px-1 text-xs">
-                        아이디 찾기
+                        회원가입
                     </button>
-                    <button
-                        type="button"
-                        className="border-[1px] border-black border-x-[#9C9C9C] px-1 text-xs">
-                        비밀번호 찾기
-                    </button>
-                    <Link to="/auth/register">
-                        <button type="button" className="px-1 text-xs">
-                            회원가입
-                        </button>
-                    </Link>
+                </Link>
+            </div>
+
+            {/* 카카오 로그인 */}
+            <div className="flex w-full flex-col items-center justify-center">
+                <div className="mb-[0.8125rem] flex w-[19.5rem] items-center">
+                    <div className="flex-grow border-t-[1px] border-[#9C9C9C]" />
+                    <p className="px-2 text-[0.6875rem] text-[#9C9C9C]">
+                        간편 로그인
+                    </p>
+                    <div className="flex-grow border-t-[1px] border-[#9C9C9C]" />
                 </div>
 
-                {/* 카카오 로그인 */}
-                <div className="flex w-full flex-col items-center justify-center">
-                    <div className="mb-[0.8125rem] flex w-[19.5rem] items-center">
-                        <div className="flex-grow border-t-[1px] border-[#9C9C9C]" />
-                        <p className="px-2 text-[0.6875rem] text-[#9C9C9C]">
-                            간편 로그인
+                <button
+                    type="button"
+                    onClick={handleKaKaoLoginSubmit}
+                    disabled={isKakaoLoginLoading}
+                    className={`flex h-[3rem] w-[19.5rem] items-center justify-center gap-3 rounded-[0.1875rem] ${
+                        isKakaoLoginLoading ? 'bg-gray-500' : 'bg-[#EEB02F]'
+                    }`}>
+                    {isKakaoLoginLoading ? (
+                        <p className="text-[0.875rem] font-medium text-black">
+                            로딩 중...
                         </p>
-                        <div className="flex-grow border-t-[1px] border-[#9C9C9C]" />
-                    </div>
-
-                    <button
-                        type="button"
-                        onClick={handleKaKaoLoginSubmit}
-                        disabled={isKakaoLoginLoading}
-                        className={`flex h-[3rem] w-[19.5rem] items-center justify-center gap-3 rounded-[0.1875rem] ${
-                            isKakaoLoginLoading ? 'bg-gray-500' : 'bg-[#EEB02F]'
-                        }`}>
-                        {isKakaoLoginLoading ? (
+                    ) : (
+                        <>
+                            <img src={kakao} alt="kakao" />
                             <p className="text-[0.875rem] font-medium text-black">
-                                로딩 중...
+                                카카오 로그인
                             </p>
-                        ) : (
-                            <>
-                                <img src={kakao} alt="kakao" />
-                                <p className="text-[0.875rem] font-medium text-black">
-                                    카카오 로그인
-                                </p>
-                            </>
-                        )}
-                    </button>
-                </div>
+                        </>
+                    )}
+                </button>
             </div>
         </div>
     );
