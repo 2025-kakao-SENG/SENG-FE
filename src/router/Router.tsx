@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Route, Routes, useLocation, useNavigate} from 'react-router-dom';
 import LandingPage from '@/pages/LandingPage';
 import Layout from '@/layouts/Layout.tsx';
@@ -108,10 +108,17 @@ function Router() {
         '/settings/display',
     ].includes(location.pathname);
 
+    useEffect(() => {
+        if (!isModalRoute) {
+            setBackgroundLocation('');
+        }
+    }, [location.pathname, isModalRoute]);
+
     // backgroundLocation 설정
     if (!backgroundLocation && isModalRoute) {
         setBackgroundLocation(location.state?.backgroundLocation || location);
     }
+
     return (
         <div className="min-w-screen relative flex min-h-screen bg-black text-white">
             {/* 배경 라우트 (이전 화면) */}

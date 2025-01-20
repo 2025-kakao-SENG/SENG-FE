@@ -75,7 +75,7 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
     ];
 
     return (
-        <div className="absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 transform items-start justify-between rounded-2xl bg-[#111111] pl-5 pr-[1.9375rem]">
+        <div className="absolute left-1/2 top-1/2 z-10 flex h-auto w-auto -translate-x-1/2 -translate-y-1/2 transform items-start justify-between rounded-2xl bg-[#111111] pl-5 pr-[1.9375rem]">
             <div className="flex justify-between pt-[3.25rem]">
                 {/* 탭 */}
                 <div className="flex flex-col">
@@ -130,8 +130,8 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
             {/* 닫기 버튼 */}
             <button
                 type="button"
-                className="pt-[1.9375rem]"
-                onClick={() => navigate(-1)}>
+                className="absolute right-8 top-0 z-50 pt-[1.9375rem]"
+                onClick={() => navigate(backgroundLocation)}>
                 <img src={close} alt="" className="" />
             </button>
         </div>
