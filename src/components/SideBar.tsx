@@ -241,6 +241,12 @@ export default function SideBar({isModalOpen}: SideBarProps) {
                 </button>
             </div>
 
+            {errorMessage && (
+                <div className="absolute bottom-0 w-full bg-[#FF0000] py-1.5 text-center text-white">
+                    {errorMessage}
+                </div>
+            )}
+
             <div className="mb-0 ml-20">
                 <img src={logoTransparent} alt="" className="" />
             </div>

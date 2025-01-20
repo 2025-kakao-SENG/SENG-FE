@@ -1,4 +1,5 @@
-import {createBrowserRouter, Navigate, Outlet} from 'react-router-dom';
+import {useState} from 'react';
+import {Route, Routes, useLocation, useNavigate} from 'react-router-dom';
 import LandingPage from '@/pages/LandingPage';
 import Layout from '@/layouts/Layout.tsx';
 import LoginPage from '@/pages/auth/LoginPage';
@@ -12,9 +13,8 @@ import CommunityPage from '@/pages/settings/CommunityPage.tsx';
 import LibraryManagementPage from '@/pages/settings/LibraryManagementPage';
 import NotificationPage from '@/pages/settings/NotificationPage.tsx';
 import DisplayPage from '@/pages/settings/DisplayPage.tsx';
-import LogoutPage from '@/pages/auth/LogoutPage';
 
-const router = createBrowserRouter([
+/* const router = [
     {
         path: 'landing',
         element: <LandingPage />,
@@ -23,6 +23,7 @@ const router = createBrowserRouter([
         path: '/',
         element: <Layout />,
         children: [
+            {path: 'login', element: <LoginModalRouter />},
             {
                 path: 'auth',
                 element: <Outlet />,
@@ -87,6 +88,68 @@ const router = createBrowserRouter([
             },
         ],
     },
-]);
+]; */
 
-export default router;
+function Router() {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    // backgroundLocation 상태 저장
+    const [backgroundLocation, setBackgroundLocation] = useState(null);
+
+    // 현재 location이 모달 경로인지 확인
+    const isModalRoute = ['/login', '/register'].includes(location.pathname);
+
+    // backgroundLocation 설정
+    if (!backgroundLocation && isModalRoute) {
+        setBackgroundLocation(location.state?.backgroundLocation || location);
+    }
+    return (
+        <div className="min-w-screen relative flex min-h-screen bg-black text-white">
+            {/* 배경 라우트 (이전 화면) */}
+            <Routes location={backgroundLocation || location}>
+                <Route path="/" element={<Layout />}>
+                    <Route path="home" element={<HomePage />}>
+                        <Route path="ai" element={<AISideBar />} />
+                    </Route>
+                    <Route path="library" element={<LibraryPage />} />
+                    <Route path="settings" element={<SettingsLayout />}>
+                        <Route path="myPage" element={<MyPage />} />
+                        <Route path="community" element={<CommunityPage />} />
+                        <Route
+                            path="libraryManagement"
+                            element={<LibraryManagementPage />}
+                        />
+                        <Route
+                            path="notification"
+                            element={<NotificationPage />}
+                        />
+                        <Route path="display" element={<DisplayPage />} />
+                    </Route>
+                </Route>
+                <Route path="*" element={<LandingPage />} />
+            </Routes>
+
+            {/* 모달 라우트 */}
+            {isModalRoute && (
+                <Routes>
+                    <Route
+                        path="/login"
+                        element={
+                            <LoginPage
+                                navigateToRegister={() =>
+                                    navigate('/register', {
+                                        state: {backgroundLocation},
+                                    })
+                                }
+                            />
+                        }
+                    />
+                    <Route path="/register" element={<RegisterPage />} />
+                </Routes>
+            )}
+        </div>
+    );
+}
+
+export default Router;

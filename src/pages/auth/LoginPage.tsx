@@ -1,4 +1,4 @@
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useState} from 'react';
 import {
     AuthLoginApiRequest,
@@ -13,7 +13,11 @@ import logoCircle from '@/assets/images/login/logoCircle.svg';
 import close from '@/assets/images/login/close.svg';
 import kakao from '@/assets/images/login/kakao.svg';
 
-function LoginPage() {
+interface LoginPageProps {
+    navigateToRegister: () => void;
+}
+
+function LoginPage({navigateToRegister}: LoginPageProps) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {authLoginApi, isLoading: isLoginLoading} = useAuthLoginApi();
@@ -104,7 +108,7 @@ function LoginPage() {
     }
 
     return (
-        <div className="relative flex h-[30.9375rem] w-[25.8125rem] flex-col items-center bg-[#1B1B1B] text-[#9C9C9C]">
+        <div className="absolute left-1/2 top-1/2 z-10 flex h-[30.9375rem] w-[25.8125rem] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center bg-[#1B1B1B] text-[#9C9C9C]">
             <img
                 src={logoCircle}
                 alt="StoryBreeze Logo"
@@ -160,11 +164,12 @@ function LoginPage() {
                     className="border-[1px] border-black border-x-[#9C9C9C] px-1 text-xs">
                     비밀번호 찾기
                 </button>
-                <Link to="/auth/register">
-                    <button type="button" className="px-1 text-xs">
-                        회원가입
-                    </button>
-                </Link>
+                <button
+                    type="button"
+                    className="px-1 text-xs"
+                    onClick={navigateToRegister}>
+                    회원가입
+                </button>
             </div>
 
             {/* 카카오 로그인 */}
