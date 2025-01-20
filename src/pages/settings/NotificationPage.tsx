@@ -1,6 +1,8 @@
 function NotificationPage() {
     return (
-        <div className="h-[40.05rem] overflow-y-scroll pr-[20.625rem]">
+        <div
+            className="h-[37vw] overflow-y-scroll pr-[20.625rem]"
+            style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
             <h2 className="text-sm font-semibold text-[#F5F5F5]">
                 시스템 알림
             </h2>

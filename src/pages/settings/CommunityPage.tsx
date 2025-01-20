@@ -6,7 +6,9 @@ function Community() {
         <div className="">
             <h2 className="text-sm font-semibold text-[#F5F5F5]">작성한 글</h2>
 
-            <div className="mt-[0.8125rem] flex h-[38rem] flex-col gap-[0.9375rem] overflow-y-scroll">
+            <div
+                className="mt-[0.8125rem] flex h-[34.5vw] flex-col gap-[0.9375rem] overflow-y-scroll"
+                style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
                 {/* 날짜1 */}
                 <div className="flex flex-col gap-[0.1875rem]">
                     <p className="text-[0.625rem] text-[#8D8D8D]">2025.01.08</p>
