@@ -129,7 +129,7 @@ export default function SideBar({isModalOpen}: SideBarProps) {
 
     return (
         <div
-            className={`fixed right-0 flex h-[57.125rem] w-[23.75rem] transform flex-col rounded-[0.6875rem] bg-[#111111] transition-transform duration-300 ${
+            className={`fixed right-0 flex h-[51.5vw] w-[23vw] transform flex-col rounded-[0.6875rem] bg-[#111111] transition-transform duration-300 ${
                 isSidebarPartiallyOpen ? 'translate-x-0' : 'translate-x-[90%]'
             }`}
             style={{
@@ -247,7 +247,7 @@ export default function SideBar({isModalOpen}: SideBarProps) {
                 </div>
             )}
 
-            <div className="mb-0 ml-20">
+            <div className="ml-20">
                 <img src={logoTransparent} alt="" className="" />
             </div>
         </div>

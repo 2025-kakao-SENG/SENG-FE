@@ -6,6 +6,7 @@ module.exports = {
             MB: '767px',
             TB: '1024px',
             PC: '1920px',
+            DEFAULT: 'calc(986 / 1920 * 100dvh)',
         },
         // colors: {
         //     primary: '#DBAC4A',
