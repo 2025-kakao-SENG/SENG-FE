@@ -1,5 +1,5 @@
-import {useState} from 'react';
-import {useNavigate, Outlet} from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {useNavigate, Outlet, useLocation} from 'react-router-dom';
 import logoCircle from '@/assets/images/login/logoCircle.svg';
 import userYellow from '@/assets/images/MyPage/userYellow.svg';
 import user from '@/assets/images/MyPage/user.svg';
@@ -13,9 +13,28 @@ import setting from '@/assets/images/menuBar/setting.svg';
 import settingYellow from '@/assets/images/MyPage/settingYellow.svg';
 import close from '@/assets/images/login/close.svg';
 
-function SettingLayout() {
+interface SettingLayoutProps {
+    backgroundLocation: string;
+}
+
+function SettingLayout({backgroundLocation}: SettingLayoutProps) {
     const [activeTab, setActiveTab] = useState('myPage');
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.pathname.includes('myPage')) {
+            setActiveTab('myPage');
+        } else if (location.pathname.includes('community')) {
+            setActiveTab('community');
+        } else if (location.pathname.includes('libraryManagement')) {
+            setActiveTab('libraryManagement');
+        } else if (location.pathname.includes('notification')) {
+            setActiveTab('notification');
+        } else if (location.pathname.includes('display')) {
+            setActiveTab('display');
+        }
+    }, [location]);
 
     const menuItems = [
         {
@@ -56,7 +75,7 @@ function SettingLayout() {
     ];
 
     return (
-        <div className="flex items-start justify-between rounded-2xl bg-[#111111] pl-5 pr-[1.9375rem]">
+        <div className="absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 transform items-start justify-between rounded-2xl bg-[#111111] pl-5 pr-[1.9375rem]">
             <div className="flex justify-between pt-[3.25rem]">
                 {/* 탭 */}
                 <div className="flex flex-col">
@@ -78,7 +97,9 @@ function SettingLayout() {
                             }`}
                             onClick={() => {
                                 setActiveTab(item.name);
-                                navigate(item.path);
+                                navigate(item.path, {
+                                    state: {backgroundLocation},
+                                });
                             }}>
                             <img
                                 src={
