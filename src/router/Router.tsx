@@ -95,10 +95,18 @@ function Router() {
     const navigate = useNavigate();
 
     // backgroundLocation 상태 저장
-    const [backgroundLocation, setBackgroundLocation] = useState(null);
+    const [backgroundLocation, setBackgroundLocation] = useState('');
 
     // 현재 location이 모달 경로인지 확인
-    const isModalRoute = ['/login', '/register'].includes(location.pathname);
+    const isModalRoute = [
+        '/login',
+        '/register',
+        '/settings/myPage',
+        '/settings/community',
+        '/settings/libraryManagement',
+        '/settings/notification',
+        '/settings/display',
+    ].includes(location.pathname);
 
     // backgroundLocation 설정
     if (!backgroundLocation && isModalRoute) {
@@ -113,19 +121,6 @@ function Router() {
                         <Route path="ai" element={<AISideBar />} />
                     </Route>
                     <Route path="library" element={<LibraryPage />} />
-                    <Route path="settings" element={<SettingsLayout />}>
-                        <Route path="myPage" element={<MyPage />} />
-                        <Route path="community" element={<CommunityPage />} />
-                        <Route
-                            path="libraryManagement"
-                            element={<LibraryManagementPage />}
-                        />
-                        <Route
-                            path="notification"
-                            element={<NotificationPage />}
-                        />
-                        <Route path="display" element={<DisplayPage />} />
-                    </Route>
                 </Route>
                 <Route path="*" element={<LandingPage />} />
             </Routes>
@@ -146,6 +141,25 @@ function Router() {
                         }
                     />
                     <Route path="/register" element={<RegisterPage />} />
+                    <Route
+                        path="/settings"
+                        element={
+                            <SettingsLayout
+                                backgroundLocation={backgroundLocation}
+                            />
+                        }>
+                        <Route path="myPage" element={<MyPage />} />
+                        <Route path="community" element={<CommunityPage />} />
+                        <Route
+                            path="libraryManagement"
+                            element={<LibraryManagementPage />}
+                        />
+                        <Route
+                            path="notification"
+                            element={<NotificationPage />}
+                        />
+                        <Route path="display" element={<DisplayPage />} />
+                    </Route>
                 </Routes>
             )}
         </div>

@@ -38,6 +38,18 @@ export default function MenuBar() {
         setActiveMenu('myPage');
     };
 
+    const handleCommunityClick = () => {
+        setActiveMenu('/settings/community');
+        navigate('/settings/community', {
+            state: {backgroundLocation: location},
+        });
+    };
+
+    const handleSettingsClick = () => {
+        setActiveMenu('/settings/display');
+        navigate('/settings/myPage', {state: {backgroundLocation: location}});
+    };
+
     const getMenuClass = (menu: string) =>
         `rounded-lg px-3 py-2.5 ${
             activeMenu === menu ? 'bg-[#2D2F39]' : 'hover:bg-[#4a4a4a]'
@@ -100,15 +112,13 @@ export default function MenuBar() {
                             className={getMenuClass('ai')}
                         />
                     </Link>
-                    <Link
-                        to="/settings/myPage"
-                        onClick={() => setActiveMenu('community')}>
+                    <button type="button" onClick={handleCommunityClick}>
                         <img
                             src={community}
                             alt="community"
                             className={getMenuClass('community')}
                         />
-                    </Link>
+                    </button>
                 </li>
 
                 {/* 세팅 메뉴 */}
@@ -116,15 +126,13 @@ export default function MenuBar() {
                     <p className="text-[0.625rem] font-medium text-[#888888]">
                         SETTINGS
                     </p>
-                    <Link
-                        to="/settings/display"
-                        onClick={() => setActiveMenu('display')}>
+                    <button type="button" onClick={handleSettingsClick}>
                         <img
                             src={setting}
                             alt="settings"
                             className={getMenuClass('display')}
                         />
-                    </Link>
+                    </button>
                 </li>
 
                 {/* 리프와 로그아웃 */}
