@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {useSelector} from 'react-redux';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {getUserLoginData} from '@/redux/selector';
 import logo from '@/assets/images/logo.svg';
 import home from '@/assets/images/menuBar/home.svg';
@@ -18,6 +18,7 @@ import rightArrow2 from '@/assets/images/menuBar/rightArrow2.svg';
 export default function MenuBar() {
     const navigate = useNavigate();
     const userLoginData = useSelector(getUserLoginData);
+    const location = useLocation();
 
     const [activeMenu, setActiveMenu] = useState('/home');
     const [isOpen, setIsOpen] = useState(true); // MenuBar 상태 관리
@@ -30,7 +31,9 @@ export default function MenuBar() {
         if (userLoginData.isLogined) {
             navigate('/setting/myPage');
         } else {
-            navigate('/auth/login');
+            navigate('/login', {
+                state: {backgroundLocation: location},
+            });
         }
         setActiveMenu('myPage');
     };

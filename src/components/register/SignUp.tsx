@@ -151,12 +151,12 @@ function SignUp() {
                             className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                             onChange={e => setEmail(e.target.value)}
                         />
-                        {emailError && (
-                            <p className="text-[0.625rem] text-[#FF0000]">
-                                {emailError}
-                            </p>
-                        )}
                     </div>
+                    {emailError && (
+                        <p className="text-[0.625rem] text-[#FF0000]">
+                            {emailError}
+                        </p>
+                    )}
 
                     {/* 비밀번호 */}
                     <div className="flex justify-between gap-[0.8775rem]">
@@ -170,12 +170,12 @@ function SignUp() {
                                 className="h-[2.633125rem] w-[14.67125rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                                 onChange={e => setPassword(e.target.value)}
                             />
-                            {passwordError && (
-                                <p className="text-[0.625rem] text-[#FF0000]">
-                                    {passwordError}
-                                </p>
-                            )}
                         </div>
+                        {passwordError && (
+                            <p className="text-[0.625rem] text-[#FF0000]">
+                                {passwordError}
+                            </p>
+                        )}
                         <div className="flex items-center justify-between gap-[1.6425rem]">
                             <p className="text-[0.66875rem] text-[#F5F5F5]">
                                 비밀번호 확인
@@ -186,12 +186,12 @@ function SignUp() {
                                 className="h-[2.633125rem] w-[14.629375rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                                 onChange={e => setCheckPassword(e.target.value)}
                             />
-                            {checkPasswordError && (
-                                <p className="text-[0.625rem] text-[#FF0000]">
-                                    {checkPasswordError}
-                                </p>
-                            )}
                         </div>
+                        {checkPasswordError && (
+                            <p className="text-[0.625rem] text-[#FF0000]">
+                                {checkPasswordError}
+                            </p>
+                        )}
                     </div>
 
                     {/* 이름 */}
@@ -203,12 +203,12 @@ function SignUp() {
                             className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                             onChange={e => setName(e.target.value)}
                         />
-                        {nameError && (
-                            <p className="text-[0.625rem] text-[#FF0000]">
-                                {nameError}
-                            </p>
-                        )}
                     </div>
+                    {nameError && (
+                        <p className="text-[0.625rem] text-[#FF0000]">
+                            {nameError}
+                        </p>
+                    )}
 
                     {/* 생년월일 */}
                     <div className="relative flex items-center justify-between">
@@ -226,12 +226,12 @@ function SignUp() {
                             alt="Calendar"
                             className="focus:placeholder:img-[#DBAC4A] absolute right-[1.46875rem] top-[0.9375rem]"
                         />
-                        {birthError && (
-                            <p className="text-[0.625rem] text-[#FF0000]">
-                                {birthError}
-                            </p>
-                        )}
                     </div>
+                    {birthError && (
+                        <p className="text-[0.625rem] text-[#FF0000]">
+                            {birthError}
+                        </p>
+                    )}
 
                     {/* 연락처 */}
                     <div className="flex items-center justify-between">
@@ -244,12 +244,12 @@ function SignUp() {
                             className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                             onChange={e => setPhone(e.target.value)}
                         />
-                        {phoneError && (
-                            <p className="text-[0.625rem] text-[#FF0000]">
-                                {phoneError}
-                            </p>
-                        )}
                     </div>
+                    {phoneError && (
+                        <p className="text-[0.625rem] text-[#FF0000]">
+                            {phoneError}
+                        </p>
+                    )}
 
                     {/* 주소 */}
                     <div className="flex items-center justify-between">
@@ -267,12 +267,12 @@ function SignUp() {
                                 주소찾기
                             </button>
                         </div>
-                        {addressError && (
-                            <p className="text-[0.625rem] text-[#FF0000]">
-                                {addressError}
-                            </p>
-                        )}
                     </div>
+                    {addressError && (
+                        <p className="text-[0.625rem] text-[#FF0000]">
+                            {addressError}
+                        </p>
+                    )}
 
                     {/* 에러 메시지 */}
                     {errorMessage && (

@@ -1,6 +1,6 @@
 import {Outlet} from 'react-router-dom';
-import Palette from '../components/Palette';
 import Book from '@/components/book/Book';
+import Palette from '@/components/Palette';
 
 function Home() {
     return (
