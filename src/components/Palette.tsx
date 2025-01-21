@@ -30,7 +30,7 @@ export default function Palette() {
     };
 
     return (
-        <div className="flex rounded-[0.575rem] border border-[#DBAC4A] bg-[#111111]">
+        <div className="flex w-fit overflow-hidden rounded-[0.575rem] border border-[#DBAC4A] bg-[#111111]">
             <div className="flex items-center gap-[0.43125rem] py-[0.2875rem] pl-[0.2875rem] pr-[0.43125rem]">
                 <div className="flex items-center">
                     <img
