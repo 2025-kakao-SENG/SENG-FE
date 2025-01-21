@@ -88,24 +88,32 @@ export default function Palette() {
                     />
                 </div>
 
-                <img
-                    src={text}
-                    alt="Text Button"
-                    className={getButtonClass('text')}
-                    onClick={() => handleButtonClick('text')}
-                />
-                <img
-                    src={chat}
-                    alt="Chat Button"
-                    className={getButtonClass('chat')}
-                    onClick={() => handleButtonClick('chat')}
-                />
-                <img
-                    src={interests}
-                    alt="Interests Button"
-                    className={getButtonClass('interests')}
-                    onClick={() => handleButtonClick('interests')}
-                />
+                <div className="flex items-center">
+                    <img
+                        src={text}
+                        alt="Text Button"
+                        className={getButtonClass('text')}
+                        onClick={() => handleButtonClick('text')}
+                    />
+                </div>
+
+                <div className="flex items-center">
+                    <img
+                        src={chat}
+                        alt="Chat Button"
+                        className={getButtonClass('chat')}
+                        onClick={() => handleButtonClick('chat')}
+                    />
+                </div>
+
+                <div className="flex items-center">
+                    <img
+                        src={interests}
+                        alt="Interests Button"
+                        className={getButtonClass('interests')}
+                        onClick={() => handleButtonClick('interests')}
+                    />
+                </div>
             </div>
 
             <div className="flex items-center justify-center border-l border-[#444444] pb-[0.3rem] pl-[0.7875rem] pr-4 pt-[0.275rem]">
