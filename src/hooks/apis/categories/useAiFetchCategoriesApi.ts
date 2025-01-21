@@ -1,6 +1,6 @@
 import {useLazyFetchCategoriesQuery} from '@/redux/apiSlice/categoreisApiSlice';
 import {FetchBaseQueryError} from '@reduxjs/toolkit/query/react';
-import {CategoriesApiResponse} from '@/types/category/categoriesTypes';
+import {CategoriesApiResponse} from '@/types/apis/category/categoriesTypes';
 
 const useFetchCategoriesApi = () => {
     const [lazyFetchCategoriesQuery, {isLoading}] =

@@ -2,19 +2,19 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {
     AuthLoginApiRequest,
     AuthLoginApiResponse,
-} from '@/types/auth/loginApiTypes';
+} from '@/types/apis/auth/loginApiTypes';
 import {
     AuthRegisterApiResponse,
     AuthRegisterApiRequest,
-} from '@/types/auth/registerApiTypes';
+} from '@/types/apis/auth/registerApiTypes';
 import {
     AuthDeregisterApiResponse,
     AuthDeregisterApiRequest,
-} from '@/types/auth/deregisterApiTypes';
+} from '@/types/apis/auth/deregisterApiTypes';
 import {
     AuthKakaoLoginApiResponse,
     AuthKakaoLoginApiRequest,
-} from '@/types/auth/kakaoLoginApiTypes';
+} from '@/types/apis/auth/kakaoLoginApiTypes';
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 

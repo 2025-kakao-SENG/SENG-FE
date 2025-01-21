@@ -5,7 +5,7 @@ import {FetchBaseQueryError} from '@reduxjs/toolkit/query/react';
 import {
     BookContentApiRequest,
     BookContentApiResponse,
-} from '@/types/book/bookContentApiTypes';
+} from '@/types/apis/book/bookContentApiTypes';
 
 const useBookContentApi = () => {
     const [bookContentApiMutation, {isLoading}] = useBookContentApiMutation();

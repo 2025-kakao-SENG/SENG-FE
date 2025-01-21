@@ -3,13 +3,17 @@ import {useState} from 'react';
 import {
     AuthRegisterApiRequest,
     AuthRegisterApiResponse,
-} from '@/types/auth/registerApiTypes';
+} from '@/types/apis/auth/registerApiTypes';
 import useAuthRegisterApi from '@/hooks/apis/auth/useAuthRegisterApi';
 import logoCircle from '@/assets/images/login/logoCircle.svg';
 import calendar from '@/assets/images/calendar.svg';
 import close from '@/assets/images/login/close.svg';
 
-function SignUp() {
+interface SignUpProps {
+    backgroundLocation: string;
+}
+
+function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
     const navigate = useNavigate();
     const {authRegisterApi, isLoading} = useAuthRegisterApi();
 
@@ -21,80 +25,15 @@ function SignUp() {
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
 
-    const [nameError, setNameError] = useState('');
-    const [emailError, setEmailError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
-    const [checkPasswordError, setCheckPasswordError] = useState('');
-    const [birthError, setBirthError] = useState('');
-    const [phoneError, setPhoneError] = useState('');
-    const [addressError, setAddressError] = useState('');
-
     const [errorMessage, setErrorMessage] = useState('');
 
     const successRegister = () => {
-        navigate('/auth/login');
-    };
-
-    const validateInputs = (): boolean => {
-        let isValid = true;
-
-        if (!name.trim()) {
-            setNameError('이름을 입력해주세요.');
-            isValid = false;
-        } else {
-            setNameError('');
-        }
-
-        if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            setEmailError('유효한 이메일을 입력해주세요.');
-            isValid = false;
-        } else {
-            setEmailError('');
-        }
-
-        if (!password.trim() || password.length < 6) {
-            setPasswordError('비밀번호는 6자 이상이어야 합니다.');
-            isValid = false;
-        } else {
-            setPasswordError('');
-        }
-
-        if (password !== checkPassword) {
-            setCheckPasswordError('비밀번호가 일치하지 않습니다.');
-            isValid = false;
-        } else {
-            setCheckPasswordError('');
-        }
-
-        if (!birth.trim() || !/^\d{4}-\d{2}-\d{2}$/.test(birth)) {
-            setBirthError('유효한 생년월일을 입력해주세요. (YYYY-MM-DD)');
-            isValid = false;
-        } else {
-            setBirthError('');
-        }
-
-        if (!phone.trim() || !/^010\d{8}$/.test(phone)) {
-            setPhoneError('유효한 전화번호를 입력해주세요.');
-            isValid = false;
-        } else {
-            setPhoneError('');
-        }
-
-        if (!address.trim()) {
-            setAddressError('주소를 입력해주세요.');
-            isValid = false;
-        } else {
-            setAddressError('');
-        }
-
-        return isValid;
+        navigate('login', {
+            state: {backgroundLocation: registerBackgroundLocation},
+        });
     };
 
     async function handleSubmit() {
-        if (!validateInputs()) {
-            return;
-        }
-
         const request: AuthRegisterApiRequest = {
             name,
             email,
@@ -111,14 +50,17 @@ function SignUp() {
             if (response.status === 'success') {
                 successRegister();
             } else {
-                setErrorMessage(response.message);
+                setErrorMessage('회원가입 중 오류가 발생했습니다.');
+                // 세부 에러 항목 활성화
+                /* setErrorMessage(response.message); */
             }
-        } catch (error: unknown) {
-            if (error instanceof Error) {
+        } catch /* (error: unknown) */ {
+            setErrorMessage('회원가입 중 오류가 발생했습니다.');
+            /* if (error instanceof Error) {
                 setErrorMessage(error.message);
             } else {
                 setErrorMessage('회원가입 중 알 수 없는 오류가 발생했습니다.');
-            }
+            } */
         }
     }
 
@@ -149,14 +91,10 @@ function SignUp() {
                             type="text"
                             placeholder="이메일을 입력해주세요."
                             className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
+                            value={email}
                             onChange={e => setEmail(e.target.value)}
                         />
                     </div>
-                    {emailError && (
-                        <p className="text-[0.625rem] text-[#FF0000]">
-                            {emailError}
-                        </p>
-                    )}
 
                     {/* 비밀번호 */}
                     <div className="flex justify-between gap-[0.8775rem]">
@@ -168,14 +106,11 @@ function SignUp() {
                                 type="password"
                                 placeholder="비밀번호를 입력해주세요."
                                 className="h-[2.633125rem] w-[14.67125rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
+                                value={password}
                                 onChange={e => setPassword(e.target.value)}
                             />
                         </div>
-                        {passwordError && (
-                            <p className="text-[0.625rem] text-[#FF0000]">
-                                {passwordError}
-                            </p>
-                        )}
+
                         <div className="flex items-center justify-between gap-[1.6425rem]">
                             <p className="text-[0.66875rem] text-[#F5F5F5]">
                                 비밀번호 확인
@@ -184,14 +119,10 @@ function SignUp() {
                                 type="password"
                                 placeholder="비밀번호를 한번 더 입력해주세요."
                                 className="h-[2.633125rem] w-[14.629375rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
+                                value={checkPassword}
                                 onChange={e => setCheckPassword(e.target.value)}
                             />
                         </div>
-                        {checkPasswordError && (
-                            <p className="text-[0.625rem] text-[#FF0000]">
-                                {checkPasswordError}
-                            </p>
-                        )}
                     </div>
 
                     {/* 이름 */}
@@ -201,14 +132,10 @@ function SignUp() {
                             type="text"
                             placeholder="이름을 입력해주세요."
                             className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
+                            value={name}
                             onChange={e => setName(e.target.value)}
                         />
                     </div>
-                    {nameError && (
-                        <p className="text-[0.625rem] text-[#FF0000]">
-                            {nameError}
-                        </p>
-                    )}
 
                     {/* 생년월일 */}
                     <div className="relative flex items-center justify-between">
@@ -219,6 +146,7 @@ function SignUp() {
                             type="text"
                             placeholder="연도-월-일"
                             className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
+                            value={birth}
                             onChange={e => setBirth(e.target.value)}
                         />
                         <img
@@ -227,11 +155,6 @@ function SignUp() {
                             className="focus:placeholder:img-[#DBAC4A] absolute right-[1.46875rem] top-[0.9375rem]"
                         />
                     </div>
-                    {birthError && (
-                        <p className="text-[0.625rem] text-[#FF0000]">
-                            {birthError}
-                        </p>
-                    )}
 
                     {/* 연락처 */}
                     <div className="flex items-center justify-between">
@@ -242,14 +165,10 @@ function SignUp() {
                             type="text"
                             placeholder="010 1234 1234"
                             className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
+                            value={phone}
                             onChange={e => setPhone(e.target.value)}
                         />
                     </div>
-                    {phoneError && (
-                        <p className="text-[0.625rem] text-[#FF0000]">
-                            {phoneError}
-                        </p>
-                    )}
 
                     {/* 주소 */}
                     <div className="flex items-center justify-between">
@@ -259,6 +178,7 @@ function SignUp() {
                                 type="text"
                                 placeholder="주소를 입력해주세요."
                                 className="h-[2.633125rem] w-[28.965625rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
+                                value={address}
                                 onChange={e => setAddress(e.target.value)}
                             />
                             <button
@@ -268,18 +188,6 @@ function SignUp() {
                             </button>
                         </div>
                     </div>
-                    {addressError && (
-                        <p className="text-[0.625rem] text-[#FF0000]">
-                            {addressError}
-                        </p>
-                    )}
-
-                    {/* 에러 메시지 */}
-                    {errorMessage && (
-                        <p className="text-[0.625rem] text-[#FF0000]">
-                            {errorMessage}
-                        </p>
-                    )}
 
                     {/* 회원가입 버튼 */}
                     <button
@@ -288,6 +196,13 @@ function SignUp() {
                         className="h-[2.633125rem] w-[39.875rem] rounded-sm bg-[#EEB02F] text-black">
                         {isLoading ? '회원가입 중...' : '회원가입'}
                     </button>
+
+                    {/* 에러 메시지 */}
+                    {errorMessage && (
+                        <p className="text-[0.625rem] text-[#FF0000]">
+                            {errorMessage}
+                        </p>
+                    )}
                 </div>
             </div>
 

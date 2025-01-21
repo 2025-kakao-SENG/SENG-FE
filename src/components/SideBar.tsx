@@ -4,32 +4,29 @@ import useFetchSubCategoriesApi from '@/hooks/apis/categories/useAiFecthSubCateg
 import {
     CategoriesApiResponse,
     Category,
-} from '@/types/category/categoriesTypes';
+} from '@/types/apis/category/categoriesTypes';
 import rightArrow from '@/assets/images/sideBar/rightArrow.svg';
 import aiYellow from '@/assets/images/aiYellow.svg';
 import leftArrow from '@/assets/images/sideBar/leftArrow.svg';
 import aiBlack from '@/assets/images/sideBar/aiBlack.svg';
 import logoTransparent from '@/assets/images/sideBar/logoTransparent.png';
 import rightArrow2 from '@/assets/images/sideBar/rightArrow2.svg';
-import {SubCategoryApiRequest} from '@/types/category/subCategoriesTypes';
-import useBookHeadApi from '@/hooks/apis/book/useBookHeadApi';
-import useBookContentApi from '@/hooks/apis/book/useBookContentApi';
-import {
-    BookHeadApiRequest,
-    BookHeadApiResponse,
-} from '@/types/book/bookHeadApiTypes';
+import {SubCategoryApiRequest} from '@/types/apis/category/subCategoriesTypes';
+import {useDispatch, useSelector} from 'react-redux';
+import {getUserId} from '@/redux/selector';
+import {setCreateBookInfo} from '@/redux/slice/createBookSlice';
 
 interface SideBarProps {
     isModalOpen: boolean;
 }
 
 export default function SideBar({isModalOpen}: SideBarProps) {
+    const dispatch = useDispatch();
+    const userId = useSelector(getUserId);
     const {fetchCategoriesApi, isLoading: categoriesLoading} =
         useFetchCategoriesApi();
     const {fetchSubCategoriesApi, isLoading: subCategoriesLoading} =
         useFetchSubCategoriesApi();
-    const {bookHeadApi, isLoading: bookHeadLoading} = useBookHeadApi();
-    const {bookContentApi, isLoading: bookContentLoading} = useBookContentApi();
 
     const [activeCategoryName, setActiveCategoryName] = useState('');
     const [currentCategoryNamePath, setCurrentCategoryNamePath] = useState<
@@ -68,7 +65,7 @@ export default function SideBar({isModalOpen}: SideBarProps) {
             }
         };
         fetchDate();
-    }, []);
+    }, [fetchCategoriesApi]);
 
     const handleCategoryClick = (category: string) => {
         setActiveCategoryName(category);
@@ -136,41 +133,17 @@ export default function SideBar({isModalOpen}: SideBarProps) {
     };
 
     const handleCreateBook = async () => {
-        if (currentCategoryNamePath.length === 0) {
-            setErrorMessage('카테고리를 선택해주세요.');
-        } else {
-            const request: BookHeadApiRequest = {
-                user_pid: 1,
-                category_arr: currentCategoryNamePath,
-            };
-
-            try {
-                const response: BookHeadApiResponse =
-                    await bookHeadApi(request);
-
-                if (response && !('error' in response)) {
-                    const contentRequest = {
-                        pid: response.pid,
-                    };
-                    const contentResponse =
-                        await bookContentApi(contentRequest);
-
-                    if (contentResponse && !('error' in contentResponse)) {
-                        setErrorMessage('책이 생성되었습니다.');
-                    } else {
-                        setErrorMessage(contentResponse.error);
-                    }
-                } else {
-                    setErrorMessage(response.error);
-                }
-            } catch (error: unknown) {
-                if (error instanceof Error) {
-                    setErrorMessage(error.message);
-                } else {
-                    setErrorMessage('책 생성 중 오류가 발생했습니다.');
-                }
-            }
+        if (userId === null) {
+            setErrorMessage('로그인이 필요합니다.');
+            return;
         }
+
+        dispatch(
+            setCreateBookInfo({
+                user_pid: parseInt(userId, 10),
+                category_arr: currentCategoryNamePath,
+            }),
+        );
     };
 
     return (
@@ -286,13 +259,13 @@ export default function SideBar({isModalOpen}: SideBarProps) {
                         생성하기
                     </p>
                 </button>
-            </div>
 
-            {errorMessage && (
-                <div className="absolute bottom-0 w-full bg-[#FF0000] py-1.5 text-center text-white">
-                    {errorMessage}
-                </div>
-            )}
+                {errorMessage && (
+                    <div className="absolute bottom-0 w-full bg-[#FF4C4C] py-1.5 text-center text-[#FFFFFF]">
+                        {errorMessage}
+                    </div>
+                )}
+            </div>
 
             <div className="ml-20 mt-5">
                 <img src={logoTransparent} alt="" className="" />

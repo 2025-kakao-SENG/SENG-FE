@@ -2,11 +2,11 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {
     BookHeadApiRequest,
     BookHeadApiResponse,
-} from '@/types/book/bookHeadApiTypes';
+} from '@/types/apis/book/bookHeadApiTypes';
 import {
     BookContentApiRequest,
     BookContentApiResponse,
-} from '@/types/book/bookContentApiTypes';
+} from '@/types/apis/book/bookContentApiTypes';
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 

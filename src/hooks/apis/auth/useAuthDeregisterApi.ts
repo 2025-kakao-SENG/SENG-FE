@@ -2,7 +2,7 @@ import {useAuthDeregisterApiMutation} from '@/redux/apiSlice/authApiSlice';
 import {
     AuthDeregisterApiRequest,
     AuthDeregisterApiResponse,
-} from '@/types/auth/deregisterApiTypes';
+} from '@/types/apis/auth/deregisterApiTypes';
 
 const useAuthDeregisterApi = () => {
     const [authDeregisterApiMutation, {isLoading}] =
