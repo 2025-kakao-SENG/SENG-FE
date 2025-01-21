@@ -12,6 +12,12 @@ import aiBlack from '@/assets/images/sideBar/aiBlack.svg';
 import logoTransparent from '@/assets/images/sideBar/logoTransparent.png';
 import rightArrow2 from '@/assets/images/sideBar/rightArrow2.svg';
 import {SubCategoryApiRequest} from '@/types/category/subCategoriesTypes';
+import useBookHeadApi from '@/hooks/apis/book/useBookHeadApi';
+import useBookContentApi from '@/hooks/apis/book/useBookContentApi';
+import {
+    BookHeadApiRequest,
+    BookHeadApiResponse,
+} from '@/types/book/bookHeadApiTypes';
 
 interface SideBarProps {
     isModalOpen: boolean;
@@ -22,6 +28,8 @@ export default function SideBar({isModalOpen}: SideBarProps) {
         useFetchCategoriesApi();
     const {fetchSubCategoriesApi, isLoading: subCategoriesLoading} =
         useFetchSubCategoriesApi();
+    const {bookHeadApi, isLoading: bookHeadLoading} = useBookHeadApi();
+    const {bookContentApi, isLoading: bookContentLoading} = useBookContentApi();
 
     const [activeCategoryName, setActiveCategoryName] = useState('');
     const [currentCategoryNamePath, setCurrentCategoryNamePath] = useState<
@@ -127,13 +135,51 @@ export default function SideBar({isModalOpen}: SideBarProps) {
         }
     };
 
+    const handleCreateBook = async () => {
+        if (currentCategoryNamePath.length === 0) {
+            setErrorMessage('카테고리를 선택해주세요.');
+        } else {
+            const request: BookHeadApiRequest = {
+                user_pid: 1,
+                category_arr: currentCategoryNamePath,
+            };
+
+            try {
+                const response: BookHeadApiResponse =
+                    await bookHeadApi(request);
+
+                if (response && !('error' in response)) {
+                    const contentRequest = {
+                        pid: response.pid,
+                    };
+                    const contentResponse =
+                        await bookContentApi(contentRequest);
+
+                    if (contentResponse && !('error' in contentResponse)) {
+                        setErrorMessage('책이 생성되었습니다.');
+                    } else {
+                        setErrorMessage(contentResponse.error);
+                    }
+                } else {
+                    setErrorMessage(response.error);
+                }
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    setErrorMessage(error.message);
+                } else {
+                    setErrorMessage('책 생성 중 오류가 발생했습니다.');
+                }
+            }
+        }
+    };
+
     return (
         <div
             className={`fixed right-0 flex h-[51.5vw] w-[23vw] transform flex-col rounded-[0.6875rem] bg-[#111111] transition-transform duration-300 ${
                 isSidebarPartiallyOpen ? 'translate-x-0' : 'translate-x-[90%]'
             }`}
             style={{
-                display: isModalOpen ? 'none' : 'block', // 모달 열릴 때 SideBar 숨기기
+                display: isModalOpen ? 'none' : 'block',
             }}>
             <div className="pl-[0.5625rem] pt-[0.9375rem]">
                 <button
@@ -233,7 +279,8 @@ export default function SideBar({isModalOpen}: SideBarProps) {
 
                 <button
                     type="button"
-                    className="flex h-[2.1875rem] w-full items-center justify-center gap-1.5 rounded-[0.25rem] bg-[#FFC752] hover:bg-[#EEB02F]">
+                    className="flex h-[2.1875rem] w-full items-center justify-center gap-1.5 rounded-[0.25rem] bg-[#FFC752] hover:bg-[#EEB02F]"
+                    onClick={handleCreateBook}>
                     <img src={aiBlack} alt="" className="" />
                     <p className="text-[0.6875rem] font-medium text-[#000000]">
                         생성하기

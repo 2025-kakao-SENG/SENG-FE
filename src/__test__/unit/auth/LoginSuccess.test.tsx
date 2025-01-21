@@ -6,10 +6,12 @@ import LoginPage from '@/pages/auth/LoginPage';
 
 describe('로그인 페이지 테스트', () => {
     it('일반 로그인 성공 테스트', async () => {
+        const nevigateToRegister = vi.fn();
+
         render(
             <Provider store={store}>
                 <MemoryRouter>
-                    <LoginPage />
+                    <LoginPage nevigateToRegister={nevigateToRegister} />
                 </MemoryRouter>
             </Provider>,
         );
