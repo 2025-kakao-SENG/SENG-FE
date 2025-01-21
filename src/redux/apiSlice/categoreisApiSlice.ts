@@ -1,9 +1,9 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {CategoriesApiResponse} from '@/types/category/categoriesTypes';
+import {CategoriesApiResponse} from '@/types/apis/category/categoriesTypes';
 import {
     SubCategoryApiResponse,
     SubCategoryApiRequest,
-} from '@/types/category/subCategoriesTypes';
+} from '@/types/apis/category/subCategoriesTypes';
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 

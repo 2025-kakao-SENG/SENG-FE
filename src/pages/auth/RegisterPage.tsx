@@ -2,7 +2,11 @@ import {useState} from 'react';
 import SignUp from '@/components/register/SignUp';
 import Service from '@/components/register/Service';
 
-function RegisterPage() {
+interface RegisterPageProps {
+    backgroundLocation: string;
+}
+
+function RegisterPage({backgroundLocation}: RegisterPageProps) {
     const [showSignUp, setShowSignUp] = useState(false);
 
     const renderSignUp = () => {
@@ -14,7 +18,7 @@ function RegisterPage() {
             {/* 이용약관 페이지 */}
             {!showSignUp && <Service renderSignUp={renderSignUp} />}
             {/* 회원가입 페이지 */}
-            {showSignUp && <SignUp />}
+            {showSignUp && <SignUp backgroundLocation={backgroundLocation} />}
         </div>
     );
 }

@@ -2,7 +2,7 @@ import {useAuthRegisterApiMutation} from '@/redux/apiSlice/authApiSlice';
 import {
     AuthRegisterApiRequest,
     AuthRegisterApiResponse,
-} from '@/types/auth/registerApiTypes';
+} from '@/types/apis/auth/registerApiTypes';
 
 const useAuthRegisterApi = () => {
     const [authRegisterApiMutaion, {isLoading}] = useAuthRegisterApiMutation();

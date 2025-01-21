@@ -3,21 +3,23 @@ import {useState} from 'react';
 import {
     AuthLoginApiRequest,
     AuthLoginApiResponse,
-} from '@/types/auth/loginApiTypes';
+} from '@/types/apis/auth/loginApiTypes';
 import useAuthLoginApi from '@/hooks/apis/auth/useAuthLoginApi';
 import useAuthKaKaoLoginApi from '@/hooks/apis/auth/useAuthKakaoLoginApi';
 import {useDispatch} from 'react-redux';
-import {AuthKakaoLoginApiResponse} from '@/types/auth/kakaoLoginApiTypes';
+import {AuthKakaoLoginApiResponse} from '@/types/apis/auth/kakaoLoginApiTypes';
 import {setUserInfoByLogin, UserSliceState} from '@/redux/slice/userSlice';
 import logoCircle from '@/assets/images/login/logoCircle.svg';
 import close from '@/assets/images/login/close.svg';
 import kakao from '@/assets/images/login/kakao.svg';
 
 interface LoginPageProps {
-    navigateToRegister: () => void;
+    backgroundLocation: string;
 }
 
-function LoginPage({navigateToRegister}: LoginPageProps) {
+function LoginPage({
+    backgroundLocation: loginBackgroundLocation,
+}: LoginPageProps) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {authLoginApi, isLoading: isLoginLoading} = useAuthLoginApi();
@@ -56,14 +58,17 @@ function LoginPage({navigateToRegister}: LoginPageProps) {
                 dispatch(setUserInfoByLogin(dispatchData));
                 successLogin();
             } else {
-                setErrorMessage(response.message);
+                setErrorMessage('아이디 혹은 비밀번호가 잘못되었습니다.');
+                // 세부 에러 항목 활성화
+                /* setErrorMessage(response.message); */
             }
-        } catch (error: unknown) {
-            if (error instanceof Error) {
+        } catch /* (error: unknown) */ {
+            setErrorMessage('아이디 혹은 비밀번호가 잘못되었습니다.');
+            /*             if (error instanceof Error) {
                 setErrorMessage(error.message);
             } else {
                 setErrorMessage('로그인 통신 오류');
-            }
+            } */
         }
     }
 
@@ -88,14 +93,17 @@ function LoginPage({navigateToRegister}: LoginPageProps) {
                 dispatch(setUserInfoByLogin(dispatchData));
                 successLogin();
             } else {
-                setErrorMessage(response.message);
+                setErrorMessage('아이디 혹은 비밀번호가 잘못되었습니다.');
+                // 세부 에러 항목 활성화
+                // setErrorMessage(response.message);
             }
-        } catch (error: unknown) {
-            if (error instanceof Error) {
+        } catch /* (error: unknown) */ {
+            setErrorMessage('아이디 혹은 비밀번호가 잘못되었습니다.');
+            /* if (error instanceof Error) {
                 setErrorMessage(error.message);
             } else {
                 setErrorMessage('카카오 로그인 통신 오류');
-            }
+            } */
         }
     }
 
@@ -117,7 +125,7 @@ function LoginPage({navigateToRegister}: LoginPageProps) {
             <button
                 type="button"
                 className="absolute right-[1.9375rem] top-[1.9375rem]"
-                onClick={() => navigate(-1)}>
+                onClick={() => navigate(loginBackgroundLocation)}>
                 <img src={close} alt="Close Button" />
             </button>
             <form
@@ -132,7 +140,9 @@ function LoginPage({navigateToRegister}: LoginPageProps) {
                     type="text"
                     placeholder="이메일"
                     onChange={handleEmailChange}
-                    className="h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] border-[#9C9C9C] bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none"
+                    className={`h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] ${
+                        errorMessage ? 'border-red-500' : 'border-[#9C9C9C]'
+                    } bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none`}
                 />
                 <input
                     id="password"
@@ -140,10 +150,12 @@ function LoginPage({navigateToRegister}: LoginPageProps) {
                     type="password"
                     placeholder="비밀번호"
                     onChange={handlePasswordChange}
-                    className="h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] border-[#9C9C9C] bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none"
+                    className={`h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] ${
+                        errorMessage ? 'border-red-500' : 'border-[#9C9C9C]'
+                    } bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none`}
                 />
                 {errorMessage && (
-                    <p className="mt-2 text-sm text-red-500">{errorMessage}</p>
+                    <p className="mt-1 text-sm text-red-500">{errorMessage}</p>
                 )}
             </form>
             <button
@@ -167,7 +179,13 @@ function LoginPage({navigateToRegister}: LoginPageProps) {
                 <button
                     type="button"
                     className="px-1 text-xs"
-                    onClick={navigateToRegister}>
+                    onClick={() =>
+                        navigate('/register', {
+                            state: {
+                                backgroundLocation: loginBackgroundLocation,
+                            },
+                        })
+                    }>
                     회원가입
                 </button>
             </div>

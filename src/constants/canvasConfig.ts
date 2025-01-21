@@ -1,4 +1,4 @@
-import {CanvasConfig} from '@/types/bookType';
+import {CanvasConfig} from '@/types/book/canvasType';
 
 const defaultCanvasConfig: CanvasConfig = {
     canvas: {

@@ -2,7 +2,7 @@ import {useAuthLoginApiMutation} from '@/redux/apiSlice/authApiSlice';
 import {
     AuthLoginApiRequest,
     AuthLoginApiResponse,
-} from '@/types/auth/loginApiTypes';
+} from '@/types/apis/auth/loginApiTypes';
 import {FetchBaseQueryError} from '@reduxjs/toolkit/query/react';
 
 const useAuthLoginApi = () => {

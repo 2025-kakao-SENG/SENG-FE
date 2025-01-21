@@ -4,6 +4,7 @@ import sessionStorage from 'redux-persist/lib/storage/session';
 import {userSlice} from './slice/userSlice';
 import {authApi} from './apiSlice/authApiSlice';
 import {categoriesApi} from './apiSlice/categoreisApiSlice';
+import {createBookSlice} from './slice/createBookSlice';
 
 const persistConfig = {
     key: 'login',
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     [authApi.reducerPath]: authApi.reducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     user: userSlice.reducer,
+    createBook: createBookSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

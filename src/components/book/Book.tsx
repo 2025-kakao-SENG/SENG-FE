@@ -2,8 +2,19 @@ import {useState, useEffect, useRef} from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import bookMockData from '@/__test__/mocks/bookMockData';
 import defaultCanvasConfig from '@/constants/canvasConfig';
-import {CanvasConfig} from '@/types/bookType';
+import {CanvasConfig} from '@/types/book/canvasType';
 import Page from './Page';
+
+import useBookHeadApi from '@/hooks/apis/book/useBookHeadApi';
+import useBookContentApi from '@/hooks/apis/book/useBookContentApi';
+import {useSelector} from 'react-redux';
+import {getBookCreatingData} from '@/redux/selector';
+import {
+    BookHeadApiRequest,
+    BookHeadApiResponse,
+} from '@/types/apis/book/bookHeadApiTypes';
+import {BookData} from '@/types/book/bookDataType';
+import {produce} from 'immer';
 
 // 책 테마화
 
@@ -30,8 +41,14 @@ import Page from './Page';
 // 버튼 로딩 상태로 변경 (로딩)
 
 function Book() {
-    const [bookData] = useState(bookMockData);
+    const createBookData = useSelector(getBookCreatingData);
+    const {bookHeadApi, isLoading: isBookHeadLoading} = useBookHeadApi();
+    const {bookContentApi, isLoading: isBookContentLoading} =
+        useBookContentApi();
+
+    const [bookData, setBookDate] = useState<BookData>(bookMockData);
     const [canvasConfig, setCanvasConfig] = useState(defaultCanvasConfig);
+    const [errorMessage, setErrorMessage] = useState('');
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const flipBookRef = useRef<{pageFlip: () => any}>(null);
@@ -41,6 +58,52 @@ function Book() {
         width: window.innerWidth,
         height: window.innerHeight,
     });
+
+    useEffect(() => {
+        const fetchBookHead = async () => {
+            if (createBookData === null) {
+                return;
+            }
+
+            const request: BookHeadApiRequest = {
+                user_pid: createBookData.userPid,
+                category_arr: createBookData.categoriesArr,
+            };
+
+            try {
+                const response: BookHeadApiResponse =
+                    await bookHeadApi(request);
+
+                if (response.success) {
+                    setBookDate(
+                        produce(draft => {
+                            if (draft && draft.metadata) {
+                                draft.metadata.pid = response.data.pid;
+                                draft.metadata.title = response.data.title;
+                                draft.metadata.category =
+                                    response.data.category;
+                                draft.metadata.created_at =
+                                    response.data.created_at;
+                                draft.metadata.generated_date =
+                                    response.data.generated_date;
+                            }
+                        }),
+                    );
+
+                    console.log(response.data);
+
+                    // parseBookOutline(response.data.outline);
+                }
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    setErrorMessage(error.message);
+                } else {
+                    setErrorMessage('책 생성 중 오류가 발생했습니다.');
+                }
+            }
+        };
+        fetchBookHead();
+    }, [createBookData]);
 
     // 리사이즈 이벤트 핸들러
     useEffect(() => {
@@ -60,39 +123,39 @@ function Book() {
 
     // 캔버스 설정 업데이트
     useEffect(() => {
-        updateCanvasConfig(windowSize.width * 0.33);
-    }, [windowSize]);
+        const updateCanvasConfig = (newWidth: number) => {
+            const aspectRatio = 1.414; // 세로/가로 비율
+            const newHeight = Math.floor(newWidth * aspectRatio); // 세로 계산
 
-    const updateCanvasConfig = (newWidth: number) => {
-        const aspectRatio = 1.414; // 세로/가로 비율
-        const newHeight = Math.floor(newWidth * aspectRatio); // 세로 계산
+            const newCanvasConfig: CanvasConfig = {
+                ...canvasConfig,
+                canvas: {
+                    ...canvasConfig.canvas,
+                    width: newWidth,
+                    height: newHeight,
+                },
+                contents: {
+                    ...canvasConfig.contents,
+                    header: {
+                        ...canvasConfig.contents.header,
+                        font: `bold ${newWidth * 0.04}px Arial`,
+                    },
+                    body: {
+                        ...canvasConfig.contents.body,
+                        font: `bold ${newWidth * 0.02}px Arial`,
+                    },
+                    pageNumber: {
+                        ...canvasConfig.contents.pageNumber,
+                        font: `bold ${newWidth * 0.03}px Arial`,
+                    },
+                },
+            };
 
-        const newCanvasConfig: CanvasConfig = {
-            ...canvasConfig,
-            canvas: {
-                ...canvasConfig.canvas,
-                width: newWidth,
-                height: newHeight,
-            },
-            contents: {
-                ...canvasConfig.contents,
-                header: {
-                    ...canvasConfig.contents.header,
-                    font: `bold ${newWidth * 0.04}px Arial`,
-                },
-                body: {
-                    ...canvasConfig.contents.body,
-                    font: `bold ${newWidth * 0.02}px Arial`,
-                },
-                pageNumber: {
-                    ...canvasConfig.contents.pageNumber,
-                    font: `bold ${newWidth * 0.03}px Arial`,
-                },
-            },
+            setCanvasConfig(newCanvasConfig);
         };
 
-        setCanvasConfig(newCanvasConfig);
-    };
+        updateCanvasConfig(windowSize.width * 0.33);
+    }, [windowSize]);
 
     const handleFlipNext = () => {
         const pageFlip = flipBookRef.current?.pageFlip();
@@ -135,7 +198,7 @@ function Book() {
                 flippingTime={1500}
                 usePortrait={false}
                 startZIndex={0}
-                autoSize={true}
+                autoSize
                 maxShadowOpacity={1}
                 showCover={false}
                 mobileScrollSupport
@@ -146,7 +209,7 @@ function Book() {
                 disableFlipByClick
                 className="h-full w-full"
                 style={{}}>
-                {bookData.chapters.map((chapter, idx) => (
+                {bookData?.chapters.map((chapter, idx) => (
                     <Page
                         key={idx}
                         pageNumber={idx + 1}

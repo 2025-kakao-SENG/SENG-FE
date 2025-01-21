@@ -3,7 +3,7 @@ import {FetchBaseQueryError} from '@reduxjs/toolkit/query/react';
 import {
     BookHeadApiRequest,
     BookHeadApiResponse,
-} from '@/types/book/bookHeadApiTypes';
+} from '@/types/apis/book/bookHeadApiTypes';
 
 const useBookHeadApi = () => {
     const [bookHeadApiMutation, {isLoading}] = useBookHeadApiMutation();

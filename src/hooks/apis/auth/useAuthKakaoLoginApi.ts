@@ -2,7 +2,7 @@ import {useAuthKakaoLoginApiMutation} from '@/redux/apiSlice/authApiSlice';
 import {
     AuthKakaoLoginApiRequest,
     AuthKakaoLoginApiResponse,
-} from '@/types/auth/kakaoLoginApiTypes';
+} from '@/types/apis/auth/kakaoLoginApiTypes';
 
 function useAuthKaKaoLoginApi() {
     const [authKakaoLoginApimutation, {isLoading}] =

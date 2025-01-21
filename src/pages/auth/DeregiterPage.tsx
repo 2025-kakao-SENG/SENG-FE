@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {AuthDeregisterApiRequest} from '@/types/auth/deregisterApiTypes';
+import {AuthDeregisterApiRequest} from '@/types/apis/auth/deregisterApiTypes';
 import useAuthDeregisterApi from '@/hooks/apis/auth/useAuthDeregisterApi';
 import {useNavigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';

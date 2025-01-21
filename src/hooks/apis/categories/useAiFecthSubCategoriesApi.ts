@@ -3,7 +3,7 @@ import {FetchBaseQueryError} from '@reduxjs/toolkit/query';
 import {
     SubCategoryApiRequest,
     SubCategoryApiResponse,
-} from '@/types/category/subCategoriesTypes';
+} from '@/types/apis/category/subCategoriesTypes';
 
 const useFetchSubCategoriesApi = () => {
     const [lazyFetchSubCategoriesQuery, {isLoading}] =

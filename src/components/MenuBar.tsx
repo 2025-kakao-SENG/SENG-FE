@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
-import {getUserLoginData} from '@/redux/selector';
+import {getLeafCount, getUserLoginData} from '@/redux/selector';
 import logo from '@/assets/images/logo.svg';
 import home from '@/assets/images/menuBar/home.svg';
 import user from '@/assets/images/menuBar/user.svg';
@@ -16,6 +16,7 @@ import leftArrow2 from '@/assets/images/menuBar/leftArrow2.svg';
 import rightArrow2 from '@/assets/images/menuBar/rightArrow2.svg';
 
 export default function MenuBar() {
+    const leafCount = useSelector(getLeafCount);
     const navigate = useNavigate();
     const userLoginData = useSelector(getUserLoginData);
     const location = useLocation();
@@ -29,7 +30,9 @@ export default function MenuBar() {
 
     const handleMyPageClick = () => {
         if (userLoginData.isLogined) {
-            navigate('/setting/myPage');
+            navigate('/settings/myPage', {
+                state: {backgroundLocation: location},
+            });
         } else {
             navigate('/login', {
                 state: {backgroundLocation: location},
@@ -142,20 +145,30 @@ export default function MenuBar() {
                         alt="leaf"
                         className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-[#4a4a4a] active:bg-[#2D2F39]"
                     />
-                    <p className="text-[0.6875rem] text-white">47</p>
+                    <p className="text-[0.6875rem] text-white">
+                        {leafCount % 100}
+                    </p>
                     <img
                         src={goldenLeaf}
                         alt="goldenLeaf"
                         className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-[#4a4a4a] active:bg-[#2D2F39]"
                     />
-                    <p className="text-[0.6875rem] text-[#FAC453]">2</p>
-                    <Link to="/auth/logout">
+                    <p className="text-[0.6875rem] text-[#FAC453]">
+                        {leafCount / 100}
+                    </p>
+                    <button
+                        type="button"
+                        onClick={() =>
+                            navigate('/logout', {
+                                state: {backgroundLocation: location},
+                            })
+                        }>
                         <img
                             src={logout}
                             alt="logout"
                             className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-[#4a4a4a] active:bg-[#2D2F39]"
                         />
-                    </Link>
+                    </button>
                 </li>
             </ul>
         </div>

@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Route, Routes, useLocation, useNavigate} from 'react-router-dom';
+import {Route, Routes, useLocation} from 'react-router-dom';
 import LandingPage from '@/pages/LandingPage';
 import Layout from '@/layouts/Layout.tsx';
 import LoginPage from '@/pages/auth/LoginPage';
@@ -13,86 +13,10 @@ import CommunityPage from '@/pages/settings/CommunityPage.tsx';
 import LibraryManagementPage from '@/pages/settings/LibraryManagementPage';
 import NotificationPage from '@/pages/settings/NotificationPage.tsx';
 import DisplayPage from '@/pages/settings/DisplayPage.tsx';
-
-/* const router = [
-    {
-        path: 'landing',
-        element: <LandingPage />,
-    },
-    {
-        path: '/',
-        element: <Layout />,
-        children: [
-            {path: 'login', element: <LoginModalRouter />},
-            {
-                path: 'auth',
-                element: <Outlet />,
-                children: [
-                    {
-                        index: true,
-                        element: <Navigate to="login" />,
-                    },
-                    {
-                        path: 'login',
-                        element: <LoginPage />,
-                    },
-                    {
-                        path: 'logout',
-                        element: <LogoutPage />,
-                    },
-                    {
-                        path: 'register',
-                        element: <RegisterPage />,
-                    },
-                ],
-            },
-            {
-                path: 'home',
-                element: <HomePage />,
-                children: [
-                    {
-                        path: 'ai',
-                        element: <AISideBar />,
-                    },
-                ],
-            },
-            {
-                path: 'library',
-                element: <LibraryPage />,
-            },
-            {
-                path: 'settings',
-                element: <SettingsLayout />,
-                children: [
-                    {
-                        path: 'myPage',
-                        element: <MyPage />,
-                    },
-                    {
-                        path: 'community',
-                        element: <CommunityPage />,
-                    },
-                    {
-                        path: 'libraryManagement',
-                        element: <LibraryManagementPage />,
-                    },
-                    {
-                        path: 'notification',
-                        element: <NotificationPage />,
-                    },
-                    {
-                        path: 'display',
-                        element: <DisplayPage />,
-                    },
-                ],
-            },
-        ],
-    },
-]; */
+import LogoutPage from '@/pages/auth/LogoutPage.tsx';
 
 function Router() {
     const location = useLocation();
-    const navigate = useNavigate();
 
     // backgroundLocation 상태 저장
     const [backgroundLocation, setBackgroundLocation] = useState('');
@@ -100,6 +24,7 @@ function Router() {
     // 현재 location이 모달 경로인지 확인
     const isModalRoute = [
         '/login',
+        '/logout',
         '/register',
         '/settings/myPage',
         '/settings/community',
@@ -139,15 +64,26 @@ function Router() {
                         path="/login"
                         element={
                             <LoginPage
-                                navigateToRegister={() =>
-                                    navigate('/register', {
-                                        state: {backgroundLocation},
-                                    })
-                                }
+                                backgroundLocation={backgroundLocation}
                             />
                         }
                     />
-                    <Route path="/register" element={<RegisterPage />} />
+                    <Route
+                        path="/logout"
+                        element={
+                            <LogoutPage
+                                backgroundLocation={backgroundLocation}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/register"
+                        element={
+                            <RegisterPage
+                                backgroundLocation={backgroundLocation}
+                            />
+                        }
+                    />
                     <Route
                         path="/settings"
                         element={
