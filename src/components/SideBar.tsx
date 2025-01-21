@@ -269,8 +269,12 @@ export default function SideBar({isModalOpen}: SideBarProps) {
                 )}
             </div>
 
-            <div className="ml-20 mt-5">
-                <img src={logoTransparent} alt="" className="" />
+            <div className="absolute bottom-0 left-2/3 -translate-x-1/2">
+                <img
+                    src={logoTransparent}
+                    alt="logo"
+                    className="md:max-w-[10rem] lg:max-w-[8rem] xl:max-w-[6rem] h-auto w-auto max-w-[20rem] transition-all duration-300 ease-in-out"
+                />
             </div>
         </div>
     );
