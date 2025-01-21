@@ -1,5 +1,5 @@
 import bookTest from '@/assets/images/bookTest.svg';
-import book from '@/assets/images/book.svg';
+import read from '@/assets/images/read.svg';
 import bin from '@/assets/images/bin.svg';
 
 function LibraryManagementPage() {
@@ -21,7 +21,7 @@ function LibraryManagementPage() {
                         />
                         <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                             <img
-                                src={book}
+                                src={read}
                                 alt="book icon"
                                 className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
                             />
@@ -44,7 +44,7 @@ function LibraryManagementPage() {
                         />
                         <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                             <img
-                                src={book}
+                                src={read}
                                 alt="book icon"
                                 className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
                             />
@@ -67,7 +67,7 @@ function LibraryManagementPage() {
                         />
                         <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                             <img
-                                src={book}
+                                src={read}
                                 alt="book icon"
                                 className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
                             />
@@ -90,7 +90,7 @@ function LibraryManagementPage() {
                         />
                         <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                             <img
-                                src={book}
+                                src={read}
                                 alt="book icon"
                                 className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
                             />
@@ -113,7 +113,7 @@ function LibraryManagementPage() {
                         />
                         <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                             <img
-                                src={book}
+                                src={read}
                                 alt="book icon"
                                 className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
                             />
@@ -136,7 +136,7 @@ function LibraryManagementPage() {
                         />
                         <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                             <img
-                                src={book}
+                                src={read}
                                 alt="book icon"
                                 className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
                             />
@@ -159,7 +159,7 @@ function LibraryManagementPage() {
                         />
                         <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                             <img
-                                src={book}
+                                src={read}
                                 alt="book icon"
                                 className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
                             />
@@ -182,7 +182,7 @@ function LibraryManagementPage() {
                         />
                         <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                             <img
-                                src={book}
+                                src={read}
                                 alt="book icon"
                                 className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
                             />
@@ -205,7 +205,7 @@ function LibraryManagementPage() {
                         />
                         <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                             <img
-                                src={book}
+                                src={read}
                                 alt="book icon"
                                 className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
                             />

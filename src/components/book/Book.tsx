@@ -183,6 +183,8 @@ function Book() {
             style={{
                 width: `${canvasConfig.canvas.width * 2}px`,
                 height: `${canvasConfig.canvas.height}px`,
+                maxHeight: `calc(100vh - 2rem)`, // 화면 아래에서 2rem 떨어지도록 제한
+                overflow: 'hidden',
             }}>
             <HTMLFlipBook
                 ref={flipBookRef}

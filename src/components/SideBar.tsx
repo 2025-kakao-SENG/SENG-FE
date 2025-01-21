@@ -148,11 +148,13 @@ export default function SideBar({isModalOpen}: SideBarProps) {
 
     return (
         <div
-            className={`fixed right-0 flex h-[51.5vw] w-[23vw] transform flex-col rounded-[0.6875rem] bg-[#111111] transition-transform duration-300 ${
+            className={`fixed right-0 flex h-[calc(100%-4rem)] w-[23vw] flex-col overflow-hidden rounded-[0.6875rem] bg-[#111111] shadow-lg transition-transform duration-300 ${
                 isSidebarPartiallyOpen ? 'translate-x-0' : 'translate-x-[90%]'
             }`}
             style={{
                 display: isModalOpen ? 'none' : 'block',
+                top: '2rem', // 위쪽 여백
+                bottom: '2rem', // 아래쪽 여백
             }}>
             <div className="pl-[0.5625rem] pt-[0.9375rem]">
                 <button

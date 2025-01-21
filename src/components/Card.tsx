@@ -1,5 +1,7 @@
 import React from 'react';
 import bookTest from '../assets/images/bookTest.svg';
+import read from '@/assets/images/read.svg';
+import bin from '@/assets/images/bin.svg';
 
 const Card: React.FC = () => {
     // 내부에서 사용할 데이터
@@ -162,13 +164,25 @@ const Card: React.FC = () => {
             {books.map(book => (
                 <div
                     key={book.id}
-                    className="h-[16.6875rem] w-[10.4375rem] transform cursor-pointer overflow-hidden rounded-2xl transition-transform duration-200 hover:animate-wiggle hover:drop-shadow-glow-yellow"
+                    className="group relative h-[16.6875rem] w-[10.4375rem] transform cursor-pointer overflow-hidden rounded-2xl transition-transform duration-200 hover:animate-wiggle hover:drop-shadow-glow-yellow"
                     onClick={() => handleRead(book.link)}>
                     <img
                         src={book.cover}
                         alt={`${book.title} cover`}
                         className="h-full w-full object-cover opacity-80 transition-opacity duration-300 hover:opacity-100"
                     />
+                    <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        <img
+                            src={read}
+                            alt="book icon"
+                            className="cursor-pointer"
+                        />
+                        <img
+                            src={bin}
+                            alt="delete icon"
+                            className="cursor-pointer"
+                        />
+                    </div>
                 </div>
             ))}
         </div>

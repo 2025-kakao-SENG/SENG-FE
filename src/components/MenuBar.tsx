@@ -61,11 +61,11 @@ export default function MenuBar() {
     return (
         <div
             className={`relative h-full min-h-screen w-full py-[2.375rem] transition-transform duration-300 ${
-                isOpen ? 'translate-x-0' : '-translate-x-[6rem]'
+                isOpen ? 'translate-x-0' : '-translate-x-[5rem]'
             }`}>
             <ul className="relative flex h-full w-full flex-col justify-items-center rounded-xl bg-[#111111] p-6 shadow-right">
                 {/* 로고 */}
-                <div>
+                <div className="flex w-full items-center justify-center">
                     <img src={logo} alt="SENG logo" className="w-11" />
                 </div>
 
