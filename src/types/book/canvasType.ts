@@ -16,6 +16,7 @@ export interface CanvasContentsConfig {
     textBaseline: CanvasTextBaseline;
     direction: CanvasDirection;
     header: CanvasTextStyle;
+    subHeader: CanvasTextStyle;
     body: CanvasTextStyle;
     pageNumber: CanvasTextStyle;
 }

@@ -16,6 +16,12 @@ const defaultCanvasConfig: CanvasConfig = {
             strokeStyle: '#FAC453', // 테두리 색상
             lineWidth: 2, // 테두리 두께
         },
+        subHeader: {
+            font: 'bold 20px Arial', // 폰트
+            fillStyle: '#FAC453', // 채우기 색상
+            strokeStyle: '#FAC453', // 테두리 색상
+            lineWidth: 2, // 테두리 두께
+        },
         body: {
             font: 'bold 20px Arial', // 폰트
             fillStyle: '#FAC453', // 채우기 색상

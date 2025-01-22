@@ -1,50 +1,63 @@
 import React, {useRef, useEffect} from 'react';
-import {Chapter, SubChapter} from '@/types/book/bookDataType';
+import {Chapter} from '@/types/book/bookDataType';
 import {CanvasConfig} from '@/types/book/canvasType';
 
 type PageProps = React.PropsWithChildren<{
     pageNumber: number;
-    ChapterData: Chapter;
+    chapterData: Chapter;
+    subChapterIndex: number;
     canvasConfig: CanvasConfig;
 }>;
 
 function Page(
-    {pageNumber, ChapterData, canvasConfig}: PageProps,
+    {pageNumber, chapterData, subChapterIndex, canvasConfig}: PageProps,
     ref: React.Ref<HTMLDivElement>,
 ) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const renderHeader = (ctx: CanvasRenderingContext2D) => {
-        /*         const {header} = canvasConfig.contents;
+    const renderChapter = (ctx: CanvasRenderingContext2D) => {
+        const {header} = canvasConfig.contents;
         ctx.font = header.font;
         ctx.fillStyle = header.fillStyle;
-
         ctx.fillText(
-            ChapterData.chapterTitle,
+            chapterData.chapterTitle,
             canvasConfig.coordinateCriteria.xRatio * canvasConfig.canvas.width, // 좌측에서 10% 위치
             canvasConfig.coordinateCriteria.yRatio * canvasConfig.canvas.height, // 상단에서 10% 위치
-        ); */
+        );
     };
 
-    const renderContents = (ctx: CanvasRenderingContext2D) => {
-        /*         const {body} = canvasConfig.contents;
+    const renderSubChapter = (ctx: CanvasRenderingContext2D) => {
+        const {subHeader} = canvasConfig.contents;
+        ctx.font = subHeader.font;
+        ctx.fillStyle = subHeader.fillStyle;
+        ctx.fillText(
+            chapterData.subChapters[subChapterIndex].subChapterTitle,
+            canvasConfig.canvas.width * canvasConfig.coordinateCriteria.xRatio, // 좌측에서 10% 위치
+            canvasConfig.canvas.height *
+                canvasConfig.coordinateCriteria.yRatio + // 상단에서 10% 위치
+                canvasConfig.canvas.height *
+                    canvasConfig.coordinateCriteria.lineSpaceingRatio, // 줄 간격
+        );
+    };
+    const renderSubChapterContents = (ctx: CanvasRenderingContext2D) => {
+        const {body} = canvasConfig.contents;
         ctx.font = body.font;
         ctx.fillStyle = body.fillStyle;
 
-        ChapterData.subChapters.forEach((subChapter: SubChapter, index) => {
+        const {subChapterContent} = chapterData.subChapters[subChapterIndex];
+
+        subChapterContent.forEach((content: string, index: number) => {
             ctx.fillText(
-                line,
+                content,
                 canvasConfig.canvas.width *
                     canvasConfig.coordinateCriteria.xRatio, // 좌측에서 10% 위치
                 canvasConfig.canvas.height *
                     canvasConfig.coordinateCriteria.yRatio + // 상단에서 10% 위치
-                    (index + 1) *
-                        canvasConfig.canvas.height *
-                        canvasConfig.coordinateCriteria.lineSpaceingRatio, // 줄 간격
-                canvasConfig.canvas.width *
-                    canvasConfig.coordinateCriteria.maxWidthRatio, // 최대 너비
+                    canvasConfig.canvas.height *
+                        (canvasConfig.coordinateCriteria.lineSpaceingRatio *
+                            (index + 2)), // 줄 간격
             );
-        }); */
+        });
     };
 
     const renderPageNumber = (ctx: CanvasRenderingContext2D) => {
@@ -75,14 +88,22 @@ function Page(
             ctx.fillStyle = canvasConfig.canvas.backgroundColor;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 캔버스 공통 설정
+            // 캔버스 화질 개선
+            const dpi = window.devicePixelRatio || 1;
+            const style = getComputedStyle(canvas);
+            canvas.width = parseInt(style.width, 10) * dpi;
+            canvas.height = parseInt(style.height, 10) * dpi;
+            ctx.scale(dpi, dpi);
+
+            // 캔버스 텍스트 공통 설정
             ctx.textAlign = canvasConfig.contents.textAlign;
             ctx.textBaseline = canvasConfig.contents.textBaseline;
             ctx.direction = canvasConfig.contents.direction;
 
             // 개별 영역 그리기
-            renderHeader(ctx);
-            renderContents(ctx);
+            renderChapter(ctx);
+            renderSubChapter(ctx);
+            renderSubChapterContents(ctx);
             renderPageNumber(ctx);
         };
         renderCanvas();
@@ -96,8 +117,8 @@ function Page(
                 height={canvasConfig.canvas.height}
                 data-testid="canvas"
                 style={{
-                    width: '100%',
-                    height: '100%',
+                    width: `${canvasConfig.canvas.width}px`,
+                    height: `${canvasConfig.canvas.height}px`,
                     backgroundColor: canvasConfig.canvas.backgroundColor,
                 }}
             />

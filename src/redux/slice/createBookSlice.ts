@@ -1,7 +1,7 @@
 import {BookHeadApiRequest} from '@/types/apis/book/bookHeadApiTypes';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-const initialState = {
+export const initialState = {
     isCreating: false,
     userPid: 0,
     categoriesArr: [] as string[],

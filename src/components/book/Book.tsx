@@ -1,9 +1,10 @@
 import {useState, useEffect, useRef} from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import bookMockData from '@/__test__/mocks/bookMockData';
+import {initialState} from '@/redux/slice/createBookSlice';
 import defaultCanvasConfig from '@/constants/canvasConfig';
 import {CanvasConfig} from '@/types/book/canvasType';
-import Page from './Page';
+import Page from '@/components/book/Page';
 
 import useBookHeadApi from '@/hooks/apis/book/useBookHeadApi';
 import useBookContentApi from '@/hooks/apis/book/useBookContentApi';
@@ -13,15 +14,22 @@ import {
     BookHeadApiRequest,
     BookHeadApiResponse,
 } from '@/types/apis/book/bookHeadApiTypes';
-import {BookData} from '@/types/book/bookDataType';
+import {BookData, Chapter, ParsedContent} from '@/types/book/bookDataType';
 import {produce} from 'immer';
+import parseJsonString from '@/utils/book/parseJsonString';
+import {
+    BookContentApiRequest,
+    BookContentApiResponse,
+} from '@/types/apis/book/bookContentApiTypes';
+
+import parseHTMLString from '@/utils/book/parseHTMLString';
 
 // 책 테마화
 
 // [만들 것들]
 // 만들 함수 및 데이터 타입(서재 고려 해야함)
-// 1. 책 Law 데이터 타입
-// 2. 텍스트 파싱 함수
+// $ 1. 책 Law 데이터 타입
+// $ 2. 텍스트 파싱 함수 !
 // 3. 텍스트 끊는 함수 (줄마다 끊어 줘야 함)
 // 4. 책 가공 정보 데이터 타입 (그리기 위한 textLayout 정보) + 책 가공 컨텐츠 데이터 타입 => 책 가공 데이터 타입     !! 이 정보 만으로 그릴 수 있어야 함
 
@@ -46,64 +54,132 @@ function Book() {
     const {bookContentApi, isLoading: isBookContentLoading} =
         useBookContentApi();
 
-    const [bookData, setBookDate] = useState<BookData>(bookMockData);
+    const [windowSize, setWindowSize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight,
+    });
     const [canvasConfig, setCanvasConfig] = useState(defaultCanvasConfig);
+
+    const [bookData, setBookDate] = useState<BookData>(bookMockData);
+    const pageNumber = useRef<number>(0);
+
+    const [createCompleteMessage, setCreateCompleteMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const flipBookRef = useRef<{pageFlip: () => any}>(null);
 
-    // window 크기를 저장할 state
-    const [windowSize, setWindowSize] = useState({
-        width: window.innerWidth,
-        height: window.innerHeight,
-    });
-
-    useEffect(() => {
-        const fetchBookHead = async () => {
-            if (createBookData === null) {
-                return;
-            }
-
+    const fetchBookHeadApi = async () => {
+        try {
             const request: BookHeadApiRequest = {
                 user_pid: createBookData.userPid,
                 category_arr: createBookData.categoriesArr,
             };
 
-            try {
-                const response: BookHeadApiResponse =
-                    await bookHeadApi(request);
+            const response: BookHeadApiResponse = await bookHeadApi(request);
 
-                if (response.success) {
-                    setBookDate(
-                        produce(draft => {
-                            if (draft && draft.metadata) {
-                                draft.metadata.pid = response.data.pid;
-                                draft.metadata.title = response.data.title;
-                                draft.metadata.category =
-                                    response.data.category;
-                                draft.metadata.created_at =
-                                    response.data.created_at;
-                                draft.metadata.generated_date =
-                                    response.data.generated_date;
-                            }
-                        }),
-                    );
+            if (response.success) {
+                setBookDate(
+                    produce(bookData, draft => {
+                        const outline = parseJsonString(response.data.outline);
 
-                    console.log(response.data);
+                        const chapters: Chapter[] = outline.map(
+                            (chapter: Chapter, chapterIdx: number) => ({
+                                chapterIndex: chapterIdx,
+                                chapterTitle: chapter.chapterTitle,
+                                subChapters: chapter.subChapters.map(
+                                    (subTitle, subIdx) => ({
+                                        subChapterIndex: subIdx,
+                                        subChapterTitle: subTitle,
+                                        subChapterContent: [],
+                                        // eslint-disable-next-line no-plusplus
+                                        pageNumber: ++pageNumber.current,
+                                    }),
+                                ),
+                            }),
+                        );
 
-                    // parseBookOutline(response.data.outline);
-                }
-            } catch (error: unknown) {
-                if (error instanceof Error) {
-                    setErrorMessage(error.message);
-                } else {
-                    setErrorMessage('책 생성 중 오류가 발생했습니다.');
-                }
+                        if (draft && draft.metadata) {
+                            draft.metadata.pid = response.data.pid;
+                            draft.metadata.title = response.data.title;
+                            draft.metadata.category = response.data.category;
+                            draft.metadata.created_at =
+                                response.data.created_at;
+                            draft.metadata.generated_date =
+                                response.data.generated_date;
+                            draft.chapters = chapters;
+                        }
+                    }),
+                );
+                console.log(bookData);
+            } else {
+                setErrorMessage(response.error);
             }
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                setErrorMessage(error.message);
+            } else {
+                setErrorMessage('책 생성 중 오류가 발생했습니다.');
+            }
+        }
+    };
+
+    const fetchBookContentApi = async () => {
+        const request: BookContentApiRequest = {
+            pid: parseInt(bookData.metadata.pid, 10),
         };
-        fetchBookHead();
-    }, [createBookData]);
+
+        try {
+            const response: BookContentApiResponse =
+                await bookContentApi(request);
+            if (response.success && 'data' in response) {
+                setBookDate(
+                    produce(bookData, draft => {
+                        const {
+                            chapterIndex: nextChapterIndex,
+                            subChapterIndex: nextSubChapterIndex,
+                            generatedContent,
+                        } = response.data;
+
+                        const currentChapterIndex =
+                            nextSubChapterIndex === 0
+                                ? Math.max(nextChapterIndex - 1, 0)
+                                : nextChapterIndex;
+
+                        const currentSubChapterIndex =
+                            nextSubChapterIndex === 0
+                                ? bookData.chapters[currentChapterIndex]
+                                      .subChapters.length - 1
+                                : nextSubChapterIndex - 1;
+
+                        const parsedContent: ParsedContent = parseHTMLString(
+                            generatedContent,
+                            bookData.chapters[currentChapterIndex].chapterTitle,
+                            bookData.chapters[currentChapterIndex].subChapters[
+                                currentSubChapterIndex
+                            ].subChapterTitle,
+                        );
+
+                        draft.chapters[currentChapterIndex].subChapters[
+                            currentSubChapterIndex
+                        ].subChapterContent = parsedContent.content;
+                    }),
+                );
+            } else if (response.success && 'message' in response) {
+                setCreateCompleteMessage(response.message);
+            } else if ('error' in response) {
+                setErrorMessage(response.error);
+            } else {
+                setErrorMessage('콘텐츠 생성 중 오류가 발생했습니다.');
+            }
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                setErrorMessage(error.message);
+            } else {
+                setErrorMessage('책 생성 중 오류가 발생했습니다.');
+            }
+        }
+    };
 
     // 리사이즈 이벤트 핸들러
     useEffect(() => {
@@ -140,6 +216,10 @@ function Book() {
                         ...canvasConfig.contents.header,
                         font: `bold ${newWidth * 0.04}px Arial`,
                     },
+                    subHeader: {
+                        ...canvasConfig.contents.subHeader,
+                        font: `bold ${newWidth * 0.03}px Arial`,
+                    },
                     body: {
                         ...canvasConfig.contents.body,
                         font: `bold ${newWidth * 0.02}px Arial`,
@@ -157,6 +237,14 @@ function Book() {
         updateCanvasConfig(windowSize.width * 0.33);
     }, [windowSize]);
 
+    // 책 기본 정보 가져오기
+    useEffect(() => {
+        if (createBookData === initialState) {
+            return;
+        }
+        fetchBookHeadApi();
+    }, [createBookData]);
+
     const handleFlipNext = () => {
         const pageFlip = flipBookRef.current?.pageFlip();
         if (pageFlip) {
@@ -171,11 +259,12 @@ function Book() {
         }
     };
 
-    const handleGoToPage3 = () => {
-        const pageFlip = flipBookRef.current?.pageFlip();
-        if (pageFlip) {
-            pageFlip.flip(1, 'top'); // 페이지 인덱스는 0부터 시작
+    const handleNewContents = async () => {
+        if (bookData === null) {
+            return;
         }
+
+        await fetchBookContentApi();
     };
 
     return (
@@ -211,18 +300,29 @@ function Book() {
                 disableFlipByClick
                 className="h-full w-full"
                 style={{}}>
-                {bookData?.chapters.map((chapter, idx) => (
-                    <Page
-                        key={idx}
-                        pageNumber={idx + 1}
-                        pageData={chapter}
-                        canvasConfig={canvasConfig}
-                    />
-                ))}
+                {bookData?.chapters.map(chapter =>
+                    chapter.subChapters.map((subChapter, subIdx) => (
+                        <Page
+                            key={`page-${chapter.chapterIndex}-${subChapter.subChapterIndex}`}
+                            pageNumber={subChapter.pageNumber}
+                            chapterData={chapter}
+                            subChapterIndex={subIdx}
+                            canvasConfig={canvasConfig}
+                        />
+                    )),
+                )}
             </HTMLFlipBook>
 
-            <button type="button" onClick={handleGoToPage3}>
+            {isBookHeadLoading && <div>책 정보를 가져오는 중...</div>}
+            {isBookContentLoading && <div>콘텐츠를 생성하는 중...</div>}
+            {createCompleteMessage && <div>{createCompleteMessage}</div>}
+            {errorMessage && <div>{errorMessage}</div>}
+
+            <button type="button" onClick={handleFlipPrev}>
                 이전 페이지
+            </button>
+            <button type="button" onClick={handleNewContents}>
+                새로운 컨텐츠
             </button>
             <button type="button" onClick={handleFlipNext}>
                 다음 페이지
