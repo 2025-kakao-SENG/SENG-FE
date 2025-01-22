@@ -40,7 +40,7 @@ export default function SideBar({isModalOpen}: SideBarProps) {
 
     const depth = useRef(0);
     const [categoriesView, setCategoriesView] = useState<string[]>([]);
-    const [defaultCategories, setDefaultCategories] = useState<Category[]>([]);
+    const [dafaultCategories, setDefaultCategories] = useState<Category[]>([]);
     const [errorMessage, setErrorMessage] = useState('');
     const [isSidebarPartiallyOpen, setIsSidebarPartiallyOpen] = useState(true);
 
@@ -84,7 +84,7 @@ export default function SideBar({isModalOpen}: SideBarProps) {
                 }
             }
         };
-        fetchDate();
+        fetchData();
     }, []);
 
     const handleCategoryClick = (category: string) => {
@@ -167,6 +167,7 @@ export default function SideBar({isModalOpen}: SideBarProps) {
     };
 
     return (
+        // eslint-disable-next-line react/jsx-no-useless-fragment
         <>
             {isVisible && (
                 <div

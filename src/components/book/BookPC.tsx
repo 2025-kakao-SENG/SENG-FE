@@ -23,15 +23,16 @@ import {
 } from '@/types/apis/book/bookContentApiTypes';
 
 import parseHTMLString from '@/utils/book/parseHTMLString';
+import splitContentByCanvasWidth from '@/utils/book/splitContentByCanvasWidth';
 
 // 책 테마화
 
 // [만들 것들]
 // 만들 함수 및 데이터 타입(서재 고려 해야함)
 // $ 1. 책 Law 데이터 타입
-// $ 2. 텍스트 파싱 함수 !
+// $ 2. 텍스트 파싱 함수
 // 3. 텍스트 끊는 함수 (줄마다 끊어 줘야 함)
-// 4. 책 가공 정보 데이터 타입 (그리기 위한 textLayout 정보) + 책 가공 컨텐츠 데이터 타입 => 책 가공 데이터 타입     !! 이 정보 만으로 그릴 수 있어야 함
+// $ 4. 책 가공 정보 데이터 타입 (그리기 위한 textLayout 정보) + 책 가공 컨텐츠 데이터 타입 => 책 가공 데이터 타입
 
 // 5. 일반 텍스트 출력 함수
 // 6. 애니매이션 텍스트 입력 함수
@@ -58,6 +59,7 @@ function Book() {
         width: window.innerWidth,
         height: window.innerHeight,
     });
+    const bookSizeRatioByWindowSize = 0.3;
     const [canvasConfig, setCanvasConfig] = useState(defaultCanvasConfig);
 
     const [bookData, setBookDate] = useState<BookData>(bookMockData);
@@ -79,6 +81,7 @@ function Book() {
             const response: BookHeadApiResponse = await bookHeadApi(request);
 
             if (response.success) {
+                pageNumber.current = 0;
                 setBookDate(
                     produce(bookData, draft => {
                         const outline = parseJsonString(response.data.outline);
@@ -111,7 +114,6 @@ function Book() {
                         }
                     }),
                 );
-                console.log(bookData);
             } else {
                 setErrorMessage(response.error);
             }
@@ -160,9 +162,14 @@ function Book() {
                             ].subChapterTitle,
                         );
 
+                        const splitedContent = splitContentByCanvasWidth(
+                            parsedContent.content,
+                            canvasConfig,
+                        );
+
                         draft.chapters[currentChapterIndex].subChapters[
                             currentSubChapterIndex
-                        ].subChapterContent = parsedContent.content;
+                        ].subChapterContent = splitedContent;
                     }),
                 );
             } else if (response.success && 'message' in response) {
@@ -214,19 +221,19 @@ function Book() {
                     ...canvasConfig.contents,
                     header: {
                         ...canvasConfig.contents.header,
-                        font: `bold ${newWidth * 0.04}px Arial`,
+                        font: `bold ${newWidth * canvasConfig.canvas.headerSizeRatio}px Arial`,
                     },
                     subHeader: {
                         ...canvasConfig.contents.subHeader,
-                        font: `bold ${newWidth * 0.03}px Arial`,
+                        font: `bold ${newWidth * canvasConfig.canvas.subHeaderSizeRatio}px Arial`,
                     },
                     body: {
                         ...canvasConfig.contents.body,
-                        font: `bold ${newWidth * 0.02}px Arial`,
+                        font: `bold ${newWidth * canvasConfig.canvas.bodySizeRatio}px Arial`,
                     },
                     pageNumber: {
                         ...canvasConfig.contents.pageNumber,
-                        font: `bold ${newWidth * 0.03}px Arial`,
+                        font: `bold ${newWidth * canvasConfig.canvas.pageNumberSizeRatio}px Arial`,
                     },
                 },
             };
@@ -234,7 +241,7 @@ function Book() {
             setCanvasConfig(newCanvasConfig);
         };
 
-        updateCanvasConfig(windowSize.width * 0.33);
+        updateCanvasConfig(windowSize.width * bookSizeRatioByWindowSize);
     }, [windowSize]);
 
     // 책 기본 정보 가져오기
@@ -268,66 +275,81 @@ function Book() {
     };
 
     return (
-        <div
-            style={{
-                width: `${canvasConfig.canvas.width * 2}px`,
-                height: `${canvasConfig.canvas.height}px`,
-                maxHeight: `calc(100vh - 2rem)`, // 화면 아래에서 2rem 떨어지도록 제한
-                overflow: 'hidden',
-            }}>
-            <HTMLFlipBook
-                ref={flipBookRef}
-                width={canvasConfig.canvas.width}
-                height={canvasConfig.canvas.height}
-                startPage={0}
-                size="stretch"
-                minWidth={0}
-                maxWidth={10000}
-                minHeight={0}
-                maxHeight={10000}
-                drawShadow
-                flippingTime={1500}
-                usePortrait={false}
-                startZIndex={0}
-                autoSize
-                maxShadowOpacity={1}
-                showCover={false}
-                mobileScrollSupport
-                clickEventForward
-                useMouseEvents
-                swipeDistance={1}
-                showPageCorners
-                disableFlipByClick
-                className="h-full w-full"
-                style={{}}>
-                {bookData?.chapters.map(chapter =>
-                    chapter.subChapters.map((subChapter, subIdx) => (
-                        <Page
-                            key={`page-${chapter.chapterIndex}-${subChapter.subChapterIndex}`}
-                            pageNumber={subChapter.pageNumber}
-                            chapterData={chapter}
-                            subChapterIndex={subIdx}
-                            canvasConfig={canvasConfig}
-                        />
-                    )),
-                )}
-            </HTMLFlipBook>
-
+        <>
             {isBookHeadLoading && <div>책 정보를 가져오는 중...</div>}
             {isBookContentLoading && <div>콘텐츠를 생성하는 중...</div>}
             {createCompleteMessage && <div>{createCompleteMessage}</div>}
             {errorMessage && <div>{errorMessage}</div>}
 
-            <button type="button" onClick={handleFlipPrev}>
-                이전 페이지
-            </button>
-            <button type="button" onClick={handleNewContents}>
-                새로운 컨텐츠
-            </button>
-            <button type="button" onClick={handleFlipNext}>
-                다음 페이지
-            </button>
-        </div>
+            <div
+                className={`mb-3 flex h-auto w-[${canvasConfig.canvas.width * 2}px] justify-between`}>
+                <button
+                    type="button"
+                    onClick={handleFlipPrev}
+                    className="rounded-[0.6875rem] bg-[#1C1C1C] px-[1.125rem] py-[0.4375rem] hover:bg-[#2D2D2D]">
+                    이전 페이지
+                </button>
+                {!(bookData.metadata.pid === 'landingPage') && (
+                    <button
+                        type="button"
+                        onClick={handleNewContents}
+                        className="rounded-[0.6875rem] bg-[#1C1C1C] px-[1.125rem] py-[0.4375rem] hover:bg-[#2D2D2D]">
+                        새로운 컨텐츠
+                    </button>
+                )}
+                <button
+                    type="button"
+                    onClick={handleFlipNext}
+                    className="rounded-[0.6875rem] bg-[#1C1C1C] px-[1.125rem] py-[0.4375rem] hover:bg-[#2D2D2D]">
+                    다음 페이지
+                </button>
+            </div>
+
+            <div
+                style={{
+                    width: `${canvasConfig.canvas.width * 2}px`,
+                    height: `${canvasConfig.canvas.height}px`,
+                    maxHeight: `calc(100vh - 2rem)`, // 화면 아래에서 2rem 떨어지도록 제한
+                }}>
+                <HTMLFlipBook
+                    ref={flipBookRef}
+                    width={canvasConfig.canvas.width}
+                    height={canvasConfig.canvas.height}
+                    startPage={0}
+                    size="stretch"
+                    minWidth={0}
+                    maxWidth={10000}
+                    minHeight={400}
+                    maxHeight={800}
+                    drawShadow
+                    flippingTime={700}
+                    usePortrait={false}
+                    startZIndex={0}
+                    autoSize
+                    maxShadowOpacity={1.3}
+                    showCover={false}
+                    mobileScrollSupport
+                    clickEventForward
+                    useMouseEvents={false}
+                    swipeDistance={1}
+                    showPageCorners={false}
+                    disableFlipByClick
+                    className=""
+                    style={{}}>
+                    {bookData?.chapters.map(chapter =>
+                        chapter.subChapters.map((subChapter, subIdx) => (
+                            <Page
+                                key={`page-${chapter.chapterIndex}-${subChapter.subChapterIndex}`}
+                                pageNumber={subChapter.pageNumber}
+                                chapterData={chapter}
+                                subChapterIndex={subIdx}
+                                canvasConfig={canvasConfig}
+                            />
+                        )),
+                    )}
+                </HTMLFlipBook>
+            </div>
+        </>
     );
 }
 
