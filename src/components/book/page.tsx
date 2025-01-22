@@ -36,7 +36,7 @@ function Page(
             canvasConfig.canvas.height *
                 canvasConfig.coordinateCriteria.yRatio + // 상단에서 10% 위치
                 canvasConfig.canvas.height *
-                    canvasConfig.coordinateCriteria.lineSpaceingRatio, // 줄 간격
+                    canvasConfig.coordinateCriteria.headerLineSpaceingRatio, // 줄 간격
         );
     };
     const renderSubChapterContents = (ctx: CanvasRenderingContext2D) => {
@@ -54,8 +54,12 @@ function Page(
                 canvasConfig.canvas.height *
                     canvasConfig.coordinateCriteria.yRatio + // 상단에서 10% 위치
                     canvasConfig.canvas.height *
-                        (canvasConfig.coordinateCriteria.lineSpaceingRatio *
-                            (index + 2)), // 줄 간격
+                        (canvasConfig.coordinateCriteria.lineSpaceingRatio * // 바디 줄 간격
+                            index) +
+                    canvasConfig.canvas.height *
+                        canvasConfig.coordinateCriteria
+                            .headerLineSpaceingRatio *
+                        2, // 헤더 줄 간격
             );
         });
     };
@@ -83,17 +87,17 @@ function Page(
             const ctx = canvas.getContext('2d');
             if (!ctx) return;
 
-            // 캔버스 초기화
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = canvasConfig.canvas.backgroundColor;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
             // 캔버스 화질 개선
             const dpi = window.devicePixelRatio || 1;
             const style = getComputedStyle(canvas);
             canvas.width = parseInt(style.width, 10) * dpi;
             canvas.height = parseInt(style.height, 10) * dpi;
             ctx.scale(dpi, dpi);
+
+            // 캔버스 초기화
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = canvasConfig.canvas.backgroundColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // 캔버스 텍스트 공통 설정
             ctx.textAlign = canvasConfig.contents.textAlign;
@@ -107,10 +111,12 @@ function Page(
             renderPageNumber(ctx);
         };
         renderCanvas();
-    });
+    }, [canvasConfig, chapterData, subChapterIndex, pageNumber]);
 
     return (
-        <div ref={ref} className="h-full w-full">
+        <div
+            ref={ref}
+            className={`w-[${canvasConfig.canvas.width}px] h-[${canvasConfig.canvas.height}px]`}>
             <canvas
                 ref={canvasRef}
                 width={canvasConfig.canvas.width}

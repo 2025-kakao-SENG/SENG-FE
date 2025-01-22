@@ -11,7 +11,7 @@ const bookMockData: BookData = {
     chapters: [
         {
             chapterIndex: 1,
-            chapterTitle: 'Chapter 1: A Whisper from the Past',
+            chapterTitle: 'Whisper from the Past',
             subChapters: [
                 {
                     subChapterIndex: 1,

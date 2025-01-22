@@ -22,15 +22,9 @@ function parseHTMLString(
     const isSubtitleValid = subtitle === expectedSubtitle;
     const isValid = isTitleValid && isSubtitleValid;
 
-    console.log(doc.body.textContent);
-    console.log(title);
-    console.log(expectedTitle);
-    console.log(subtitle);
-    console.log(expectedSubtitle);
-
-/*     if (!isValid) {
+    if (!isValid) {
         throw new Error('제목 또는 소제목이 일치하지 않습니다.');
-    } */
+    }
 
     // <h1>과 <h2> 제거
     h1?.remove();

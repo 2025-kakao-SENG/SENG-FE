@@ -25,12 +25,17 @@ export interface CanvasTagConfig {
     width: number;
     height: number;
     backgroundColor: string;
+    headerSizeRatio: number;
+    subHeaderSizeRatio: number;
+    bodySizeRatio: number;
+    pageNumberSizeRatio: number;
 }
 
 export interface CanvasCoordinateCriteria {
     xRatio: number;
     yRatio: number;
     maxWidthRatio: number;
+    headerLineSpaceingRatio: number;
     lineSpaceingRatio: number;
 }
 
