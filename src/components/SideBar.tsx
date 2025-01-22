@@ -84,8 +84,8 @@ export default function SideBar({isModalOpen}: SideBarProps) {
                 }
             }
         };
-        fetchData();
-    }, [fetchCategoriesApi]);
+        fetchDate();
+    }, []);
 
     const handleCategoryClick = (category: string) => {
         setActiveCategoryName(category);

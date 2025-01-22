@@ -5,16 +5,18 @@ import {userSlice} from './slice/userSlice';
 import {authApi} from './apiSlice/authApiSlice';
 import {categoriesApi} from './apiSlice/categoreisApiSlice';
 import {createBookSlice} from './slice/createBookSlice';
+import {bookApi} from './apiSlice/bookApiSlice';
 
 const persistConfig = {
     key: 'login',
     storage: sessionStorage,
-    whiteList: ['user'],
+    whitelist: ['user'],
 };
 
 const rootReducer = combineReducers({
     [authApi.reducerPath]: authApi.reducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
+    [bookApi.reducerPath]: bookApi.reducer,
     user: userSlice.reducer,
     createBook: createBookSlice.reducer,
 });
@@ -26,7 +28,11 @@ export const store = configureStore({
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({
             serializableCheck: false,
-        }).concat([authApi.middleware, categoriesApi.middleware]),
+        }).concat([
+            authApi.middleware,
+            categoriesApi.middleware,
+            bookApi.middleware,
+        ]),
 });
 
 export const persistor = persistStore(store);

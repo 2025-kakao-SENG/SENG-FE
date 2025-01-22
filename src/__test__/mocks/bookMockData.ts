@@ -2,7 +2,7 @@ import {BookData} from '@/types/book/bookDataType';
 
 const bookMockData: BookData = {
     metadata: {
-        pid: 'book-001',
+        pid: 'landingPage',
         title: "Ethan's Adventure",
         category: 'Adventure',
         created_at: '2025-01-20',
@@ -16,20 +16,26 @@ const bookMockData: BookData = {
                 {
                     subChapterIndex: 1,
                     subChapterTitle: 'Section 1.1',
-                    subChapterContent:
+                    subChapterContent: [
                         'The dusty attic was filled with relics from a bygone era.',
+                    ],
+                    pageNumber: 1,
                 },
                 {
                     subChapterIndex: 2,
                     subChapterTitle: 'Section 1.2',
-                    subChapterContent:
+                    subChapterContent: [
                         'Ethan stumbled upon a faded photograph, a map etched on its reverse side.',
+                    ],
+                    pageNumber: 2,
                 },
                 {
                     subChapterIndex: 3,
                     subChapterTitle: 'Section 1.3',
-                    subChapterContent:
+                    subChapterContent: [
                         'It spoke of a hidden cave deep within the mountains, untouched for centuries.',
+                    ],
+                    pageNumber: 3,
                 },
             ],
         },
@@ -40,20 +46,26 @@ const bookMockData: BookData = {
                 {
                     subChapterIndex: 1,
                     subChapterTitle: 'Section 2.1',
-                    subChapterContent:
+                    subChapterContent: [
                         'Ethan hesitated, torn between the mundane life he knew and the call of adventure.',
+                    ],
+                    pageNumber: 4,
                 },
                 {
                     subChapterIndex: 2,
                     subChapterTitle: 'Section 2.2',
-                    subChapterContent:
+                    subChapterContent: [
                         'His mentor encouraged him, reminding him that some paths must be walked alone.',
+                    ],
+                    pageNumber: 5,
                 },
                 {
                     subChapterIndex: 3,
                     subChapterTitle: 'Section 2.3',
-                    subChapterContent:
+                    subChapterContent: [
                         'With a deep breath, he set out on his journey.',
+                    ],
+                    pageNumber: 6,
                 },
             ],
         },
@@ -64,20 +76,26 @@ const bookMockData: BookData = {
                 {
                     subChapterIndex: 1,
                     subChapterTitle: 'Section 3.1',
-                    subChapterContent:
+                    subChapterContent: [
                         'The mountain trail was treacherous, with sharp turns and sudden drops.',
+                    ],
+                    pageNumber: 7,
                 },
                 {
                     subChapterIndex: 2,
                     subChapterTitle: 'Section 3.2',
-                    subChapterContent:
+                    subChapterContent: [
                         'Ethan’s resolve was tested by the chilling winds and the eerie howls of the forest.',
+                    ],
+                    pageNumber: 8,
                 },
                 {
                     subChapterIndex: 3,
                     subChapterTitle: 'Section 3.3',
-                    subChapterContent:
+                    subChapterContent: [
                         'The closer he got to his destination, the stronger the sense of mystery grew.',
+                    ],
+                    pageNumber: 9,
                 },
             ],
         },
@@ -88,20 +106,26 @@ const bookMockData: BookData = {
                 {
                     subChapterIndex: 1,
                     subChapterTitle: 'Section 4.1',
-                    subChapterContent:
+                    subChapterContent: [
                         'At last, Ethan reached the entrance of the cave, hidden behind a cascading waterfall.',
+                    ],
+                    pageNumber: 10,
                 },
                 {
                     subChapterIndex: 2,
                     subChapterTitle: 'Section 4.2',
-                    subChapterContent:
+                    subChapterContent: [
                         'Inside, he found walls adorned with ancient carvings depicting a lost civilization.',
+                    ],
+                    pageNumber: 11,
                 },
                 {
                     subChapterIndex: 3,
                     subChapterTitle: 'Section 4.3',
-                    subChapterContent:
+                    subChapterContent: [
                         'The air was thick with the weight of untold stories waiting to be uncovered.',
+                    ],
+                    pageNumber: 12,
                 },
             ],
         },
@@ -112,20 +136,26 @@ const bookMockData: BookData = {
                 {
                     subChapterIndex: 1,
                     subChapterTitle: 'Section 5.1',
-                    subChapterContent:
+                    subChapterContent: [
                         'Ethan wasn’t alone; shadows danced in the flickering torchlight.',
+                    ],
+                    pageNumber: 13,
                 },
                 {
                     subChapterIndex: 2,
                     subChapterTitle: 'Section 5.2',
-                    subChapterContent:
+                    subChapterContent: [
                         'A secretive group had been protecting the cave for generations.',
+                    ],
+                    pageNumber: 14,
                 },
                 {
                     subChapterIndex: 3,
                     subChapterTitle: 'Section 5.3',
-                    subChapterContent:
+                    subChapterContent: [
                         'They revealed the cave’s history, warning Ethan of the dangers ahead.',
+                    ],
+                    pageNumber: 15,
                 },
             ],
         },
@@ -136,20 +166,26 @@ const bookMockData: BookData = {
                 {
                     subChapterIndex: 1,
                     subChapterTitle: 'Section 6.1',
-                    subChapterContent:
+                    subChapterContent: [
                         'The cave was filled with traps and puzzles designed to deter intruders.',
+                    ],
+                    pageNumber: 16,
                 },
                 {
                     subChapterIndex: 2,
                     subChapterTitle: 'Section 6.2',
-                    subChapterContent:
+                    subChapterContent: [
                         'Ethan’s wit and determination were put to the ultimate test.',
+                    ],
+                    pageNumber: 17,
                 },
                 {
                     subChapterIndex: 3,
                     subChapterTitle: 'Section 6.3',
-                    subChapterContent:
+                    subChapterContent: [
                         'Each challenge brought him closer to the heart of the cave.',
+                    ],
+                    pageNumber: 18,
                 },
             ],
         },
@@ -160,20 +196,26 @@ const bookMockData: BookData = {
                 {
                     subChapterIndex: 1,
                     subChapterTitle: 'Section 7.1',
-                    subChapterContent:
+                    subChapterContent: [
                         'At the center, Ethan discovered a chamber bathed in golden light.',
+                    ],
+                    pageNumber: 19,
                 },
                 {
                     subChapterIndex: 2,
                     subChapterTitle: 'Section 7.2',
-                    subChapterContent:
+                    subChapterContent: [
                         'A pedestal held a mysterious artifact, glowing with an otherworldly aura.',
+                    ],
+                    pageNumber: 20,
                 },
                 {
                     subChapterIndex: 3,
                     subChapterTitle: 'Section 7.3',
-                    subChapterContent:
+                    subChapterContent: [
                         'As he reached for it, a voice echoed, warning him of the artifact’s curse.',
+                    ],
+                    pageNumber: 21,
                 },
             ],
         },
@@ -184,20 +226,26 @@ const bookMockData: BookData = {
                 {
                     subChapterIndex: 1,
                     subChapterTitle: 'Section 8.1',
-                    subChapterContent:
+                    subChapterContent: [
                         'Ethan had to decide whether to take the artifact or leave it undisturbed.',
+                    ],
+                    pageNumber: 22,
                 },
                 {
                     subChapterIndex: 2,
                     subChapterTitle: 'Section 8.2',
-                    subChapterContent:
+                    subChapterContent: [
                         'The weight of his choice would determine the fate of the cave and its secrets.',
+                    ],
+                    pageNumber: 23,
                 },
                 {
                     subChapterIndex: 3,
                     subChapterTitle: 'Section 8.3',
-                    subChapterContent:
+                    subChapterContent: [
                         'He chose wisely, respecting the legacy of the forgotten civilization.',
+                    ],
+                    pageNumber: 24,
                 },
             ],
         },
@@ -208,20 +256,26 @@ const bookMockData: BookData = {
                 {
                     subChapterIndex: 1,
                     subChapterTitle: 'Section 9.1',
-                    subChapterContent:
+                    subChapterContent: [
                         'The journey back was no less perilous, with nature itself seeming to conspire against him.',
+                    ],
+                    pageNumber: 25,
                 },
                 {
                     subChapterIndex: 2,
                     subChapterTitle: 'Section 9.2',
-                    subChapterContent:
+                    subChapterContent: [
                         'Ethan’s resolve was bolstered by the knowledge he had gained.',
+                    ],
+                    pageNumber: 26,
                 },
                 {
                     subChapterIndex: 3,
                     subChapterTitle: 'Section 9.3',
-                    subChapterContent:
+                    subChapterContent: [
                         'He vowed to share the story of the cave with the world.',
+                    ],
+                    pageNumber: 27,
                 },
             ],
         },
@@ -232,20 +286,26 @@ const bookMockData: BookData = {
                 {
                     subChapterIndex: 1,
                     subChapterTitle: 'Section 10.1',
-                    subChapterContent:
+                    subChapterContent: [
                         'Back home, Ethan published his findings, sparking worldwide intrigue.',
+                    ],
+                    pageNumber: 28,
                 },
                 {
                     subChapterIndex: 2,
                     subChapterTitle: 'Section 10.2',
-                    subChapterContent:
+                    subChapterContent: [
                         'The artifact, safely returned to the cave, became a symbol of respect for ancient cultures.',
+                    ],
+                    pageNumber: 29,
                 },
                 {
                     subChapterIndex: 3,
                     subChapterTitle: 'Section 10.3',
-                    subChapterContent:
+                    subChapterContent: [
                         'Ethan’s adventure became a legend, inspiring generations to come.',
+                    ],
+                    pageNumber: 30,
                 },
             ],
         },
