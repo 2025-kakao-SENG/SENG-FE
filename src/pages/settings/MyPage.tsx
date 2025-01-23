@@ -4,9 +4,11 @@ import {useUpdateUserPasswordMutation} from '@/redux/apiSlice/updateUserPassword
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '@/redux/store';
 import {setUserInfoByLogin} from '@/redux/slice/userSlice';
+import {useNavigate} from 'react-router-dom';
 
 function MyPage() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.user);
 
     // 닉네임 변경
@@ -20,6 +22,14 @@ function MyPage() {
         updateUserPassword,
         {isLoading: isUpdatingPassword, error: passwordError},
     ] = useUpdateUserPasswordMutation();
+
+    const handleLogout = () => {
+        navigate('/logout');
+    };
+
+    const handleDeregister = () => {
+        navigate('/deregister');
+    };
 
     const handleUpdateNickname = async () => {
         if (!nickname.trim()) {
@@ -208,7 +218,8 @@ function MyPage() {
                     </div>
                     <button
                         type="button"
-                        className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs text-[#CACACA] hover:bg-[#4a4a4a]">
+                        className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs text-[#CACACA] hover:bg-[#4a4a4a]"
+                        onClick={handleLogout}>
                         로그아웃
                     </button>
                 </div>
@@ -223,7 +234,8 @@ function MyPage() {
                     </div>
                     <button
                         type="button"
-                        className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#482323] text-xs text-[#CACACA] hover:bg-[#813a3a]">
+                        className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#482323] text-xs text-[#CACACA] hover:bg-[#813a3a]"
+                        onClick={handleDeregister}>
                         회원탈퇴
                     </button>
                 </div>
