@@ -171,7 +171,7 @@ export default function SideBar({isModalOpen}: SideBarProps) {
         <>
             {isVisible && (
                 <div
-                    className={`fixed z-40 flex transition-transform duration-300 ${
+                    className={`fixed z-10 flex transition-transform duration-300 ${
                         isTablet
                             ? `bottom-0 left-0 w-full flex-col items-center ${
                                   isSidebarPartiallyOpen
