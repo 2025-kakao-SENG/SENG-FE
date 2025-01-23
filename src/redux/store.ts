@@ -6,6 +6,8 @@ import {authApi} from './apiSlice/authApiSlice';
 import {categoriesApi} from './apiSlice/categoreisApiSlice';
 import {createBookSlice} from './slice/createBookSlice';
 import {bookApi} from './apiSlice/bookApiSlice';
+import {userApi} from './apiSlice/updateUserNameApiSlice';
+import {userPasswordApi} from './apiSlice/updateUserPasswordApiSlice';
 
 const persistConfig = {
     key: 'login',
@@ -17,6 +19,8 @@ const rootReducer = combineReducers({
     [authApi.reducerPath]: authApi.reducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     [bookApi.reducerPath]: bookApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
+    [userPasswordApi.reducerPath]: userPasswordApi.reducer,
     user: userSlice.reducer,
     createBook: createBookSlice.reducer,
 });
@@ -32,6 +36,8 @@ export const store = configureStore({
             authApi.middleware,
             categoriesApi.middleware,
             bookApi.middleware,
+            userApi.middleware,
+            userPasswordApi.middleware,
         ]),
 });
 
