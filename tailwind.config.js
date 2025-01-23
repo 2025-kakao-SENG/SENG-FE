@@ -3,9 +3,7 @@ module.exports = {
     content: ['./src/**/*.{ts,tsx}'],
     theme: {
         screens: {
-            MB: '767px',
-            TB: '1024px',
-            PC: '1920px',
+            TB: '768px',
             DEFAULT: 'calc(986 / 1920 * 100dvh)',
         },
         // colors: {

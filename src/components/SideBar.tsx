@@ -13,9 +13,10 @@ import logoTransparent from '@/assets/images/sideBar/logoTransparent.png';
 import rightArrow2 from '@/assets/images/sideBar/rightArrow2.svg';
 import {SubCategoryApiRequest} from '@/types/apis/category/subCategoriesTypes';
 import {useDispatch, useSelector} from 'react-redux';
-import {getUserId} from '@/redux/selector';
+import {getCreateContentPid, getUserId} from '@/redux/selector';
 import {setCreateBookInfo} from '@/redux/slice/createBookSlice';
 import Palette from '@/components/Palette';
+import {setCreateContentSignal} from '@/redux/slice/createContentSlice';
 
 interface SideBarProps {
     isModalOpen: boolean;
@@ -24,6 +25,7 @@ interface SideBarProps {
 export default function SideBar({isModalOpen}: SideBarProps) {
     const dispatch = useDispatch();
     const userId = useSelector(getUserId);
+    const createContentPid = useSelector(getCreateContentPid);
     const {fetchCategoriesApi, isLoading: categoriesLoading} =
         useFetchCategoriesApi();
     const {fetchSubCategoriesApi, isLoading: subCategoriesLoading} =
@@ -164,6 +166,12 @@ export default function SideBar({isModalOpen}: SideBarProps) {
                 category_arr: currentCategoryNamePath,
             }),
         );
+    };
+
+    const handleCreateContent = () => {
+        if (createContentPid) {
+            dispatch(setCreateContentSignal());
+        }
     };
 
     return (
@@ -324,6 +332,18 @@ export default function SideBar({isModalOpen}: SideBarProps) {
                                     생성하기
                                 </p>
                             </button>
+
+                            {createContentPid && (
+                                <button
+                                    type="button"
+                                    className="mb-7 flex h-[2.1875rem] w-full items-center justify-center gap-1.5 rounded-[0.25rem] bg-[#FFC752] hover:bg-[#EEB02F]"
+                                    onClick={handleCreateContent}>
+                                    <img src={aiBlack} alt="" className="" />
+                                    <p className="text-[0.6875rem] font-medium text-[#000000]">
+                                        컨텐츠 생성하기
+                                    </p>
+                                </button>
+                            )}
 
                             {errorMessage && (
                                 <div className="absolute bottom-0 left-1/2 w-full -translate-x-1/2 rounded-md bg-[#FF4C4C] px-4 py-2 text-center text-[#FFFFFF]">

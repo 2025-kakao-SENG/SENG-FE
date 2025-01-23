@@ -8,6 +8,7 @@ import {createBookSlice} from './slice/createBookSlice';
 import {bookApi} from './apiSlice/bookApiSlice';
 import {userApi} from './apiSlice/updateUserNameApiSlice';
 import {userPasswordApi} from './apiSlice/updateUserPasswordApiSlice';
+import {createContentSlice} from './slice/createContentSlice';
 
 const persistConfig = {
     key: 'login',
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
     [userPasswordApi.reducerPath]: userPasswordApi.reducer,
     user: userSlice.reducer,
     createBook: createBookSlice.reducer,
+    createContent: createContentSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

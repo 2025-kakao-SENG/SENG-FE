@@ -6,10 +6,13 @@ import LoginPage from '@/pages/auth/LoginPage';
 
 describe('로그인 페이지 테스트', () => {
     it('handles Kakao login success', async () => {
+
+        const backgroundLocation = vi.fn();
+
         render(
             <Provider store={store}>
                 <MemoryRouter>
-                    <LoginPage />
+                    <LoginPage backgroundLocation={backgroundLocation} />
                 </MemoryRouter>
             </Provider>,
         );

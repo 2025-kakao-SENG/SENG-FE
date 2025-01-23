@@ -1,11 +1,10 @@
 import {useEffect, useState} from 'react';
-import {Route, Routes, useLocation} from 'react-router-dom';
-import LandingPage from '@/pages/LandingPage';
+import {Navigate, Route, Routes, useLocation} from 'react-router-dom';
 import Layout from '@/layouts/Layout.tsx';
 import LoginPage from '@/pages/auth/LoginPage';
 import RegisterPage from '@/pages/auth/RegisterPage';
 import HomePage from '@/pages/HomePage.tsx';
-import AISideBar from '@/components/homePage/AISideBar.tsx';
+import AISideBar from '@/components/homePage/AISideBar';
 import LibraryPage from '@/pages/LibraryPage.tsx';
 import SettingsLayout from '@/layouts/SettingsLayout';
 import MyPage from '@/pages/settings/MyPage.tsx';
@@ -14,6 +13,7 @@ import LibraryManagementPage from '@/pages/settings/LibraryManagementPage';
 import NotificationPage from '@/pages/settings/NotificationPage.tsx';
 import DisplayPage from '@/pages/settings/DisplayPage.tsx';
 import LogoutPage from '@/pages/auth/LogoutPage.tsx';
+import NotFoundPage from '@/pages/NotFoundPage';
 
 function Router() {
     const location = useLocation();
@@ -49,12 +49,13 @@ function Router() {
             {/* 배경 라우트 (이전 화면) */}
             <Routes location={backgroundLocation || location}>
                 <Route path="/" element={<Layout />}>
+                    <Route index element={<Navigate to="/home" />} />
                     <Route path="home" element={<HomePage />}>
                         <Route path="ai" element={<AISideBar />} />
                     </Route>
                     <Route path="library" element={<LibraryPage />} />
                 </Route>
-                <Route path="*" element={<LandingPage />} />
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
 
             {/* 모달 라우트 */}
