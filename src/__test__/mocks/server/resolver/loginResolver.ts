@@ -1,25 +1,35 @@
+import {AuthLoginApiResponse} from '@/types/apis/auth/loginApiTypes';
 import {HttpResponse} from 'msw';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function loginResolver(request: any) {
-    const {properties} = await request.json();
-    return HttpResponse.json(
-        {
-            status: 'success',
-            message: 'Login successful.',
-            data: {
-                name: properties.nickname,
-                thumbnail_image: properties.thumbnail_image,
-                profile_image: properties.profile_image,
-                birth: null,
-                phone: null,
-                address: null,
-                email: null,
-                leaf: 0,
-            },
+async function loginResolver({request}: {request: Request}) {
+    const {email} = await request.json();
+
+    const response: AuthLoginApiResponse = {
+        status: 'success',
+        message: 'Login successful.',
+        data: {
+            pid: 'test-pid',
+            name: 'Test User',
+            thumbnailImage: null,
+            profileImage: null,
+            birth: '2000-01-01',
+            phone: '010-1234-5678',
+            address: 'Seoul, Korea',
+            email: 'test@example.com',
+            leaf: 100,
         },
-        {status: 200},
-    );
+    };
+
+    const errorResponse = {
+        status: 'error',
+        message: 'Invalid email or password.',
+    };
+
+    if (email === 'test@example.com') {
+        return HttpResponse.json(response, {status: 200});
+    }
+
+    return HttpResponse.json(errorResponse, {status: 401});
 }
 
 export default loginResolver;
