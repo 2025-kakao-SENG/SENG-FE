@@ -197,11 +197,20 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
                         {isLoading ? '회원가입 중...' : '회원가입'}
                     </button>
 
-                    {/* 에러 메시지 */}
                     {errorMessage && (
-                        <p className="text-[0.625rem] text-[#FF0000]">
-                            {errorMessage}
-                        </p>
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                            <div className="flex flex-col items-center justify-center rounded-lg bg-[#2C2C2C] p-6 shadow-xl">
+                                <p className="text-lg font-semibold text-[#EEB02F]">
+                                    {errorMessage}
+                                </p>
+                                <button
+                                    type="button"
+                                    className="mt-4 rounded-md bg-[#EEB02F] px-6 py-2 text-sm font-medium text-black hover:bg-[#d9a020] focus:outline-none focus:ring-2 focus:ring-[#EEB02F] focus:ring-opacity-50"
+                                    onClick={() => setErrorMessage('')}>
+                                    닫기
+                                </button>
+                            </div>
+                        </div>
                     )}
                 </div>
             </div>
