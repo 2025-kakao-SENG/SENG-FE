@@ -24,8 +24,7 @@ export default function SideBar() {
     const createContentPid = useSelector(getCreateContentPid);
     const {fetchCategoriesApi, isLoading: categoriesLoading} =
         useFetchCategoriesApi();
-    const {fetchSubCategoriesApi, isLoading: subCategoriesLoading} =
-        useFetchSubCategoriesApi();
+    const {fetchSubCategoriesApi} = useFetchSubCategoriesApi();
 
     // ✅ 태블릿 감지 (768px 이하)
     const [isTablet, setIsTablet] = useState(window.innerWidth <= 768);
@@ -41,6 +40,8 @@ export default function SideBar() {
     const [dafaultCategories, setDefaultCategories] = useState<Category[]>([]);
     const [errorMessage, setErrorMessage] = useState('');
     const [isSidebarPartiallyOpen, setIsSidebarPartiallyOpen] = useState(true);
+
+    const [subCategoryLoading, setSubCategoriesLoading] = useState(false);
 
     // ✅ 화면 크기 감지 (태블릿 여부 체크 + 깜빡임 방지)
     useEffect(() => {
@@ -98,6 +99,7 @@ export default function SideBar() {
             activeCategoryName &&
             !currentCategoryNamePath.includes(activeCategoryName)
         ) {
+            setErrorMessage('');
             if (depth.current === 0) {
                 const categoryTemp = dafaultCategories.find(
                     category => category.category_name === activeCategoryName,
@@ -116,22 +118,35 @@ export default function SideBar() {
                 const request: SubCategoryApiRequest = {
                     category: activeCategoryName,
                 };
-                const response = await fetchSubCategoriesApi(request);
+                setSubCategoriesLoading(true);
+                try {
+                    const response = await fetchSubCategoriesApi(request);
 
-                if (
-                    response &&
-                    !('error' in response) &&
-                    !('info' in response)
-                ) {
-                    setCategoriesView(response);
-                } else {
-                    if ('error' in response) {
-                        setErrorMessage(response.error);
+                    if (
+                        response &&
+                        !('error' in response) &&
+                        !('info' in response)
+                    ) {
+                        setCategoriesView(response);
+                    } else {
+                        if ('error' in response) {
+                            setErrorMessage(response.error);
+                        }
+                        if ('info' in response) {
+                            setErrorMessage(response.info);
+                        }
+                        setErrorMessage('카테고리를 찾을 수 없습니다.');
                     }
-                    if ('info' in response) {
-                        setErrorMessage(response.info);
+                } catch (error: unknown) {
+                    if (error instanceof Error) {
+                        setErrorMessage(error.message);
+                    } else {
+                        setErrorMessage(
+                            '서브 카테고리 데이터를 불러오는 중 오류가 발생했습니다.',
+                        );
                     }
-                    setErrorMessage('카테고리를 찾을 수 없습니다.');
+                } finally {
+                    setSubCategoriesLoading(false);
                 }
             }
             depth.current += 1;
@@ -242,37 +257,53 @@ export default function SideBar() {
                             </h3>
 
                             <div className="mb-[1.625rem] mt-3 flex flex-wrap gap-x-2 gap-y-[0.4375rem] py-[0.4375rem] pr-[1.125rem] text-[0.6875rem] font-medium text-[#FAC453]">
-                                {categoriesView.map(category => (
-                                    <button
-                                        type="button"
-                                        key={category}
-                                        onClick={() =>
-                                            handleCategoryClick(category)
-                                        }
-                                        className={
-                                            activeCategoryName === category
-                                                ? 'rounded-[0.6875rem] bg-gradient-to-r from-[#FFDD87] to-[#FFC752] px-[1.125rem] py-[0.4375rem] text-black'
-                                                : 'rounded-[0.6875rem] bg-[#1C1C1C] px-[1.125rem] py-[0.4375rem] hover:bg-[#2D2D2D]'
-                                        }>
-                                        {category}
-                                    </button>
-                                ))}
+                                {categoriesLoading ? (
+                                    <div className="flex h-[10rem] w-full items-center justify-center">
+                                        <p className="text-[#BEBEBE]">
+                                            카테고리 로딩중...
+                                        </p>
+                                    </div>
+                                ) : (
+                                    categoriesView.map((category, index) => (
+                                        <button
+                                            type="button"
+                                            // eslint-disable-next-line react/no-array-index-key
+                                            key={`${category}-${index}`}
+                                            onClick={() =>
+                                                handleCategoryClick(category)
+                                            }
+                                            className={
+                                                activeCategoryName === category
+                                                    ? 'rounded-[0.6875rem] bg-gradient-to-r from-[#FFDD87] to-[#FFC752] px-[1.125rem] py-[0.4375rem] text-black'
+                                                    : 'rounded-[0.6875rem] bg-[#1C1C1C] px-[1.125rem] py-[0.4375rem] hover:bg-[#2D2D2D]'
+                                            }>
+                                            {category}
+                                        </button>
+                                    ))
+                                )}
                             </div>
 
                             <div className="flex items-center justify-between gap-2.5">
                                 <button
                                     type="button"
-                                    className="h-[2.1875rem] w-full rounded-[0.25rem] bg-[#2D2D2D] text-[0.6875rem] font-medium text-[#BEBEBE] hover:bg-[#3D3D3D]"
-                                    onClick={handlePreviousClick}>
+                                    className={`h-[2.1875rem] w-full rounded-[0.25rem] bg-[#2D2D2D] text-[0.6875rem] font-medium text-[#BEBEBE] hover:bg-[#3D3D3D] ${subCategoryLoading ? 'cursor-not-allowed opacity-50' : ''}`}
+                                    onClick={handlePreviousClick}
+                                    disabled={subCategoryLoading}>
                                     이전 카테고리
                                 </button>
 
-                                <button
-                                    type="button"
-                                    className="h-[2.1875rem] w-full rounded-[0.25rem] bg-[#FFC752] text-[0.6875rem] font-medium text-[#111111] hover:bg-[#EEB02F]"
-                                    onClick={handleNextClick}>
-                                    다음으로
-                                </button>
+                                {subCategoryLoading ? (
+                                    <div className="flex h-[2.1875rem] w-full items-center justify-center rounded-[0.25rem] bg-[#2D2D2D] text-[0.6875rem] font-medium text-[#BEBEBE]">
+                                        카테고리 로딩중...
+                                    </div>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        className="h-[2.1875rem] w-full rounded-[0.25rem] bg-[#FFC752] text-[0.6875rem] font-medium text-[#111111] hover:bg-[#EEB02F]"
+                                        onClick={handleNextClick}>
+                                        다음으로
+                                    </button>
+                                )}
                             </div>
 
                             <div className="mb-3 mt-6">
@@ -320,7 +351,7 @@ export default function SideBar() {
 
                             <button
                                 type="button"
-                                className="mb-7 flex h-[2.1875rem] w-full items-center justify-center gap-1.5 rounded-[0.25rem] bg-[#FFC752] hover:bg-[#EEB02F]"
+                                className="relative z-10 mb-7 flex h-[2.1875rem] w-full items-center justify-center gap-1.5 rounded-[0.25rem] bg-[#FFC752] hover:bg-[#EEB02F]"
                                 onClick={handleCreateBook}>
                                 <img src={aiBlack} alt="" className="" />
                                 <p className="text-[0.6875rem] font-medium text-[#000000]">
@@ -331,7 +362,7 @@ export default function SideBar() {
                             {createContentPid && (
                                 <button
                                     type="button"
-                                    className="mb-7 flex h-[2.1875rem] w-full items-center justify-center gap-1.5 rounded-[0.25rem] bg-[#FFC752] hover:bg-[#EEB02F]"
+                                    className="relative z-10 mb-7 flex h-[2.1875rem] w-full items-center justify-center gap-1.5 rounded-[0.25rem] bg-[#FFC752] hover:bg-[#EEB02F]"
                                     onClick={handleCreateContent}>
                                     <img src={aiBlack} alt="" className="" />
                                     <p className="text-[0.6875rem] font-medium text-[#000000]">
@@ -341,8 +372,16 @@ export default function SideBar() {
                             )}
 
                             {errorMessage && (
-                                <div className="absolute bottom-0 left-1/2 w-full -translate-x-1/2 rounded-md bg-[#FF4C4C] px-4 py-2 text-center text-[#FFFFFF]">
-                                    {errorMessage}
+                                <div className="fixed inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50">
+                                    <div className="rounded-lg bg-[#2D2D2D] p-6 text-center text-white shadow-lg">
+                                        <p className="mb-4">{errorMessage}</p>
+                                        <button
+                                            type="button"
+                                            className="rounded bg-[#FFC752] px-4 py-2 text-[#111111] hover:bg-[#EEB02F] focus:outline-none focus:ring-2 focus:ring-[#EEB02F] focus:ring-opacity-50"
+                                            onClick={() => setErrorMessage('')}>
+                                            닫기
+                                        </button>
+                                    </div>
                                 </div>
                             )}
 

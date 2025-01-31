@@ -140,9 +140,7 @@ function LoginPage({
                     type="text"
                     placeholder="이메일"
                     onChange={handleEmailChange}
-                    className={`h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] ${
-                        errorMessage ? 'border-red-500' : 'border-[#9C9C9C]'
-                    } bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none`}
+                    className="h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] border-[#9C9C9C] bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none"
                 />
                 <input
                     id="password"
@@ -150,12 +148,22 @@ function LoginPage({
                     type="password"
                     placeholder="비밀번호"
                     onChange={handlePasswordChange}
-                    className={`h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] ${
-                        errorMessage ? 'border-red-500' : 'border-[#9C9C9C]'
-                    } bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none`}
+                    className="h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] border-[#9C9C9C] bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none"
                 />
                 {errorMessage && (
-                    <p className="mt-1 text-sm text-red-500">{errorMessage}</p>
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                        <div className="flex flex-col items-center justify-center rounded-lg bg-[#2C2C2C] p-6 shadow-xl">
+                            <p className="text-lg font-semibold text-[#EEB02F]">
+                                {errorMessage}
+                            </p>
+                            <button
+                                type="button"
+                                className="mt-4 rounded-md bg-[#EEB02F] px-6 py-2 text-sm font-medium text-black hover:bg-[#d9a020] focus:outline-none focus:ring-2 focus:ring-[#EEB02F] focus:ring-opacity-50"
+                                onClick={() => setErrorMessage('')}>
+                                닫기
+                            </button>
+                        </div>
+                    </div>
                 )}
             </form>
             <button

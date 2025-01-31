@@ -1,7 +1,7 @@
 import {useState, useEffect, useRef} from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import bookMockData from '@/__test__/mocks/bookMockData';
-import {initialState} from '@/redux/slice/createBookSlice';
+import {initialState, resetCreateBookInfo} from '@/redux/slice/createBookSlice';
 import defaultCanvasConfig from '@/constants/canvasConfig';
 import {CanvasConfig} from '@/types/book/canvasType';
 import Page from '@/components/book/Page';
@@ -62,6 +62,7 @@ function Book() {
     const bookSizeRatioPC = 0.27;
     const bookSizeRatioTablet = 0.6;
     const boundaryWidth = 768;
+    const initialWidth = useRef<number>(Math.max(window.innerWidth, 1500));
     const prevWidthRef = useRef<number>(window.innerWidth);
     const [canvasConfig, setCanvasConfig] = useState(defaultCanvasConfig);
 
@@ -88,21 +89,22 @@ function Book() {
                 setBookDate(
                     produce(bookData, draft => {
                         const outline = parseJsonString(response.data.outline);
-
                         const chapters: Chapter[] = outline.map(
-                            (chapter: Chapter, chapterIdx: number) => ({
-                                chapterIndex: chapterIdx,
-                                chapterTitle: chapter.chapterTitle,
-                                subChapters: chapter.subChapters.map(
-                                    (subTitle, subIdx) => ({
-                                        subChapterIndex: subIdx,
-                                        subChapterTitle: subTitle,
-                                        subChapterContent: [],
-                                        // eslint-disable-next-line no-plusplus
-                                        pageNumber: ++pageNumber.current,
-                                    }),
-                                ),
-                            }),
+                            (chapter: Chapter, chapterIdx: number) => {
+                                return {
+                                    chapterIndex: chapterIdx,
+                                    chapterTitle: chapter.chapterTitle,
+                                    subChapters: chapter.subChapters.map(
+                                        (subTitle, subIdx) => ({
+                                            subChapterIndex: subIdx,
+                                            subChapterTitle: subTitle,
+                                            subChapterContent: [],
+                                            // eslint-disable-next-line no-plusplus
+                                            pageNumber: ++pageNumber.current,
+                                        }),
+                                    ),
+                                };
+                            },
                         );
 
                         if (draft && draft.metadata) {
@@ -231,11 +233,10 @@ function Book() {
         };
 
         // 초기 설정
-        const initialWidth = window.innerWidth;
-        if (initialWidth > boundaryWidth) {
-            updateCanvasConfig(initialWidth * bookSizeRatioPC);
+        if (initialWidth.current > boundaryWidth) {
+            updateCanvasConfig(initialWidth.current * bookSizeRatioPC);
         } else {
-            updateCanvasConfig(initialWidth * bookSizeRatioTablet);
+            updateCanvasConfig(initialWidth.current * bookSizeRatioTablet);
         }
 
         const handleResize = () => {
@@ -249,7 +250,7 @@ function Book() {
             ) {
                 if (currentWidth > boundaryWidth) {
                     // Tablet -> PC
-                    updateCanvasConfig(currentWidth * bookSizeRatioPC * 2.2);
+                    updateCanvasConfig(initialWidth.current * bookSizeRatioPC);
                 } else {
                     // PC -> Tablet
                     updateCanvasConfig(currentWidth * bookSizeRatioTablet);
@@ -270,14 +271,15 @@ function Book() {
             return;
         }
         fetchBookHeadApi();
+
+        dispatch(resetCreateBookInfo());
     }, [createBookData]);
 
     // 책 컨텐츠 정보 가져오기 (AISideBar 에서 클릭)
     useEffect(() => {
-        if (createBookData === initialState) {
-            return;
+        if (createContentSignal) {
+            fetchBookContentApi();
         }
-        fetchBookContentApi();
     }, [createContentSignal]);
 
     const handleFlipNext = () => {
@@ -296,6 +298,16 @@ function Book() {
 
     return (
         <div className="flex h-full w-full">
+            {(isBookHeadLoading || isBookContentLoading) && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="rounded bg-gray-900 p-4 shadow-lg">
+                        <div className="flex flex-col text-[#DBAC4A]">
+                            {isBookHeadLoading && '책 정보를 가져오는 중...'}
+                            {isBookContentLoading && '콘텐츠를 생성하는 중...'}
+                        </div>
+                    </div>
+                </div>
+            )}
             {/* PC 용 FlipBook - PC 이상에서만 표시 */}
             <div className="hidden h-full w-auto items-center justify-center TB:flex">
                 <div className="flex h-full w-auto flex-none items-center justify-center gap-x-8 p-2">
@@ -337,7 +349,7 @@ function Book() {
                                 chapter.subChapters.map(
                                     (subChapter, subIdx) => (
                                         <Page
-                                            key={`page-${chapter.chapterIndex}-${subChapter.subChapterIndex}`}
+                                            key={`page-${chapter}-${chapter.chapterIndex}-${subChapter}-${subChapter.subChapterIndex}`}
                                             pageNumber={subChapter.pageNumber}
                                             chapterData={chapter}
                                             subChapterIndex={subIdx}
@@ -353,22 +365,11 @@ function Book() {
                     <FlipButton direction="next" onClick={handleFlipNext} />
                 </div>
             </div>
-
             {/* 태블릿 및 모바일 용 ScrollBook - PC 미만에서만 표시 */}
             <div className="block TB:hidden">
                 <div className="hide-scrollbar flex h-full w-full flex-col items-start justify-start overflow-y-auto p-4">
                     {/* 로딩 및 메시지 표시 */}
                     <div className="mb-4">
-                        {isBookHeadLoading && (
-                            <div className="text-gray-700">
-                                책 정보를 가져오는 중...
-                            </div>
-                        )}
-                        {isBookContentLoading && (
-                            <div className="text-gray-700">
-                                콘텐츠를 생성하는 중...
-                            </div>
-                        )}
                         {createCompleteMessage && (
                             <div className="text-green-500">
                                 {createCompleteMessage}

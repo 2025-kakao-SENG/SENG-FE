@@ -1,12 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 interface State {
-    pid: number;
+    pid: number | null;
     createContentSignal: boolean;
 }
 
 export const initialState: State = {
-    pid: 0,
+    pid: null,
     createContentSignal: false,
 };
 
