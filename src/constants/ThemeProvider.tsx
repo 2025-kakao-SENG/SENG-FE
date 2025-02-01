@@ -1,6 +1,6 @@
 import {createContext, useContext, useEffect, useState} from 'react';
 
-// ✅ 테마 상태를 관리할 Context 생성
+// 테마 상태를 관리할 Context 생성
 interface ThemeContextType {
     isDarkMode: boolean;
     toggleTheme: () => void;
@@ -16,7 +16,7 @@ export const useTheme = () => {
     return context;
 };
 
-// ✅ 전역 테마 상태 관리 Provider
+// 전역 테마 상태 관리 Provider
 export function ThemeProvider({children}: {children: React.ReactNode}) {
     const [isDarkMode, setIsDarkMode] = useState(() => {
         // localStorage에서 테마 상태 불러오기 (기본값: true)

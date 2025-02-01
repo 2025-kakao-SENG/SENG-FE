@@ -281,11 +281,13 @@ export default function SideBar() {
                                             onClick={() =>
                                                 handleCategoryClick(category)
                                             }
-                                            className={
+                                            className={`rounded-[0.6875rem] px-[1.125rem] py-[0.4375rem] transition ${
                                                 activeCategoryName === category
-                                                    ? 'rounded-[0.6875rem] bg-gradient-to-r from-[#FFDD87] to-[#FFC752] px-[1.125rem] py-[0.4375rem] text-black'
-                                                    : 'rounded-[0.6875rem] bg-[#1C1C1C] px-[1.125rem] py-[0.4375rem] hover:bg-[#2D2D2D]'
-                                            }>
+                                                    ? 'bg-gradient-to-r from-[#FFDD87] to-[#FFC752] text-black'
+                                                    : isDarkMode
+                                                      ? 'bg-[#1C1C1C] hover:bg-[#2D2D2D]'
+                                                      : 'bg-[#eeeeee] hover:bg-[#e1e1e1]'
+                                            }`}>
                                             {category}
                                         </button>
                                     ))

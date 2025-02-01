@@ -22,6 +22,7 @@ interface SettingLayoutProps {
 
 function SettingLayout({backgroundLocation}: SettingLayoutProps) {
     const [activeTab, setActiveTab] = useState('myPage');
+    const [clickedButton, setClickedButton] = useState<string | null>(null);
     const navigate = useNavigate();
     const location = useLocation();
     const userData = useSelector(getUserLoginData);
@@ -105,11 +106,16 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
                         type="button"
                         className={`flex h-[2.375rem] w-full items-center gap-2.5 rounded-[0.3125rem] pl-[0.65rem] transition-colors duration-200 ${
                             activeTab === item.name
-                                ? 'bg-[#2D2F39] text-[#DBAC4A]'
-                                : 'hover:bg-[#292929] hover:text-[#DBAC4A]'
+                                ? isDarkMode
+                                    ? 'bg-[#2D2F39] text-[#DBAC4A]'
+                                    : 'bg-[#D4D4D4] text-[#000000]'
+                                : isDarkMode
+                                  ? 'hover:bg-[#292929] hover:text-[#DBAC4A]'
+                                  : 'hover:bg-[#EEEEEE] hover:text-[#DBAC4A]'
                         }`}
                         onClick={() => {
                             setActiveTab(item.name);
+                            setClickedButton(item.name);
                             navigate(item.path, {
                                 state: {
                                     backgroundLocation: location,

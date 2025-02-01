@@ -22,8 +22,7 @@ import {useTheme} from '@/constants/ThemeProvider';
 export default function Palette() {
     const [activeButton, setActiveButton] = useState(null);
     const [isTablet, setIsTablet] = useState(false);
-    const [isToggled, setIsToggled] = useState(false);
-    const {isDarkMode} = useTheme();
+    const {isDarkMode, toggleTheme} = useTheme();
 
     //  화면 크기 감지하여 태블릿 모드 업데이트
     useEffect(() => {
@@ -41,13 +40,18 @@ export default function Palette() {
         setActiveButton(buttonName);
     };
 
+    // 기존 handleToggle을 전역 테마 변경과 동기화
     const handleToggle = () => {
-        setIsToggled(prevState => !prevState);
+        toggleTheme(); // 전역 테마 변경 (DisplayPage의 toggleTheme과 동일한 기능)
     };
 
     const getButtonClass = buttonName => {
-        return `cursor-pointer rounded-[0.575rem] p-[0.43125rem] ${
-            activeButton === buttonName ? 'bg-[#DBAC4A]' : 'hover:bg-[#4a4a4a]'
+        return `cursor-pointer rounded-[0.575rem] p-[0.43125rem] transition ${
+            activeButton === buttonName
+                ? 'bg-[#DBAC4A]'
+                : isDarkMode
+                  ? 'hover:bg-[#4a4a4a]'
+                  : 'hover:bg-[#e2e2e2]'
         }`;
     };
 
@@ -164,13 +168,16 @@ export default function Palette() {
                     ) : (
                         // 태블릿 모드에서는 Transform 아이콘 표시
                         <div
-                            className="relative flex h-[1.8rem] w-[2.8rem] items-center rounded-[0.4375rem] bg-[#383838]"
-                            onClick={handleToggle}>
+                            className={`relative flex h-[1.8rem] w-[2.8rem] items-center rounded-[0.4375rem] transition duration-500 ease-in-out ${
+                                isDarkMode ? 'bg-[#383838]' : 'bg-[#B5B5B5]'
+                            }`}
+                            onClick={handleToggle} // 여기서 toggleTheme을 호출하여 전체 테마 변경
+                        >
                             <img
                                 src={transform}
                                 alt="Transform Button"
                                 className={`transform cursor-pointer transition-transform duration-500 ease-in-out ${
-                                    isToggled
+                                    isDarkMode
                                         ? 'translate-x-[1rem]'
                                         : 'translate-x-0'
                                 }`}
