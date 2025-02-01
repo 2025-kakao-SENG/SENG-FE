@@ -10,17 +10,15 @@ import Router from '@/router/Router';
 import {ThemeProvider} from '@/constants/ThemeProvider';
 
 createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <CookiesProvider>
-                    <ThemeProvider>
-                        <BrowserRouter>
-                            <Router />
-                        </BrowserRouter>
-                    </ThemeProvider>
-                </CookiesProvider>
-            </PersistGate>
-        </Provider>
-    </StrictMode>,
+    <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+            <CookiesProvider>
+                <ThemeProvider>
+                    <BrowserRouter>
+                        <Router />
+                    </BrowserRouter>
+                </ThemeProvider>
+            </CookiesProvider>
+        </PersistGate>
+    </Provider>,
 );
