@@ -9,15 +9,13 @@ import {PersistGate} from 'redux-persist/integration/react';
 import Router from '@/router/Router';
 
 createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <CookiesProvider>
-                    <BrowserRouter>
-                        <Router />
-                    </BrowserRouter>
-                </CookiesProvider>
-            </PersistGate>
-        </Provider>
-    </StrictMode>,
+    <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+            <CookiesProvider>
+                <BrowserRouter>
+                    <Router />
+                </BrowserRouter>
+            </CookiesProvider>
+        </PersistGate>
+    </Provider>,
 );

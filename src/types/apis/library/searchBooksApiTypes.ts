@@ -19,14 +19,10 @@ export interface BookInfo {
 }
 
 // 정상 응답 (success가 true일 때) 구조
-export interface SearchBooksSuccessResponse {
-    success: true;
-    data: BookInfo[]; // BookInfo 배열
-}
+export type SearchBooksSuccessResponse = BookInfo[]; // BookInfo 배열
 
 // 에러 응답 (success가 false일 때) 구조
 export interface SearchBooksErrorResponse {
-    success: false;
     error: string; // 에러 메시지
 }
 

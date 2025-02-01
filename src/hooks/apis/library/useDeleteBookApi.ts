@@ -20,8 +20,11 @@ const useDeleteBookApi = () => {
 
         try {
             // RTK Query의 unwrap()을 통해 실제 응답 데이터를 획득
-            const response: DeleteBookApiResponse =
-                await deleteBookMutation(request).unwrap();
+            const result = await deleteBookMutation(request);
+            if (!result.data) {
+                throw new Error('도서 삭제 응답 데이터가 없습니다.');
+            }
+            const response: DeleteBookApiResponse = result.data;
             return response;
         } catch (error: unknown) {
             // RTK Query에서 발생한 에러인 경우

@@ -8,6 +8,7 @@ export const getUserId = (state: RootState) => {
     return state.user.kakaoPid;
 };
 export const getLeafCount = (state: RootState) => state.user.leaf;
+
 export const getBookCreatingData = (state: RootState) => state.createBook;
 
 export const getCreateContentPid = (state: RootState) =>
@@ -15,6 +16,11 @@ export const getCreateContentPid = (state: RootState) =>
 
 export const getCreateContentSignal = (state: RootState) => {
     return state.createContent.createContentSignal;
+};
+
+export const getDisplayBookPid = (state: RootState) => state.displayBook.pid;
+export const getDisplayBookSignal = (state: RootState) => {
+    return state.displayBook.displayBookSignal;
 };
 
 export const selectorTest: string = 'selectorTest';

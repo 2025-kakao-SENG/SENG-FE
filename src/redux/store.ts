@@ -9,6 +9,9 @@ import {bookApi} from './apiSlice/bookApiSlice';
 import {userApi} from './apiSlice/updateUserNameApiSlice';
 import {userPasswordApi} from './apiSlice/updateUserPasswordApiSlice';
 import {createContentSlice} from './slice/createContentSlice';
+import {libraryApiSlice} from './apiSlice/libraryApiSlice';
+import {LeafApiSlice} from './apiSlice/leafApiSlice';
+import {displayBookSlice} from './slice/displayBookSlice';
 
 const persistConfig = {
     key: 'login',
@@ -22,9 +25,12 @@ const rootReducer = combineReducers({
     [bookApi.reducerPath]: bookApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [userPasswordApi.reducerPath]: userPasswordApi.reducer,
+    [libraryApiSlice.reducerPath]: libraryApiSlice.reducer,
+    [LeafApiSlice.reducerPath]: LeafApiSlice.reducer,
     user: userSlice.reducer,
     createBook: createBookSlice.reducer,
     createContent: createContentSlice.reducer,
+    displayBook: displayBookSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -40,6 +46,8 @@ export const store = configureStore({
             bookApi.middleware,
             userApi.middleware,
             userPasswordApi.middleware,
+            libraryApiSlice.middleware,
+            LeafApiSlice.middleware,
         ]),
 });
 

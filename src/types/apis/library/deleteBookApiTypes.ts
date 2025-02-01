@@ -8,10 +8,7 @@ export interface DeleteBookApiRequest {
 /**
  * 도서 삭제 성공 시 응답 타입
  */
-export interface DeleteBookApiSuccessResponse {
-    status: 'success';
-    message: string; // 예: "pid가 123인 책이 성공적으로 삭제되었습니다."
-}
+export type DeleteBookApiSuccessResponse = string;
 
 /**
  * 도서 삭제 실패 시 응답 타입

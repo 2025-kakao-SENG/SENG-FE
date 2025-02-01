@@ -12,6 +12,8 @@ import ringYellow from '@/assets/images/MyPage/ringYellow.svg';
 import setting from '@/assets/images/menuBar/setting.svg';
 import settingYellow from '@/assets/images/MyPage/settingYellow.svg';
 import close from '@/assets/images/login/close.svg';
+import {useSelector} from 'react-redux';
+import {getUserLoginData} from '@/redux/selector';
 
 interface SettingLayoutProps {
     backgroundLocation: string;
@@ -21,6 +23,7 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
     const [activeTab, setActiveTab] = useState('myPage');
     const navigate = useNavigate();
     const location = useLocation();
+    const userData = useSelector(getUserLoginData);
 
     useEffect(() => {
         if (location.pathname.includes('myPage')) {
@@ -35,6 +38,10 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
             setActiveTab('display');
         }
     }, [location]);
+
+    useEffect(() => {
+        console.log(userData);
+    }, [userData]);
 
     const menuItems = [
         {
@@ -95,7 +102,10 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
                         onClick={() => {
                             setActiveTab(item.name);
                             navigate(item.path, {
-                                state: {backgroundLocation},
+                                state: {
+                                    backgroundLocation: location,
+                                    user_data: userData,
+                                },
                             });
                         }}>
                         <img
