@@ -1,10 +1,6 @@
 import {ParsedContent} from '@/types/book/bookDataType';
 
-function parseHTMLString(
-    generatedContent: string,
-    expectedTitle: string,
-    expectedSubtitle: string,
-): ParsedContent {
+function parseHTMLString(generatedContent: string): ParsedContent {
     // 브라우저 환경에서 DOMParser 사용
     const parser = new DOMParser();
     const doc = parser.parseFromString(generatedContent, 'text/html');
@@ -16,15 +12,6 @@ function parseHTMLString(
     // 제목과 소제목 텍스트 추출
     const title = h1 ? h1.textContent?.trim() || '' : '';
     const subtitle = h2 ? h2.textContent?.trim() || '' : '';
-
-    // 유효성 검증
-    const isTitleValid = title === expectedTitle;
-    const isSubtitleValid = subtitle === expectedSubtitle;
-    const isValid = isTitleValid && isSubtitleValid;
-
-    if (!isValid) {
-        throw new Error('제목 또는 소제목이 일치하지 않습니다.');
-    }
 
     // <h1>과 <h2> 제거
     h1?.remove();
@@ -40,7 +27,6 @@ function parseHTMLString(
         .filter(line => line !== '');
 
     return {
-        isValid,
         title,
         subtitle,
         content,

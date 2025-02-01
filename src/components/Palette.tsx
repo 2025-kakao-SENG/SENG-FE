@@ -51,7 +51,7 @@ export default function Palette() {
                         : ''
                 }`}>
                 <div className="flex items-center gap-[0.43125rem] py-[0.2875rem] pl-[0.2875rem] pr-[0.43125rem]">
-                    {/* <div className="flex items-center">
+                    <div className="flex items-center">
                         <img
                             src={highlight}
                             alt="Highlight Button"
@@ -63,7 +63,7 @@ export default function Palette() {
                             alt="Down-arrow Button"
                             className="cursor-pointer"
                         />
-                    </div> */}
+                    </div>
 
                     <div className="flex items-center">
                         <img
@@ -116,27 +116,27 @@ export default function Palette() {
                         />
                     </div>
 
-                    {/* <div className="flex items-center">
+                    <div className="flex items-center">
                         <img
                             src={chat}
                             alt="Chat Button"
                             className={getButtonClass('chat')}
                             onClick={() => handleButtonClick('chat')}
                         />
-                    </div> */}
+                    </div>
 
-                    {/* <div className="flex items-center">
+                    <div className="flex items-center">
                         <img
                             src={interests}
                             alt="Interests Button"
                             className={getButtonClass('interests')}
                             onClick={() => handleButtonClick('interests')}
                         />
-                    </div> */}
+                    </div>
                 </div>
 
                 {/* ✅ 데스크톱에서는 AiYellow / 태블릿에서는 Transform 아이콘 */}
-                {/* <div className="flex items-center justify-center border-l border-[#444444] pb-[0.3rem] pl-[0.7875rem] pr-4 pt-[0.275rem]">
+                <div className="flex items-center justify-center border-l border-[#444444] pb-[0.3rem] pl-[0.7875rem] pr-4 pt-[0.275rem]">
                     {!isTablet ? (
                         // 🔵 기본 화면에서는 AiYellow 유지
                         <img
@@ -161,7 +161,7 @@ export default function Palette() {
                             />
                         </div>
                     )}
-                </div> */}
+                </div>
             </div>
         </>
     );
