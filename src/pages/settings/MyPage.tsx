@@ -2,14 +2,24 @@ import {useState} from 'react';
 import {useUpdateUserNameMutation} from '@/redux/apiSlice/updateUserNameApiSlice';
 import {useUpdateUserPasswordMutation} from '@/redux/apiSlice/updateUserPasswordApiSlice';
 import {useSelector, useDispatch} from 'react-redux';
-import {RootState} from '@/redux/store';
 import {setUserInfoByLogin} from '@/redux/slice/userSlice';
 import {useNavigate} from 'react-router-dom';
+import {getUserLoginData} from '@/redux/selector';
+import useLogout from '@/hooks/useLogout';
+import useAuthDeregisterApi from '@/hooks/apis/auth/useAuthDeregisterApi';
+import {AuthDeregisterApiRequest} from '@/types/apis/auth/deregisterApiTypes';
 
 function MyPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const user = useSelector((state: RootState) => state.user);
+    const user = useSelector(getUserLoginData);
+    const logout = useLogout();
+    const userLoginDate = useSelector(getUserLoginData);
+    const {authDeregisterApi, isLoading: deregisterLoading} =
+        useAuthDeregisterApi();
+
+    const [successModal, setSuccessModal] = useState('');
+    const [errorMessageModal, setErrorMessage] = useState('');
 
     // 닉네임 변경
     const [nickname, setNickname] = useState(user.name || '');
@@ -24,11 +34,80 @@ function MyPage() {
     ] = useUpdateUserPasswordMutation();
 
     const handleLogout = () => {
-        navigate('/logout');
+        if (userLoginDate.kakaoPid) {
+            logout('kakao');
+        } else if (userLoginDate.pid) {
+            logout('default');
+        }
+        setSuccessModal('로그아웃 되었습니다.');
+        setTimeout(() => {
+            setSuccessModal('');
+            navigate('/home');
+        }, 2000);
     };
 
-    const handleDeregister = () => {
-        navigate('/deregister');
+    const handleDeregister = async () => {
+        const KAKAO_API_KEY: string = import.meta.env.VITE_KAKAO_JS_KEY;
+
+        if (userLoginDate.kakaoPid) {
+            if (!window.Kakao.isInitialized()) {
+                window.Kakao.init(KAKAO_API_KEY);
+            }
+
+            const serverRequest: AuthDeregisterApiRequest = {
+                kakaoPid: userLoginDate.kakaoPid,
+            };
+            try {
+                const serverResponse = await authDeregisterApi(serverRequest);
+
+                if (serverResponse.status === 'success') {
+                    window.Kakao.API.request({
+                        url: '/v1/user/unlink',
+                    });
+
+                    logout('kakao');
+                    setSuccessModal('회원 탈퇴 되었습니다.');
+                    setTimeout(() => {
+                        setSuccessModal('');
+                        navigate('/home');
+                    }, 2000);
+                } else {
+                    setErrorMessage(serverResponse.message);
+                }
+            } catch {
+                setErrorMessage('회원 탈퇴 통신 에러 발생');
+            }
+        }
+        // redux로 일반 회원 탈퇴
+        else if (userLoginDate.pid) {
+            const serverRequest: AuthDeregisterApiRequest = {
+                pid: parseInt(userLoginDate.pid, 10),
+            };
+
+            try {
+                const serverResponse = await authDeregisterApi(serverRequest);
+
+                if (serverResponse.status === 'success') {
+                    logout('default');
+                    setSuccessModal('회원 탈퇴 되었습니다.');
+                    setTimeout(() => {
+                        setSuccessModal('');
+                        navigate('/home');
+                    }, 2000);
+                } else {
+                    setErrorMessage(serverResponse.message);
+                }
+            } catch {
+                setErrorMessage('회원 탈퇴 통신 에러 발생');
+            }
+        }
+        // 로그인 만료됨, 다시 로그인
+        else {
+            setErrorMessage(
+                '로그인 세션이 만료되었습니다. 다시 로그인해주세요.',
+            );
+            navigate('/auth/login');
+        }
     };
 
     const handleUpdateNickname = async () => {
@@ -154,13 +233,15 @@ function MyPage() {
             <div className="flex flex-col gap-[0.5625rem]">
                 <h2 className="text-sm font-semibold text-[#F5F5F5]">이메일</h2>
                 <div className="text-xs font-medium text-[#999999]">
-                    kakao.seng@gmail.com
+                    {user.email}
                 </div>
             </div>
 
             <div className="flex flex-col gap-[0.5625rem]">
                 <h2 className="text-sm font-semibold text-[#F5F5F5]">이름</h2>
-                <div className="text-xs font-medium text-[#999999]">카카오</div>
+                <div className="text-xs font-medium text-[#999999]">
+                    {user.name}
+                </div>
             </div>
 
             <div className="flex flex-col gap-[0.5625rem]">
@@ -168,7 +249,7 @@ function MyPage() {
                     생년월일
                 </h2>
                 <div className="text-xs font-medium text-[#999999]">
-                    2025년 01월 08일
+                    {user.birth}
                 </div>
             </div>
 
@@ -240,6 +321,28 @@ function MyPage() {
                     </button>
                 </div>
             </div>
+
+            {successModal && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="flex flex-col items-center gap-3 rounded-lg bg-[#1B1B1B] p-5">
+                        <p className="text-[#DBAC4A]">{successModal}</p>
+                    </div>
+                </div>
+            )}
+
+            {errorMessageModal && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="flex flex-col items-center gap-3 rounded-lg bg-[#1B1B1B] p-5">
+                        <p className="text-[#DBAC4A]">{errorMessageModal}</p>
+                        <button
+                            type="button"
+                            className="h-[2.5rem] w-[7.5rem] rounded-[0.3125rem] bg-[#2D2F39] text-[#DBAC4A] hover:bg-[#292929]"
+                            onClick={() => setErrorMessage('')}>
+                            확인
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

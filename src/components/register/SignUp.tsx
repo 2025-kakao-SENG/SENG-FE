@@ -28,7 +28,7 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
     const [errorMessage, setErrorMessage] = useState('');
 
     const successRegister = () => {
-        navigate('login', {
+        navigate('/login', {
             state: {backgroundLocation: registerBackgroundLocation},
         });
     };

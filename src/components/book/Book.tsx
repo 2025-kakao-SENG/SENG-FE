@@ -1,7 +1,7 @@
 import {useState, useEffect, useRef} from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import bookMockData from '@/__test__/mocks/bookMockData';
-import {initialState, resetCreateBookInfo} from '@/redux/slice/createBookSlice';
+import {resetCreateBookInfo} from '@/redux/slice/createBookSlice';
 import defaultCanvasConfig from '@/constants/canvasConfig';
 import {CanvasConfig} from '@/types/book/canvasType';
 import Page from '@/components/book/Page';
@@ -30,7 +30,6 @@ import {
 import parseHTMLString from '@/utils/book/parseHTMLString';
 import splitContentByCanvasWidth from '@/utils/book/splitContentByCanvasWidth';
 import {setCreateContentPid} from '@/redux/slice/createContentSlice';
-import FlipButton from '@/components/FlipButton';
 import {
     SearchBookApiRequest,
     SearchBookApiResponse,
@@ -55,7 +54,7 @@ import {resetDisplayBookInfo} from '@/redux/slice/displayBookSlice';
 // $ 11. 페이지 넘기기 버튼, 이전 페이지 버튼
 
 // [시나리오]
-// 1. AI 생성하기 버튼 클릭
+// AI 생성하기 버튼 클릭
 // 제목 컨텐츠 API 호출 (manifest)
 // 책 처음으로 넘기는 애니매이션 (로딩)
 // 버튼 로딩 상태로 변경 (로딩)
@@ -69,7 +68,7 @@ function Book() {
     const {bookHeadApi, isLoading: isBookHeadLoading} = useBookHeadApi();
     const {bookContentApi, isLoading: isBookContentLoading} =
         useBookContentApi();
-    const {searchBookApi, isLoding: isSearchBookApi} = useSearchBookApi();
+    const {searchBookApi, isLoading: isSearchBookLoading} = useSearchBookApi();
 
     const bookSizeRatioPC = 0.27;
     const bookSizeRatioTablet = 0.6;
@@ -79,7 +78,6 @@ function Book() {
     const [canvasConfig, setCanvasConfig] = useState(defaultCanvasConfig);
 
     const [bookData, setBookDate] = useState<BookData>(bookMockData);
-    const pageNumber = useRef<number>(0);
 
     const [createCompleteMessage, setCreateCompleteMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -97,9 +95,9 @@ function Book() {
             const response: BookHeadApiResponse = await bookHeadApi(request);
 
             if (response.success) {
-                pageNumber.current = 0;
                 setBookDate(
                     produce(bookData, draft => {
+                        let pageNumber = 0;
                         const outline = parseJsonString(response.data.outline);
                         const chapters: Chapter[] = outline.map(
                             (chapter: Chapter, chapterIdx: number) => {
@@ -112,7 +110,7 @@ function Book() {
                                             subChapterTitle: subTitle,
                                             subChapterContent: [],
                                             // eslint-disable-next-line no-plusplus
-                                            pageNumber: ++pageNumber.current,
+                                            pageNumber: ++pageNumber,
                                         }),
                                     ),
                                 };
@@ -173,13 +171,8 @@ function Book() {
                                       .subChapters.length - 1
                                 : nextSubChapterIndex - 1;
 
-                        const parsedContent: ParsedContent = parseHTMLString(
-                            generatedContent,
-                            bookData.chapters[currentChapterIndex].chapterTitle,
-                            bookData.chapters[currentChapterIndex].subChapters[
-                                currentSubChapterIndex
-                            ].subChapterTitle,
-                        );
+                        const parsedContent: ParsedContent =
+                            parseHTMLString(generatedContent);
 
                         const splitedContent = splitContentByCanvasWidth(
                             parsedContent.content,
@@ -208,29 +201,82 @@ function Book() {
     };
 
     const FetchSearchBookApi = async () => {
+        if (!displayBookPid) {
+            setErrorMessage('책 정보중 Pid 항목이 존재하지 않습니다.');
+            return;
+        }
+
         try {
             const request: SearchBookApiRequest = {
-                pid: 250,
+                pid: displayBookPid,
             };
 
             const response: SearchBookApiResponse =
                 await searchBookApi(request);
 
             if (response.status === 'success') {
-                /*  export interface SearchBookData {
-                    pid: number;
-                    title: string;
-                    outline: string;
-                    content: string;
-                    category: string;
-                    created_at: string;
-                    chapterTitle: string;
-                    subChapters: string;
-                    generated_date: string;
-                    status: number; // 0=임시, 1=발행 등
-                    user_pid: number;
-                } */
-                console.log(response.data);
+                setBookDate(
+                    produce(bookData, draft => {
+                        let pageNumber = 0;
+                        const outline = parseJsonString(response.data.outline);
+                        const chapters: Chapter[] = outline.map(
+                            (chapter: Chapter, chapterIdx: number) => {
+                                return {
+                                    chapterIndex: chapterIdx,
+                                    chapterTitle: chapter.chapterTitle,
+                                    subChapters: chapter.subChapters.map(
+                                        (subTitle, subIdx) => ({
+                                            subChapterIndex: subIdx,
+                                            subChapterTitle: subTitle,
+                                            subChapterContent: [],
+                                            // eslint-disable-next-line no-plusplus
+                                            pageNumber: ++pageNumber,
+                                        }),
+                                    ),
+                                };
+                            },
+                        );
+
+                        if (draft && draft.metadata) {
+                            draft.metadata.pid = String(response.data.pid);
+                            draft.metadata.title = response.data.title;
+                            draft.metadata.category = response.data.category;
+                            draft.metadata.created_at =
+                                response.data.created_at;
+                            draft.metadata.generated_date =
+                                response.data.generated_date;
+                            draft.chapters = chapters;
+                        }
+
+                        // parseContent
+                        const semiParsedContent: string[] =
+                            response.data.content.split(/(?=\n\n<h1>)/);
+                        const parsedContentArray = semiParsedContent.map(
+                            content => {
+                                return parseHTMLString(content);
+                            },
+                        );
+
+                        const splitedContentArray = parsedContentArray.map(
+                            parsedContent => {
+                                return splitContentByCanvasWidth(
+                                    parsedContent.content,
+                                    canvasConfig,
+                                );
+                            },
+                        );
+
+                        let index = 0;
+                        draft.chapters.forEach(chapter => {
+                            chapter.subChapters.forEach(subChapter => {
+                                // eslint-disable-next-line no-param-reassign
+                                subChapter.subChapterContent =
+                                    // eslint-disable-next-line no-plusplus
+                                    splitedContentArray[index++];
+                            });
+                        });
+                    }),
+                );
             } else {
                 setErrorMessage(response.message);
             }
@@ -322,7 +368,7 @@ function Book() {
 
     // 책 컨텐츠 정보 가져오기 (AISideBar 에서 클릭)
     useEffect(() => {
-        if (createContentSignal) {
+        if (bookData.metadata.pid !== 'landingPage') {
             fetchBookContentApi();
         }
     }, [createContentSignal]);
@@ -343,12 +389,15 @@ function Book() {
 
     return (
         <div className="flex h-full w-full">
-            {(isBookHeadLoading || isBookContentLoading) && (
+            {(isBookHeadLoading ||
+                isBookContentLoading ||
+                isSearchBookLoading) && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="rounded bg-gray-900 p-4 shadow-lg">
                         <div className="flex flex-col text-[#DBAC4A]">
                             {isBookHeadLoading && '책 정보를 가져오는 중...'}
                             {isBookContentLoading && '콘텐츠를 생성하는 중...'}
+                            {isSearchBookLoading && '책 정보를 가져오는 중...'}
                         </div>
                     </div>
                 </div>
@@ -376,7 +425,7 @@ function Book() {
                             minHeight={0}
                             maxHeight={10000}
                             drawShadow
-                            flippingTime={700}
+                            flippingTime={1500}
                             usePortrait={false}
                             startZIndex={0}
                             autoSize

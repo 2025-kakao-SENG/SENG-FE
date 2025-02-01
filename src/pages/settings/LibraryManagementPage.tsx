@@ -1,4 +1,4 @@
-import LibraryItem from '@/components/library/LibraryItem';
+import LibraryManagementItem from '@/components/library/LibraryManagementItem';
 import bookTest from '@/assets/images/bookTest.svg';
 import useSearchBooksApi from '@/hooks/apis/library/useSearchBooksApi';
 import {useEffect, useState} from 'react';
@@ -7,34 +7,28 @@ import {
     SearchBooksApiRequest,
     SearchBooksApiResponse,
 } from '@/types/apis/library/searchBooksApiTypes';
-import useSearchBookApi from '@/hooks/apis/library/useSearchBookApi';
-import {
-    SearchBookApiRequest,
-    SearchBookApiResponse,
-} from '@/types/apis/library/searchBookApiTypes';
 import useDeleteBookApi from '@/hooks/apis/library/useDeleteBookApi';
 import {
     DeleteBookApiRequest,
     DeleteBookApiResponse,
 } from '@/types/apis/library/deleteBookApiTypes';
 import {useDispatch, useSelector} from 'react-redux';
-import {getUserId} from '@/redux/selector';
-import useChargeLeafApi from '@/hooks/apis/useChargeLeafApi';
+import {getUserId, getUserLoginData} from '@/redux/selector';
 import {setDisplayBookInfo} from '@/redux/slice/displayBookSlice';
 import {produce} from 'immer';
+import {useNavigate} from 'react-router-dom';
 
 function LibraryManagementPage() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const userId = useSelector(getUserId);
+    const userData = useSelector(getUserLoginData);
 
     const {searchBooksApi, isLoading: booksLoading} = useSearchBooksApi();
-    const {searchBookApi, isLoding: bookLoading} = useSearchBookApi();
-    const {deleteBookApi, isLoding: deleteBookLoading} = useDeleteBookApi();
-    const {chargeLeafApi, isLoding: chargeLeafLoading} = useChargeLeafApi();
+    const {deleteBookApi, isLoading: deleteBookLoading} = useDeleteBookApi();
 
     const [libraryItems, setLibraryItems] = useState<BookInfo[]>([]);
 
-    const [isDeleteSuccess, setIsDeleteSuccess] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     const FetchSearchBooksApi = async () => {
@@ -65,7 +59,7 @@ function LibraryManagementPage() {
         }
     };
 
-    const ChargeLeaf = async () => {
+    /*  const ChargeLeaf = async () => {
         if (!userId) {
             setErrorMessage('로그인 정보가 없습니다.');
             return;
@@ -85,10 +79,11 @@ function LibraryManagementPage() {
         } catch {
             setErrorMessage('리프를 충전하는 중 오류가 발생했습니다.');
         }
-    };
+    }; */
 
     const handleSearchBook = (Pid: number) => {
         dispatch(setDisplayBookInfo(Pid));
+        navigate('/home/ai');
     };
 
     const handleDeleteBook = async (Pid: number) => {
@@ -101,15 +96,11 @@ function LibraryManagementPage() {
                 await deleteBookApi(request);
 
             if (response) {
-                setIsDeleteSuccess(true);
                 setLibraryItems(
                     produce(libraryItems, draft => {
                         return draft.filter(book => Number(book.pid) !== Pid);
                     }),
                 );
-                setTimeout(() => {
-                    setIsDeleteSuccess(false);
-                }, 1500);
             } else {
                 setErrorMessage('책 정보를 삭제하는 데 실패했습니다.');
             }
@@ -126,20 +117,21 @@ function LibraryManagementPage() {
     return (
         <div>
             <h2 className="flex text-sm font-semibold">
-                <p className="text-[#DBAC4A]">@Noah</p>
-                <p className="text-[#C9C9C9]">의 책장</p>
+                <p className="text-[#DBAC4A]">{userData.name}</p>
+                <p className="text-[#C9C9C9]">님의 책장</p>
             </h2>
             {booksLoading ? (
-                <div className="flex h-full items-center justify-center">
-                    <div className="loader" />
-                    <p className="ml-2 text-lg">로딩중...</p>
+                <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+                    <div className="flex items-center justify-center">
+                        <div className="border-b-5 h-32 w-32 animate-spin rounded-full border-t-[7px] border-[#DBAC4A]" />
+                    </div>
                 </div>
             ) : (
                 <div
                     className="mt-[2.375rem] flex h-[32vw] flex-wrap gap-[2.625rem] overflow-y-scroll pl-[0.5625rem]"
                     style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
                     {libraryItems.map(book => (
-                        <LibraryItem
+                        <LibraryManagementItem
                             key={book.pid}
                             pid={Number(book.pid)}
                             image={bookTest}
@@ -148,6 +140,18 @@ function LibraryManagementPage() {
                             handleDeleteBook={handleDeleteBook}
                         />
                     ))}
+                </div>
+            )}
+            {deleteBookLoading && (
+                <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+                    <div className="loader" />
+                </div>
+            )}
+            {errorMessage && (
+                <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+                    <div className="rounded-2xl bg-[#111111] p-5">
+                        <p className="text-lg text-[#DBAC4A]">{errorMessage}</p>
+                    </div>
                 </div>
             )}
         </div>

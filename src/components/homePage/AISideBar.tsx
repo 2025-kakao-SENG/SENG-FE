@@ -286,7 +286,7 @@ export default function SideBar() {
                             <div className="flex items-center justify-between gap-2.5">
                                 <button
                                     type="button"
-                                    className={`h-[2.1875rem] w-full rounded-[0.25rem] bg-[#2D2D2D] text-[0.6875rem] font-medium text-[#BEBEBE] hover:bg-[#3D3D3D] ${subCategoryLoading ? 'cursor-not-allowed opacity-50' : ''}`}
+                                    className={`z-10 h-[2.1875rem] w-full rounded-[0.25rem] bg-[#2D2D2D] text-[0.6875rem] font-medium text-[#BEBEBE] hover:bg-[#3D3D3D] ${subCategoryLoading ? 'cursor-not-allowed opacity-50' : ''}`}
                                     onClick={handlePreviousClick}
                                     disabled={subCategoryLoading}>
                                     이전 카테고리
@@ -299,7 +299,7 @@ export default function SideBar() {
                                 ) : (
                                     <button
                                         type="button"
-                                        className="h-[2.1875rem] w-full rounded-[0.25rem] bg-[#FFC752] text-[0.6875rem] font-medium text-[#111111] hover:bg-[#EEB02F]"
+                                        className="z-10 h-[2.1875rem] w-full rounded-[0.25rem] bg-[#FFC752] text-[0.6875rem] font-medium text-[#111111] hover:bg-[#EEB02F]"
                                         onClick={handleNextClick}>
                                         다음으로
                                     </button>

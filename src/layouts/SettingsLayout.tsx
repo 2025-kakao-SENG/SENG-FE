@@ -87,7 +87,9 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
             <div className="flex w-[20%] min-w-[15rem] flex-col items-start p-5">
                 <div className="mb-4 flex items-center gap-[0.8125rem]">
                     <img src={logoCircle} alt="" className="h-[1.875rem]" />
-                    <div className="font-semibold text-[#DBAC4A]">@Noah</div>
+                    <div className="font-semibold text-[#DBAC4A]">
+                        {userData.name}님
+                    </div>
                 </div>
                 {/* 메뉴 리스트 */}
                 {menuItems.map(item => (
