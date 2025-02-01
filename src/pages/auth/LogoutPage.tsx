@@ -2,6 +2,7 @@ import {useNavigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import useLogout from '@/hooks/useLogout';
 import {getUserLoginData} from '@/redux/selector';
+import {useTheme} from '@/constants/ThemeProvider';
 
 interface LogoutProps {
     backgroundLocation: string;
@@ -11,6 +12,7 @@ function Logout({backgroundLocation: logoutBackgroundLocation}: LogoutProps) {
     const navigate = useNavigate();
     const logout = useLogout();
     const userLoginDate = useSelector(getUserLoginData);
+    const {isDarkMode} = useTheme();
 
     const handleLogout = () => {
         if (userLoginDate.kakaoPid) {
@@ -24,7 +26,12 @@ function Logout({backgroundLocation: logoutBackgroundLocation}: LogoutProps) {
     };
 
     return (
-        <div className="absolute left-1/2 top-1/2 flex h-[9.75rem] w-[27.75rem] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center rounded-2xl bg-[#1B1B1B]">
+        <div
+            className={`absolute left-1/2 top-1/2 flex h-[9.75rem] w-[27.75rem] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center rounded-2xl bg-[#1B1B1B] ${
+                isDarkMode
+                    ? 'bg-[#1B1B1B] text-white'
+                    : 'bg-[#f5f5f5] text-black'
+            }`}>
             {userLoginDate.isLogined ? (
                 <>
                     {/* 로그아웃 확인 메시지 */}

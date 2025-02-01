@@ -17,6 +17,7 @@ import {getCreateContentPid, getUserId} from '@/redux/selector';
 import {setCreateBookInfo} from '@/redux/slice/createBookSlice';
 import Palette from '@/components/Palette';
 import {setCreateContentSignal} from '@/redux/slice/createContentSlice';
+import {useTheme} from '@/constants/ThemeProvider';
 
 export default function SideBar() {
     const dispatch = useDispatch();
@@ -25,8 +26,9 @@ export default function SideBar() {
     const {fetchCategoriesApi, isLoading: categoriesLoading} =
         useFetchCategoriesApi();
     const {fetchSubCategoriesApi} = useFetchSubCategoriesApi();
+    const {isDarkMode} = useTheme();
 
-    // ✅ 태블릿 감지 (768px 이하)
+    // 태블릿 감지 (768px 이하)
     const [isTablet, setIsTablet] = useState(window.innerWidth <= 768);
     const [isVisible, setIsVisible] = useState(true);
 
@@ -43,7 +45,7 @@ export default function SideBar() {
 
     const [subCategoryLoading, setSubCategoriesLoading] = useState(false);
 
-    // ✅ 화면 크기 감지 (태블릿 여부 체크 + 깜빡임 방지)
+    // 화면 크기 감지 (태블릿 여부 체크 + 깜빡임 방지)
     useEffect(() => {
         const checkScreenSize = () => {
             const isNowTablet = window.innerWidth <= 768;
@@ -213,18 +215,25 @@ export default function SideBar() {
                         </div>
                     )}
 
-                    {/* ✅ 기존 SideBar 유지 (버튼, UI, 기능 변경 없음) */}
                     <div
                         className={`bg-[#111111] shadow-lg transition-opacity duration-300 ${
                             isTablet
                                 ? 'w-full flex-row justify-around p-3'
                                 : 'h-full rounded-[0.6875rem]'
+                        } ${
+                            isDarkMode
+                                ? 'bg-[#111111] text-black'
+                                : 'bg-[#fdfdfd] text-white'
                         }`}>
                         {!isTablet && (
                             <div className="pl-[0.5625rem] pt-[0.9375rem]">
                                 <button
                                     type="button"
-                                    className="rounded-lg px-2 py-2.5 hover:bg-[#4a4a4a]"
+                                    className={`rounded-lg px-2 py-2.5 transition ${
+                                        isDarkMode
+                                            ? 'hover:bg-[#4a4a4a] active:bg-[#2D2F39]'
+                                            : 'hover:bg-[#EEEEEE] active:bg-[#D4D4D4]'
+                                    }`}
                                     onClick={() => {
                                         setIsSidebarPartiallyOpen(
                                             !isSidebarPartiallyOpen,
@@ -286,9 +295,12 @@ export default function SideBar() {
                             <div className="flex items-center justify-between gap-2.5">
                                 <button
                                     type="button"
-                                    className={`z-10 h-[2.1875rem] w-full rounded-[0.25rem] bg-[#2D2D2D] text-[0.6875rem] font-medium text-[#BEBEBE] hover:bg-[#3D3D3D] ${subCategoryLoading ? 'cursor-not-allowed opacity-50' : ''}`}
-                                    onClick={handlePreviousClick}
-                                    disabled={subCategoryLoading}>
+                                    className={`z-10 h-[2.1875rem] w-full rounded-[0.25rem] text-[0.6875rem] font-medium ${
+                                        isDarkMode
+                                            ? 'bg-[#2D2D2D] text-[#BEBEBE] hover:bg-[#3D3D3D]'
+                                            : 'bg-[#747474] text-[#FFFFFF] hover:bg-[#b5b5b5]'
+                                    }`}
+                                    onClick={handlePreviousClick}>
                                     이전 카테고리
                                 </button>
 
@@ -313,7 +325,12 @@ export default function SideBar() {
                             </div>
 
                             <div className="mb-7 w-full">
-                                <div className="flex items-center justify-start gap-2 rounded-[0.25rem] bg-[#1C1C1C] px-2.5 py-[0.875rem] text-[0.6875rem] font-medium text-[#F6F6F6]">
+                                <div
+                                    className={`flex items-center justify-start gap-2 rounded-[0.25rem] px-2.5 py-[0.875rem] text-[0.6875rem] font-medium ${
+                                        isDarkMode
+                                            ? 'bg-[#1C1C1C] text-[#F6F6F6]'
+                                            : 'bg-[#EEEEEE] text-[#111111]'
+                                    }`}>
                                     {[...currentCategoryNamePath]
                                         .reverse()
                                         .map((path, index) => (
@@ -325,7 +342,9 @@ export default function SideBar() {
                                                         currentCategoryNamePath.length -
                                                             1
                                                             ? 'text-[#FAC453]'
-                                                            : 'text-[#F6F6F6]'
+                                                            : isDarkMode
+                                                              ? 'text-[#F6F6F6]'
+                                                              : 'text-[#333333]'
                                                     }
                                                     onClick={() =>
                                                         handlePathClick(

@@ -10,3 +10,7 @@
 .hide-scrollbar::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
 }
+
+body {
+    @apply bg-lightBg text-lightText dark:bg-darkBg dark:text-darkText;
+}

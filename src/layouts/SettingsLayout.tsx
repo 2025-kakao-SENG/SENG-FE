@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useNavigate, Outlet, useLocation} from 'react-router-dom';
-import logoCircle from '@/assets/images/login/logoCircle.svg';
+import logo from '@/assets/images/logo.svg';
 import userYellow from '@/assets/images/MyPage/userYellow.svg';
 import user from '@/assets/images/MyPage/user.svg';
 import community from '@/assets/images/menuBar/community.svg';
@@ -14,6 +14,7 @@ import settingYellow from '@/assets/images/MyPage/settingYellow.svg';
 import close from '@/assets/images/login/close.svg';
 import {useSelector} from 'react-redux';
 import {getUserLoginData} from '@/redux/selector';
+import {useTheme} from '@/constants/ThemeProvider';
 
 interface SettingLayoutProps {
     backgroundLocation: string;
@@ -24,6 +25,7 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
     const navigate = useNavigate();
     const location = useLocation();
     const userData = useSelector(getUserLoginData);
+    const {isDarkMode} = useTheme();
 
     useEffect(() => {
         if (location.pathname.includes('myPage')) {
@@ -82,11 +84,16 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
     ];
 
     return (
-        <div className="absolute left-1/2 top-1/2 z-10 flex h-screen max-h-[45vw] w-screen max-w-[75vw] -translate-x-1/2 -translate-y-1/2 transform items-start justify-between overflow-hidden rounded-2xl bg-[#111111] shadow-lg">
+        <div
+            className={`absolute left-1/2 top-1/2 z-10 flex h-screen max-h-[45vw] w-screen max-w-[75vw] -translate-x-1/2 -translate-y-1/2 transform items-start justify-between overflow-hidden rounded-2xl shadow-lg transition ${
+                isDarkMode
+                    ? 'bg-[#111111] text-white'
+                    : 'bg-[#ffffff] text-black'
+            }`}>
             {/* 왼쪽 사이드바 */}
             <div className="flex w-[20%] min-w-[15rem] flex-col items-start p-5">
                 <div className="mb-4 flex items-center gap-[0.8125rem]">
-                    <img src={logoCircle} alt="" className="h-[1.875rem]" />
+                    <img src={logo} alt="" className="h-[1.875rem]" />
                     <div className="font-semibold text-[#DBAC4A]">
                         {userData.name}님
                     </div>
@@ -130,7 +137,11 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
                     {menuItems.find(item => item.name === activeTab)?.label}
                 </h1>
 
-                <div className="my-5 border-t border-[#535353]" />
+                <div
+                    className={`my-5 border-t transition ${
+                        isDarkMode ? 'border-[#535353]' : 'border-[#b1b1b1]'
+                    }`}
+                />
 
                 {/* 컨텐츠 영역 */}
                 <div className="h-full overflow-auto pl-5">

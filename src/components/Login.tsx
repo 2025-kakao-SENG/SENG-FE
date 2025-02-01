@@ -27,7 +27,7 @@ const KakaoLogin: React.FC = () => (
 
         <button
             type="button"
-            className="flex h-[3rem] w-[19.5rem] items-center justify-center gap-3 rounded-[0.1875rem] bg-[#EEB02F]">
+            className="mb-4 flex h-[3rem] w-[19.5rem] items-center justify-center gap-3 rounded-[0.1875rem] bg-[#EEB02F]">
             <img src={kakao} alt="kakao" />
             <p className="text-[0.875rem] font-medium text-black">
                 카카오 로그인

@@ -17,6 +17,7 @@ import {getCreateContentPid, getUserId} from '@/redux/selector';
 import {setCreateBookInfo} from '@/redux/slice/createBookSlice';
 import Palette from '@/components/Palette';
 import {setCreateContentSignal} from '@/redux/slice/createContentSlice';
+import {useTheme} from '@/constants/ThemeProvider';
 
 interface SideBarProps {
     isModalOpen: boolean;
@@ -30,8 +31,9 @@ export default function SideBar({isModalOpen}: SideBarProps) {
         useFetchCategoriesApi();
     const {fetchSubCategoriesApi, isLoading: subCategoriesLoading} =
         useFetchSubCategoriesApi();
+    const {isDarkMode} = useTheme();
 
-    // ✅ 태블릿 감지 (768px 이하)
+    // 태블릿 감지 (768px 이하)
     const [isTablet, setIsTablet] = useState(window.innerWidth <= 768);
     const [isVisible, setIsVisible] = useState(true);
 
@@ -46,7 +48,7 @@ export default function SideBar({isModalOpen}: SideBarProps) {
     const [errorMessage, setErrorMessage] = useState('');
     const [isSidebarPartiallyOpen, setIsSidebarPartiallyOpen] = useState(true);
 
-    // ✅ 화면 크기 감지 (태블릿 여부 체크 + 깜빡임 방지)
+    // 화면 크기 감지 (태블릿 여부 체크 + 깜빡임 방지)
     useEffect(() => {
         const checkScreenSize = () => {
             const isNowTablet = window.innerWidth <= 768;
@@ -203,12 +205,15 @@ export default function SideBar({isModalOpen}: SideBarProps) {
                         </div>
                     )}
 
-                    {/* ✅ 기존 SideBar 유지 (버튼, UI, 기능 변경 없음) */}
                     <div
                         className={`bg-[#111111] shadow-lg transition-opacity duration-300 ${
                             isTablet
                                 ? 'w-full flex-row justify-around p-3'
                                 : 'h-full rounded-[0.6875rem]'
+                        } ${
+                            isDarkMode
+                                ? 'bg-[#111111] text-white'
+                                : 'bg-[#ffffff] text-black'
                         }`}>
                         {!isTablet && (
                             <div className="pl-[0.5625rem] pt-[0.9375rem]">

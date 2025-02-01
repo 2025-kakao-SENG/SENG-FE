@@ -116,7 +116,7 @@ function LoginPage({
     }
 
     return (
-        <div className="absolute left-1/2 top-1/2 z-10 flex h-[30.9375rem] w-[25.8125rem] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center bg-[#1B1B1B] text-[#9C9C9C]">
+        <div className="absolute left-1/2 top-1/2 z-10 flex h-[30.9375rem] w-[25.8125rem] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center bg-[#1B1B1B] pb-8 text-[#9C9C9C]">
             <img
                 src={logoCircle}
                 alt="StoryBreeze Logo"

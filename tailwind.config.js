@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+    darkMode: 'class',
     content: ['./src/**/*.{ts,tsx}'],
     theme: {
         screens: {
@@ -25,6 +26,12 @@ module.exports = {
             },
             boxShadow: {
                 right: '1px 0 #292929', // 오른쪽 그림자
+            },
+            colors: {
+                lightBg: '#F5F5F5',
+                darkBg: '#1B1B1B',
+                lightText: '#000000',
+                darkText: '#FFFFFF',
             },
         },
     },
