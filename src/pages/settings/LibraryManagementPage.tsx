@@ -1,225 +1,155 @@
+import LibraryItem from '@/components/library/LibraryItem';
 import bookTest from '@/assets/images/bookTest.svg';
-import read from '@/assets/images/read.svg';
-import bin from '@/assets/images/bin.svg';
+import useSearchBooksApi from '@/hooks/apis/library/useSearchBooksApi';
+import {useEffect, useState} from 'react';
+import {
+    BookInfo,
+    SearchBooksApiRequest,
+    SearchBooksApiResponse,
+} from '@/types/apis/library/searchBooksApiTypes';
+import useSearchBookApi from '@/hooks/apis/library/useSearchBookApi';
+import {
+    SearchBookApiRequest,
+    SearchBookApiResponse,
+} from '@/types/apis/library/searchBookApiTypes';
+import useDeleteBookApi from '@/hooks/apis/library/useDeleteBookApi';
+import {
+    DeleteBookApiRequest,
+    DeleteBookApiResponse,
+} from '@/types/apis/library/deleteBookApiTypes';
+import {useDispatch, useSelector} from 'react-redux';
+import {getUserId} from '@/redux/selector';
+import useChargeLeafApi from '@/hooks/apis/useChargeLeafApi';
+import {setDisplayBookInfo} from '@/redux/slice/displayBookSlice';
+import {produce} from 'immer';
 
 function LibraryManagementPage() {
+    const dispatch = useDispatch();
+    const userId = useSelector(getUserId);
+
+    const {searchBooksApi, isLoading: booksLoading} = useSearchBooksApi();
+    const {searchBookApi, isLoding: bookLoading} = useSearchBookApi();
+    const {deleteBookApi, isLoding: deleteBookLoading} = useDeleteBookApi();
+    const {chargeLeafApi, isLoding: chargeLeafLoading} = useChargeLeafApi();
+
+    const [libraryItems, setLibraryItems] = useState<BookInfo[]>([]);
+
+    const [isDeleteSuccess, setIsDeleteSuccess] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const FetchSearchBooksApi = async () => {
+        if (!userId) {
+            setErrorMessage('로그인 정보가 없습니다.');
+            return;
+        }
+
+        try {
+            const request: SearchBooksApiRequest = {
+                user_pid: Number(userId),
+            };
+
+            const response: SearchBooksApiResponse =
+                await searchBooksApi(request);
+
+            if (!('error' in response)) {
+                setLibraryItems(response);
+            } else {
+                setErrorMessage(response.error);
+            }
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                setErrorMessage(error.message);
+            } else {
+                setErrorMessage('책장 정보를 불러오는 중 오류가 발생했습니다.');
+            }
+        }
+    };
+
+    const ChargeLeaf = async () => {
+        if (!userId) {
+            setErrorMessage('로그인 정보가 없습니다.');
+            return;
+        }
+
+        try {
+            const response = await chargeLeafApi({
+                id: parseInt(userId, 10),
+                leaf: 100,
+            });
+
+            if (!('error' in response)) {
+                console.log('리프 충전 결과', response);
+            } else {
+                setErrorMessage(response.error);
+            }
+        } catch {
+            setErrorMessage('리프를 충전하는 중 오류가 발생했습니다.');
+        }
+    };
+
+    const handleSearchBook = (Pid: number) => {
+        dispatch(setDisplayBookInfo(Pid));
+    };
+
+    const handleDeleteBook = async (Pid: number) => {
+        try {
+            const request: DeleteBookApiRequest = {
+                pid: Pid,
+            };
+
+            const response: DeleteBookApiResponse =
+                await deleteBookApi(request);
+
+            if (response) {
+                setIsDeleteSuccess(true);
+                setLibraryItems(
+                    produce(libraryItems, draft => {
+                        return draft.filter(book => Number(book.pid) !== Pid);
+                    }),
+                );
+                setTimeout(() => {
+                    setIsDeleteSuccess(false);
+                }, 1500);
+            } else {
+                setErrorMessage('책 정보를 삭제하는 데 실패했습니다.');
+            }
+        } catch {
+            setErrorMessage('책 정보를 삭제하는 중 오류가 발생했습니다.');
+        }
+    };
+
+    // 라이브러리 책 정보 불러오기
+    useEffect(() => {
+        FetchSearchBooksApi();
+    }, []);
+
     return (
         <div>
             <h2 className="flex text-sm font-semibold">
                 <p className="text-[#DBAC4A]">@Noah</p>
                 <p className="text-[#C9C9C9]">의 책장</p>
             </h2>
-            <div
-                className="mt-[2.375rem] flex h-[32vw] flex-wrap gap-[2.625rem] overflow-y-scroll pl-[0.5625rem]"
-                style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
-                <div className="flex cursor-pointer flex-col items-center text-xs font-medium text-[#999999]">
-                    <div className="group relative">
-                        <img
-                            src={bookTest}
-                            alt="book"
-                            className="h-[13.375rem] w-[8.375rem] rounded-[0.9375rem] transition-opacity duration-300 hover:opacity-50"
-                        />
-                        <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <img
-                                src={read}
-                                alt="book icon"
-                                className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
-                            />
-                            <img
-                                src={bin}
-                                alt="delete icon"
-                                className="h-[1.0625rem] w-[0.855rem] cursor-pointer"
-                            />
-                        </div>
-                    </div>
-                    <p className="mt-3">도서 생성일</p>
-                    <p>2025년 01월 08일 (08:30)</p>
+            {booksLoading ? (
+                <div className="flex h-full items-center justify-center">
+                    <div className="loader" />
+                    <p className="ml-2 text-lg">로딩중...</p>
                 </div>
-                <div className="flex cursor-pointer flex-col items-center text-xs font-medium text-[#999999]">
-                    <div className="group relative">
-                        <img
-                            src={bookTest}
-                            alt="book"
-                            className="h-[13.375rem] w-[8.375rem] rounded-[0.9375rem] transition-opacity duration-300 hover:opacity-50"
+            ) : (
+                <div
+                    className="mt-[2.375rem] flex h-[32vw] flex-wrap gap-[2.625rem] overflow-y-scroll pl-[0.5625rem]"
+                    style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
+                    {libraryItems.map(book => (
+                        <LibraryItem
+                            key={book.pid}
+                            pid={Number(book.pid)}
+                            image={bookTest}
+                            createdAt={book.created_at}
+                            handleSearchBook={handleSearchBook}
+                            handleDeleteBook={handleDeleteBook}
                         />
-                        <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <img
-                                src={read}
-                                alt="book icon"
-                                className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
-                            />
-                            <img
-                                src={bin}
-                                alt="delete icon"
-                                className="h-[1.0625rem] w-[0.855rem] cursor-pointer"
-                            />
-                        </div>
-                    </div>
-                    <p className="mt-3">도서 생성일</p>
-                    <p>2025년 01월 08일 (08:30)</p>
+                    ))}
                 </div>
-                <div className="flex cursor-pointer flex-col items-center text-xs font-medium text-[#999999]">
-                    <div className="group relative">
-                        <img
-                            src={bookTest}
-                            alt="book"
-                            className="h-[13.375rem] w-[8.375rem] rounded-[0.9375rem] transition-opacity duration-300 hover:opacity-50"
-                        />
-                        <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <img
-                                src={read}
-                                alt="book icon"
-                                className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
-                            />
-                            <img
-                                src={bin}
-                                alt="delete icon"
-                                className="h-[1.0625rem] w-[0.855rem] cursor-pointer"
-                            />
-                        </div>
-                    </div>
-                    <p className="mt-3">도서 생성일</p>
-                    <p>2025년 01월 08일 (08:30)</p>
-                </div>
-                <div className="flex cursor-pointer flex-col items-center text-xs font-medium text-[#999999]">
-                    <div className="group relative">
-                        <img
-                            src={bookTest}
-                            alt="book"
-                            className="h-[13.375rem] w-[8.375rem] rounded-[0.9375rem] transition-opacity duration-300 hover:opacity-50"
-                        />
-                        <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <img
-                                src={read}
-                                alt="book icon"
-                                className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
-                            />
-                            <img
-                                src={bin}
-                                alt="delete icon"
-                                className="h-[1.0625rem] w-[0.855rem] cursor-pointer"
-                            />
-                        </div>
-                    </div>
-                    <p className="mt-3">도서 생성일</p>
-                    <p>2025년 01월 08일 (08:30)</p>
-                </div>
-                <div className="flex cursor-pointer flex-col items-center text-xs font-medium text-[#999999]">
-                    <div className="group relative">
-                        <img
-                            src={bookTest}
-                            alt="book"
-                            className="h-[13.375rem] w-[8.375rem] rounded-[0.9375rem] transition-opacity duration-300 hover:opacity-50"
-                        />
-                        <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <img
-                                src={read}
-                                alt="book icon"
-                                className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
-                            />
-                            <img
-                                src={bin}
-                                alt="delete icon"
-                                className="h-[1.0625rem] w-[0.855rem] cursor-pointer"
-                            />
-                        </div>
-                    </div>
-                    <p className="mt-3">도서 생성일</p>
-                    <p>2025년 01월 08일 (08:30)</p>
-                </div>
-                <div className="flex cursor-pointer flex-col items-center text-xs font-medium text-[#999999]">
-                    <div className="group relative">
-                        <img
-                            src={bookTest}
-                            alt="book"
-                            className="h-[13.375rem] w-[8.375rem] rounded-[0.9375rem] transition-opacity duration-300 hover:opacity-50"
-                        />
-                        <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <img
-                                src={read}
-                                alt="book icon"
-                                className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
-                            />
-                            <img
-                                src={bin}
-                                alt="delete icon"
-                                className="h-[1.0625rem] w-[0.855rem] cursor-pointer"
-                            />
-                        </div>
-                    </div>
-                    <p className="mt-3">도서 생성일</p>
-                    <p>2025년 01월 08일 (08:30)</p>
-                </div>
-                <div className="flex cursor-pointer flex-col items-center text-xs font-medium text-[#999999]">
-                    <div className="group relative">
-                        <img
-                            src={bookTest}
-                            alt="book"
-                            className="h-[13.375rem] w-[8.375rem] rounded-[0.9375rem] transition-opacity duration-300 hover:opacity-50"
-                        />
-                        <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <img
-                                src={read}
-                                alt="book icon"
-                                className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
-                            />
-                            <img
-                                src={bin}
-                                alt="delete icon"
-                                className="h-[1.0625rem] w-[0.855rem] cursor-pointer"
-                            />
-                        </div>
-                    </div>
-                    <p className="mt-3">도서 생성일</p>
-                    <p>2025년 01월 08일 (08:30)</p>
-                </div>
-                <div className="flex cursor-pointer flex-col items-center text-xs font-medium text-[#999999]">
-                    <div className="group relative">
-                        <img
-                            src={bookTest}
-                            alt="book"
-                            className="h-[13.375rem] w-[8.375rem] rounded-[0.9375rem] transition-opacity duration-300 hover:opacity-50"
-                        />
-                        <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <img
-                                src={read}
-                                alt="book icon"
-                                className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
-                            />
-                            <img
-                                src={bin}
-                                alt="delete icon"
-                                className="h-[1.0625rem] w-[0.855rem] cursor-pointer"
-                            />
-                        </div>
-                    </div>
-                    <p className="mt-3">도서 생성일</p>
-                    <p>2025년 01월 08일 (08:30)</p>
-                </div>
-                <div className="flex cursor-pointer flex-col items-center text-xs font-medium text-[#999999]">
-                    <div className="group relative">
-                        <img
-                            src={bookTest}
-                            alt="book"
-                            className="h-[13.375rem] w-[8.375rem] rounded-[0.9375rem] transition-opacity duration-300 hover:opacity-50"
-                        />
-                        <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <img
-                                src={read}
-                                alt="book icon"
-                                className="h-[0.82125rem] w-[0.98125rem] cursor-pointer"
-                            />
-                            <img
-                                src={bin}
-                                alt="delete icon"
-                                className="h-[1.0625rem] w-[0.855rem] cursor-pointer"
-                            />
-                        </div>
-                    </div>
-                    <p className="mt-3">도서 생성일</p>
-                    <p>2025년 01월 08일 (08:30)</p>
-                </div>
-            </div>
+            )}
         </div>
     );
 }

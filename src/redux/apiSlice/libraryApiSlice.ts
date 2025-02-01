@@ -27,7 +27,7 @@ export const libraryApiSlice = createApi({
             SearchBooksApiRequest
         >({
             query: (request: SearchBooksApiRequest) => ({
-                url: '/search.php',
+                url: '/library_search.php',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -57,7 +57,7 @@ export const libraryApiSlice = createApi({
             DeleteBookApiRequest
         >({
             query: (request: DeleteBookApiRequest) => ({
-                url: '/deleteBook.php',
+                url: `/library_delete.php`,
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -65,6 +65,7 @@ export const libraryApiSlice = createApi({
                 body: new URLSearchParams({
                     pid: request.pid.toString(),
                 }).toString(),
+                responseHandler: response => response.text(),
             }),
         }),
     }),

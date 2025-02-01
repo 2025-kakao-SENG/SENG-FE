@@ -9,7 +9,12 @@ import Page from '@/components/book/Page';
 import useBookHeadApi from '@/hooks/apis/book/useBookHeadApi';
 import useBookContentApi from '@/hooks/apis/book/useBookContentApi';
 import {useDispatch, useSelector} from 'react-redux';
-import {getBookCreatingData, getCreateContentSignal} from '@/redux/selector';
+import {
+    getBookCreatingData,
+    getCreateContentSignal,
+    getDisplayBookPid,
+    getDisplayBookSignal,
+} from '@/redux/selector';
 import {
     BookHeadApiRequest,
     BookHeadApiResponse,
@@ -26,8 +31,12 @@ import parseHTMLString from '@/utils/book/parseHTMLString';
 import splitContentByCanvasWidth from '@/utils/book/splitContentByCanvasWidth';
 import {setCreateContentPid} from '@/redux/slice/createContentSlice';
 import FlipButton from '@/components/FlipButton';
-
-// 책 테마화
+import {
+    SearchBookApiRequest,
+    SearchBookApiResponse,
+} from '@/types/apis/library/searchBookApiTypes';
+import useSearchBookApi from '@/hooks/apis/library/useSearchBookApi';
+import {resetDisplayBookInfo} from '@/redux/slice/displayBookSlice';
 
 // [만들 것들]
 // 만들 함수 및 데이터 타입(서재 고려 해야함)
@@ -55,9 +64,12 @@ function Book() {
     const dispatch = useDispatch();
     const createBookData = useSelector(getBookCreatingData);
     const createContentSignal = useSelector(getCreateContentSignal);
+    const displayBookSignal = useSelector(getDisplayBookSignal);
+    const displayBookPid = useSelector(getDisplayBookPid);
     const {bookHeadApi, isLoading: isBookHeadLoading} = useBookHeadApi();
     const {bookContentApi, isLoading: isBookContentLoading} =
         useBookContentApi();
+    const {searchBookApi, isLoding: isSearchBookApi} = useSearchBookApi();
 
     const bookSizeRatioPC = 0.27;
     const bookSizeRatioTablet = 0.6;
@@ -195,6 +207,38 @@ function Book() {
         }
     };
 
+    const FetchSearchBookApi = async () => {
+        try {
+            const request: SearchBookApiRequest = {
+                pid: 250,
+            };
+
+            const response: SearchBookApiResponse =
+                await searchBookApi(request);
+
+            if (response.status === 'success') {
+                /*  export interface SearchBookData {
+                    pid: number;
+                    title: string;
+                    outline: string;
+                    content: string;
+                    category: string;
+                    created_at: string;
+                    chapterTitle: string;
+                    subChapters: string;
+                    generated_date: string;
+                    status: number; // 0=임시, 1=발행 등
+                    user_pid: number;
+                } */
+                console.log(response.data);
+            } else {
+                setErrorMessage(response.message);
+            }
+        } catch {
+            setErrorMessage('책 정보를 불러오는 중 오류가 발생했습니다.');
+        }
+    };
+
     // 캔버스 초기 설정 업데이트 & 리사이즈 함수 등록
     useEffect(() => {
         const updateCanvasConfig = (newWidth: number) => {
@@ -265,15 +309,16 @@ function Book() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // 책 기본 정보 가져오기
+    // 책 생성하기 (AISideBar 에서 클릭) or 라이브러리에서 책 가져오기
     useEffect(() => {
-        if (createBookData === initialState) {
-            return;
+        if (displayBookSignal) {
+            FetchSearchBookApi();
+            dispatch(resetDisplayBookInfo());
+        } else if (createBookData.isCreating) {
+            fetchBookHeadApi();
+            dispatch(resetCreateBookInfo());
         }
-        fetchBookHeadApi();
-
-        dispatch(resetCreateBookInfo());
-    }, [createBookData]);
+    }, [createBookData, displayBookSignal]);
 
     // 책 컨텐츠 정보 가져오기 (AISideBar 에서 클릭)
     useEffect(() => {
@@ -282,19 +327,19 @@ function Book() {
         }
     }, [createContentSignal]);
 
-    const handleFlipNext = () => {
+    /* const handleFlipNext = () => {
         const pageFlip = flipBookRef.current?.pageFlip();
         if (pageFlip) {
             pageFlip.flipNext();
         }
-    };
+    }; */
 
-    const handleFlipPrev = () => {
+    /* const handleFlipPrev = () => {
         const pageFlip = flipBookRef.current?.pageFlip();
         if (pageFlip) {
             pageFlip.flipPrev();
         }
-    };
+    }; */
 
     return (
         <div className="flex h-full w-full">
@@ -312,7 +357,7 @@ function Book() {
             <div className="hidden h-full w-auto items-center justify-center TB:flex">
                 <div className="flex h-full w-auto flex-none items-center justify-center gap-x-8 p-2">
                     {/* 이전 페이지 버튼 */}
-                    <FlipButton direction="prev" onClick={handleFlipPrev} />
+                    {/* <FlipButton direction="prev" onClick={handleFlipPrev} /> */}
 
                     {/* FlipBook 컴포넌트 */}
                     <div
@@ -339,7 +384,7 @@ function Book() {
                             showCover={false}
                             mobileScrollSupport
                             clickEventForward
-                            useMouseEvents={false}
+                            useMouseEvents
                             swipeDistance={1}
                             showPageCorners={false}
                             disableFlipByClick
@@ -362,7 +407,7 @@ function Book() {
                     </div>
 
                     {/* 다음 페이지 버튼 */}
-                    <FlipButton direction="next" onClick={handleFlipNext} />
+                    {/* <FlipButton direction="next" onClick={handleFlipNext} /> */}
                 </div>
             </div>
             {/* 태블릿 및 모바일 용 ScrollBook - PC 미만에서만 표시 */}
