@@ -86,9 +86,9 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
 
     return (
         <div
-            className={`absolute left-1/2 top-1/2 z-10 flex h-screen max-h-[45vw] w-screen max-w-[75vw] -translate-x-1/2 -translate-y-1/2 transform items-start justify-between overflow-hidden rounded-2xl shadow-lg transition ${
+            className={`absolute left-1/2 top-1/2 z-10 flex h-screen max-h-[45vw] w-screen max-w-[75vw] -translate-x-1/2 -translate-y-1/2 transform items-start justify-between overflow-hidden rounded-2xl shadow-lg transition-shadow ${
                 isDarkMode
-                    ? 'bg-[#111111] text-white'
+                    ? 'bg-[#111111] text-white shadow-2xl shadow-[#00000080]'
                     : 'bg-[#ffffff] text-black'
             }`}>
             {/* 왼쪽 사이드바 */}
