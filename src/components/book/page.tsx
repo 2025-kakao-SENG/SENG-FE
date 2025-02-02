@@ -1,6 +1,7 @@
 import React, {useRef, useEffect} from 'react';
 import {Chapter} from '@/types/book/bookDataType';
 import {CanvasConfig} from '@/types/book/canvasType';
+import {useTheme} from '@/constants/ThemeProvider';
 
 type PageProps = React.PropsWithChildren<{
     pageNumber: number;
@@ -14,6 +15,7 @@ function Page(
     ref: React.Ref<HTMLDivElement>,
 ) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const {isDarkMode} = useTheme();
 
     // 애니메이션 관련 레퍼런스
     const animationFrameId = useRef<number>();
@@ -128,6 +130,11 @@ function Page(
         ctx.textBaseline = canvasConfig.contents.textBaseline;
         ctx.direction = canvasConfig.contents.direction;
 
+        // 배경 색상 변경 (다크 모드: 기존 설정 유지, 라이트 모드: `white`)
+        const backgroundColor = isDarkMode
+            ? canvasConfig.canvas.backgroundColor
+            : '#FFFFFF';
+
         const renderFrame = (timestamp: number) => {
             if (!startTimeRef.current) startTimeRef.current = timestamp;
             const elapsed = timestamp - startTimeRef.current;
@@ -174,7 +181,7 @@ function Page(
 
             // 캔버스 초기화
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = canvasConfig.canvas.backgroundColor;
+            ctx.fillStyle = backgroundColor;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // 헤더 렌더링
@@ -224,6 +231,7 @@ function Page(
         delayBetweenElements,
         delayBetweenSentences,
         subChapterContent,
+        isDarkMode,
     ]);
 
     return (
@@ -236,7 +244,9 @@ function Page(
                 style={{
                     width: `${canvasConfig.canvas.width}px`,
                     height: `${canvasConfig.canvas.height}px`,
-                    backgroundColor: canvasConfig.canvas.backgroundColor,
+                    backgroundColor: isDarkMode
+                        ? canvasConfig.canvas.backgroundColor
+                        : '#FFFFFF',
                 }}
             />
         </div>
