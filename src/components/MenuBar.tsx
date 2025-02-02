@@ -24,6 +24,7 @@ import leftArrowBlack from '@/assets/images/menuBar/leftArrowBlack.svg';
 import rightArrowLight from '@/assets/images/menuBar/rightArrowLight.svg';
 import {useTheme} from '@/constants/ThemeProvider';
 import leafLight from '@/assets/images/menuBar/leafLight.svg';
+import LeafCharge from '@/components/LeafCharge';
 
 export default function MenuBar() {
     const leafCount = useSelector(getLeafCount);
@@ -34,9 +35,19 @@ export default function MenuBar() {
 
     const [activeMenu, setActiveMenu] = useState('/home');
     const [isOpen, setIsOpen] = useState(true); // MenuBar 상태 관리
+    const [isLeafModalOpen, setIsLeafModalOpen] = useState(false);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
+    };
+
+    const openLeafModal = () => {
+        setActiveMenu('leaf');
+        setIsLeafModalOpen(true);
+    };
+
+    const closeLeafModal = () => {
+        setIsLeafModalOpen(false);
     };
 
     const handleMyPageClick = () => {
@@ -82,155 +93,181 @@ export default function MenuBar() {
     ) => (activeMenu === menu ? activeIcon : defaultIcon);
 
     return (
-        <div
-            className={`relative h-full min-h-screen w-full py-[2.375rem] transition-transform duration-300 ${
-                isOpen ? 'translate-x-0' : '-translate-x-[90%]'
-            }`}>
-            <ul
-                className={`relative flex h-full w-full flex-col justify-items-center rounded-xl bg-[#111111] p-6 shadow-right ${
-                    isDarkMode
-                        ? 'bg-[#111111] text-white shadow-[#292929]'
-                        : 'bg-[#fdfdfd] text-black shadow-[#a5a5a5]'
+        <>
+            <div
+                className={`relative h-full min-h-screen w-full py-[2.375rem] transition-transform duration-300 ${
+                    isOpen ? 'translate-x-0' : '-translate-x-[90%]'
                 }`}>
-                {/* 로고 */}
-                <div className="flex w-full items-center justify-center">
-                    <img src={logo} alt="SENG logo" className="w-11" />
-                </div>
-
-                {/* 닫기/열기 버튼 */}
-                <button
-                    type="button"
-                    onClick={toggleMenu}
-                    className={`absolute right-[-1.1rem] top-8 rounded-lg border ${
+                <ul
+                    className={`relative flex h-full w-full flex-col justify-items-center rounded-xl bg-[#111111] p-6 shadow-right ${
                         isDarkMode
-                            ? 'border-[#292929] bg-[#282318] hover:bg-[#4a4a4a] active:bg-[#2D2F39]'
-                            : 'border-[#c4c4c4] bg-[#f5f5f5] hover:bg-[#EEEEEE] active:bg-[#d4d4d4]'
-                    } p-1.5`}>
-                    <img
-                        src={
+                            ? 'bg-[#111111] text-white shadow-[#292929]'
+                            : 'bg-[#fdfdfd] text-black shadow-[#a5a5a5]'
+                    }`}>
+                    {/* 로고 */}
+                    <div className="flex w-full items-center justify-center">
+                        <img src={logo} alt="SENG logo" className="w-11" />
+                    </div>
+
+                    {/* 닫기/열기 버튼 */}
+                    <button
+                        type="button"
+                        onClick={toggleMenu}
+                        className={`absolute right-[-1.1rem] top-8 rounded-lg border ${
                             isDarkMode
-                                ? isOpen
-                                    ? leftArrow2
-                                    : rightArrow2
-                                : isOpen
-                                  ? leftArrowBlack
-                                  : rightArrowLight
-                        }
-                        alt="Toggle Menu Bar"
-                    />
-                </button>
+                                ? 'border-[#292929] bg-[#282318] hover:bg-[#4a4a4a] active:bg-[#2D2F39]'
+                                : 'border-[#c4c4c4] bg-[#f5f5f5] hover:bg-[#EEEEEE] active:bg-[#d4d4d4]'
+                        } p-1.5`}>
+                        <img
+                            src={
+                                isDarkMode
+                                    ? isOpen
+                                        ? leftArrow2
+                                        : rightArrow2
+                                    : isOpen
+                                      ? leftArrowBlack
+                                      : rightArrowLight
+                            }
+                            alt="Toggle Menu Bar"
+                        />
+                    </button>
 
-                {/* 메인 메뉴 */}
-                <li
-                    className={`my-6 flex flex-col items-center gap-2 border-y-2 py-6 ${isDarkMode ? 'border-[#2D2F39]' : 'border-[#c4c4c4]'}`}>
-                    <p className="text-[0.625rem] font-medium text-[#888888]">
-                        MAIN
-                    </p>
-                    <Link
-                        to="/home"
-                        onClick={() => setActiveMenu('home')}
-                        className={getMenuClass('home')}>
-                        <img
-                            src={getMenuIcon('home', home, homeYellow)}
-                            alt="home"
-                        />
-                    </Link>
-                    <button
-                        onClick={handleMyPageClick}
-                        type="button"
-                        className={getMenuClass('myPage')}>
-                        <img
-                            src={getMenuIcon('myPage', user, userYellow)}
-                            alt="user"
-                        />
-                    </button>
-                    <Link
-                        to="/library"
-                        onClick={() => setActiveMenu('library')}
-                        className={getMenuClass('library')}>
-                        <img
-                            src={getMenuIcon(
-                                'library',
-                                bookShelf,
-                                bookShelfYellow,
-                            )}
-                            alt="book Shelf"
-                        />
-                    </Link>
-                    <Link
-                        to="/home/ai"
-                        onClick={() => setActiveMenu('ai')}
-                        className={getMenuClass('ai')}>
-                        <img
-                            src={getMenuIcon('ai', aiGray, aiYellow)}
-                            alt="ai"
-                        />
-                    </Link>
-                    <button
-                        type="button"
-                        onClick={handleCommunityClick}
-                        className={getMenuClass('community')}>
-                        <img
-                            src={getMenuIcon(
-                                'community',
-                                community,
-                                communityYellow,
-                            )}
-                            alt="community"
-                        />
-                    </button>
-                </li>
+                    {/* 메인 메뉴 */}
+                    <li
+                        className={`my-6 flex flex-col items-center gap-2 border-y-2 py-6 ${isDarkMode ? 'border-[#2D2F39]' : 'border-[#c4c4c4]'}`}>
+                        <p className="text-[0.625rem] font-medium text-[#888888]">
+                            MAIN
+                        </p>
+                        <Link
+                            to="/home"
+                            onClick={() => setActiveMenu('home')}
+                            className={getMenuClass('home')}>
+                            <img
+                                src={getMenuIcon('home', home, homeYellow)}
+                                alt="home"
+                            />
+                        </Link>
+                        <button
+                            onClick={handleMyPageClick}
+                            type="button"
+                            className={getMenuClass('myPage')}>
+                            <img
+                                src={getMenuIcon('myPage', user, userYellow)}
+                                alt="user"
+                            />
+                        </button>
+                        <Link
+                            to="/library"
+                            onClick={() => setActiveMenu('library')}
+                            className={getMenuClass('library')}>
+                            <img
+                                src={getMenuIcon(
+                                    'library',
+                                    bookShelf,
+                                    bookShelfYellow,
+                                )}
+                                alt="book Shelf"
+                            />
+                        </Link>
+                        <Link
+                            to="/home/ai"
+                            onClick={() => setActiveMenu('ai')}
+                            className={getMenuClass('ai')}>
+                            <img
+                                src={getMenuIcon('ai', aiGray, aiYellow)}
+                                alt="ai"
+                            />
+                        </Link>
+                        <button
+                            type="button"
+                            onClick={handleCommunityClick}
+                            className={getMenuClass('community')}>
+                            <img
+                                src={getMenuIcon(
+                                    'community',
+                                    community,
+                                    communityYellow,
+                                )}
+                                alt="community"
+                            />
+                        </button>
+                    </li>
 
-                {/* 세팅 메뉴 */}
-                <li className="flex flex-col items-center gap-[0.5rem]">
-                    <p className="text-[0.625rem] font-medium text-[#888888]">
-                        SETTINGS
-                    </p>
-                    <button
-                        type="button"
-                        onClick={handleSettingsClick}
-                        className={getMenuClass('display')}>
-                        <img
-                            src={getMenuIcon('display', setting, settingYellow)}
-                            alt="settings"
-                        />
-                    </button>
-                </li>
+                    {/* 세팅 메뉴 */}
+                    <li className="flex flex-col items-center gap-[0.5rem]">
+                        <p className="text-[0.625rem] font-medium text-[#888888]">
+                            SETTINGS
+                        </p>
+                        <button
+                            type="button"
+                            onClick={handleSettingsClick}
+                            className={getMenuClass('display')}>
+                            <img
+                                src={getMenuIcon(
+                                    'display',
+                                    setting,
+                                    settingYellow,
+                                )}
+                                alt="settings"
+                            />
+                        </button>
+                    </li>
 
-                {/* 리프와 로그아웃 */}
-                <li className="mt-auto flex flex-col items-center gap-1">
-                    <img
-                        src={isDarkMode ? leaf : leafLight}
-                        alt="leaf"
-                        className="rounded-lg px-3 py-2.5"
-                    />
-                    <p
-                        className={`text-[0.6875rem] ${isDarkMode ? 'text-white' : 'text-[#a5a5a5]'}`}>
-                        {leafCount % 100}
-                    </p>
-                    <img
-                        src={goldenLeaf}
-                        alt="goldenLeaf"
-                        className="rounded-lg px-3 py-2.5"
-                    />
-                    <p className="text-[0.6875rem] text-[#FAC453]">
-                        {leafCount / 100}
-                    </p>
-                    <button
-                        type="button"
-                        onClick={() =>
-                            navigate('/logout', {
-                                state: {backgroundLocation: location},
-                            })
-                        }>
-                        <img
-                            src={logout}
-                            alt="logout"
-                            className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-[#EEEEEE]"
-                        />
-                    </button>
-                </li>
-            </ul>
-        </div>
+                    {/* 리프 버튼 - 클릭하면 모달 표시 */}
+                    <li className="mt-auto flex flex-col items-center gap-1">
+                        <button
+                            type="button"
+                            onClick={openLeafModal} // 모달 열기
+                            className={`flex flex-col items-center rounded-lg pb-2 pt-1 ${getMenuClass('leaf')}`}>
+                            <img
+                                src={isDarkMode ? leaf : leafLight}
+                                alt="leaf"
+                                className="rounded-lg px-3 py-2.5"
+                            />
+                            <p
+                                className={`text-[0.6875rem] ${
+                                    isDarkMode ? 'text-white' : 'text-[#a5a5a5]'
+                                }`}>
+                                {leafCount % 100}
+                            </p>
+                            <img
+                                src={goldenLeaf}
+                                alt="goldenLeaf"
+                                className="rounded-lg px-3 py-2.5"
+                            />
+                            <p className="text-[0.6875rem] text-[#FAC453]">
+                                {leafCount / 100}
+                            </p>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() =>
+                                navigate('/logout', {
+                                    state: {backgroundLocation: location},
+                                })
+                            }>
+                            <img
+                                src={logout}
+                                alt="logout"
+                                className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-[#EEEEEE]"
+                            />
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            {/* LeafCharge 모달 */}
+            {isLeafModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-20">
+                    <div className="relative">
+                        <LeafCharge />
+                        <button
+                            type="button"
+                            onClick={closeLeafModal}
+                            className="absolute right-5 top-5 p-2"></button>
+                    </div>
+                </div>
+            )}
+        </>
     );
 }
