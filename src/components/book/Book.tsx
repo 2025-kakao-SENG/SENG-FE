@@ -4,7 +4,7 @@ import bookMockData from '@/__test__/mocks/bookMockData';
 import {resetCreateBookInfo} from '@/redux/slice/createBookSlice';
 import defaultCanvasConfig from '@/constants/canvasConfig';
 import {CanvasConfig} from '@/types/book/canvasType';
-import Page from '@/components/book/Page';
+import Page from '@/components/book/page';
 
 import useBookHeadApi from '@/hooks/apis/book/useBookHeadApi';
 import useBookContentApi from '@/hooks/apis/book/useBookContentApi';
