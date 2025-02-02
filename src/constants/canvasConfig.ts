@@ -4,7 +4,7 @@ const defaultCanvasConfig: CanvasConfig = {
     canvas: {
         width: 0,
         height: 0,
-        backgroundColor: '#111111',
+        backgroundColor: '#131313',
         headerSizeRatio: 0.06,
         subHeaderSizeRatio: 0.04,
         bodySizeRatio: 0.02,

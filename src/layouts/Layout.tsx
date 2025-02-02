@@ -8,9 +8,7 @@ function Layout() {
     return (
         <div
             className={`absolute flex h-full w-full ${
-                isDarkMode
-                    ? 'bg-[#111111] text-white'
-                    : 'bg-[#fafafa] text-black'
+                isDarkMode ? 'bg-black text-white' : 'bg-[#fafafa] text-black'
             }`}>
             <header className="h-full w-auto items-center justify-center">
                 <MenuBar />

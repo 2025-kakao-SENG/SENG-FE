@@ -218,11 +218,11 @@ export default function SideBar() {
                     <div
                         className={`bg-[#111111] shadow-lg transition-shadow duration-300 ${
                             isTablet
-                                ? 'w-full flex-row justify-around p-3 shadow-[0px_-10px_20px_rgba(0,0,0,0.5)]'
+                                ? 'w-full flex-row justify-around p-3 shadow-[0px_10px_20px_rgba(0,0,0,0.5)]'
                                 : 'h-full rounded-[0.6875rem] shadow-lg'
                         } ${
                             isDarkMode
-                                ? 'bg-[#111111] text-black shadow-lg shadow-[#00000080]'
+                                ? 'bg-[#131313] text-black shadow-lg shadow-[#00000080]'
                                 : 'bg-[#fdfdfd] text-white'
                         }`}>
                         {!isTablet && (
