@@ -3,7 +3,15 @@ export interface UpdateUserNameApiRequest {
     name: string;
 }
 
-export interface UpdateUserNameApiResponse {
+export interface UpdateUserNameApiSuccess {
     id: number;
     name: string;
 }
+
+export interface UpdateUserNameApiError {
+    error: string;
+}
+
+export type UpdateUserNameApiResponse =
+    | UpdateUserNameApiSuccess
+    | UpdateUserNameApiError;

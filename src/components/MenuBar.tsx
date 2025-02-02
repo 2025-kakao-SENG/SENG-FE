@@ -42,12 +42,13 @@ export default function MenuBar() {
     };
 
     const openLeafModal = () => {
-        setActiveMenu('leaf');
+        setActiveMenu('/leaf');
         setIsLeafModalOpen(true);
     };
 
     const closeLeafModal = () => {
         setIsLeafModalOpen(false);
+        setActiveMenu('');
     };
 
     const handleMyPageClick = () => {
@@ -60,18 +61,18 @@ export default function MenuBar() {
                 state: {backgroundLocation: location},
             });
         }
-        setActiveMenu('myPage');
+        setActiveMenu('/settings/myPage');
     };
 
     const handleCommunityClick = () => {
-        setActiveMenu('community');
+        setActiveMenu('/settings/community');
         navigate('/settings/community', {
             state: {backgroundLocation: location},
         });
     };
 
     const handleSettingsClick = () => {
-        setActiveMenu('display');
+        setActiveMenu('/settings/display');
         navigate('/settings/display', {state: {backgroundLocation: location}});
     };
 
@@ -140,29 +141,33 @@ export default function MenuBar() {
                         </p>
                         <Link
                             to="/home"
-                            onClick={() => setActiveMenu('home')}
-                            className={getMenuClass('home')}>
+                            onClick={() => setActiveMenu('/home')}
+                            className={getMenuClass('/home')}>
                             <img
-                                src={getMenuIcon('home', home, homeYellow)}
+                                src={getMenuIcon('/home', home, homeYellow)}
                                 alt="home"
                             />
                         </Link>
                         <button
                             onClick={handleMyPageClick}
                             type="button"
-                            className={getMenuClass('myPage')}>
+                            className={getMenuClass('/settings/myPage')}>
                             <img
-                                src={getMenuIcon('myPage', user, userYellow)}
+                                src={getMenuIcon(
+                                    '/settings/myPage',
+                                    user,
+                                    userYellow,
+                                )}
                                 alt="user"
                             />
                         </button>
                         <Link
                             to="/library"
-                            onClick={() => setActiveMenu('library')}
-                            className={getMenuClass('library')}>
+                            onClick={() => setActiveMenu('/library')}
+                            className={getMenuClass('/library')}>
                             <img
                                 src={getMenuIcon(
-                                    'library',
+                                    '/library',
                                     bookShelf,
                                     bookShelfYellow,
                                 )}
@@ -171,20 +176,20 @@ export default function MenuBar() {
                         </Link>
                         <Link
                             to="/home/ai"
-                            onClick={() => setActiveMenu('ai')}
-                            className={getMenuClass('ai')}>
+                            onClick={() => setActiveMenu('/home/ai')}
+                            className={getMenuClass('/home/ai')}>
                             <img
-                                src={getMenuIcon('ai', aiGray, aiYellow)}
+                                src={getMenuIcon('/home/ai', aiGray, aiYellow)}
                                 alt="ai"
                             />
                         </Link>
                         <button
                             type="button"
                             onClick={handleCommunityClick}
-                            className={getMenuClass('community')}>
+                            className={getMenuClass('/settings/community')}>
                             <img
                                 src={getMenuIcon(
-                                    'community',
+                                    '/settings/community',
                                     community,
                                     communityYellow,
                                 )}
@@ -201,10 +206,10 @@ export default function MenuBar() {
                         <button
                             type="button"
                             onClick={handleSettingsClick}
-                            className={getMenuClass('display')}>
+                            className={getMenuClass('/settings/display')}>
                             <img
                                 src={getMenuIcon(
-                                    'display',
+                                    '/settings/display',
                                     setting,
                                     settingYellow,
                                 )}
@@ -218,7 +223,7 @@ export default function MenuBar() {
                         <button
                             type="button"
                             onClick={openLeafModal} // 모달 열기
-                            className={`flex flex-col items-center rounded-lg pb-2 pt-1 ${getMenuClass('leaf')}`}>
+                            className={`flex flex-col items-center rounded-lg pb-2 pt-1 ${getMenuClass('/leaf')}`}>
                             <img
                                 src={isDarkMode ? leaf : leafLight}
                                 alt="leaf"
@@ -260,11 +265,12 @@ export default function MenuBar() {
             {isLeafModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-20">
                     <div className="relative">
-                        <LeafCharge />
+                        <LeafCharge onClose={closeLeafModal} />
                         <button
                             type="button"
                             onClick={closeLeafModal}
-                            className="absolute right-5 top-5 p-2"></button>
+                            className="absolute right-5 top-5 p-2"
+                        />
                     </div>
                 </div>
             )}

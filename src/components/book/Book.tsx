@@ -251,14 +251,13 @@ function Book() {
                         // parseContent
                         const semiParsedContent: string[] =
                             response.data.content.split(/(?=\n\n<h1>)/);
-                        const parsedContentArray = semiParsedContent.map(
-                            content => {
+                        const parsedContentArray: ParsedContent[] =
+                            semiParsedContent.map(content => {
                                 return parseHTMLString(content);
-                            },
-                        );
+                            });
 
                         const splitedContentArray = parsedContentArray.map(
-                            parsedContent => {
+                            (parsedContent: ParsedContent) => {
                                 return splitContentByCanvasWidth(
                                     parsedContent.content,
                                     canvasConfig,
@@ -357,14 +356,14 @@ function Book() {
 
     // 책 생성하기 (AISideBar 에서 클릭) or 라이브러리에서 책 가져오기
     useEffect(() => {
-        if (displayBookSignal) {
+        if (displayBookSignal && canvasConfig.canvas.width > 0) {
             FetchSearchBookApi();
             dispatch(resetDisplayBookInfo());
         } else if (createBookData.isCreating) {
             fetchBookHeadApi();
             dispatch(resetCreateBookInfo());
         }
-    }, [createBookData, displayBookSignal]);
+    }, [createBookData, displayBookSignal, canvasConfig.canvas.width]);
 
     // 책 컨텐츠 정보 가져오기 (AISideBar 에서 클릭)
     useEffect(() => {
@@ -430,7 +429,7 @@ function Book() {
                             usePortrait={false}
                             startZIndex={0}
                             autoSize
-                            maxShadowOpacity={1.3}
+                            maxShadowOpacity={0.5}
                             showCover={false}
                             mobileScrollSupport
                             clickEventForward
@@ -463,18 +462,6 @@ function Book() {
             {/* 태블릿 및 모바일 용 ScrollBook - PC 미만에서만 표시 */}
             <div className="block TB:hidden">
                 <div className="hide-scrollbar flex h-full w-full flex-col items-start justify-start overflow-y-auto p-4">
-                    {/* 로딩 및 메시지 표시 */}
-                    <div className="mb-4">
-                        {createCompleteMessage && (
-                            <div className="text-green-500">
-                                {createCompleteMessage}
-                            </div>
-                        )}
-                        {errorMessage && (
-                            <div className="text-red-500">{errorMessage}</div>
-                        )}
-                    </div>
-
                     {/* 페이지 목록 */}
                     {bookData?.chapters.map(chapter =>
                         chapter.subChapters.map((subChapter, subIdx) => (
@@ -492,6 +479,31 @@ function Book() {
                     )}
                 </div>
             </div>
+
+            {createCompleteMessage && (
+                <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="border-b-5 h-32 w-32 animate-spin rounded-full border-t-[7px] border-[#DBAC4A]" />
+                        <p className="mt-5 text-[#DBAC4A]">
+                            {createCompleteMessage}
+                        </p>
+                    </div>
+                </div>
+            )}
+
+            {errorMessage && (
+                <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+                    <div className="flex flex-col items-center justify-center rounded-2xl bg-[#111111] p-5">
+                        <p className="text-lg text-[#DBAC4A]">{errorMessage}</p>
+                        <button
+                            type="button"
+                            onClick={() => setErrorMessage('')}
+                            className="mt-2 rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-white hover:bg-[#b88a3a]">
+                            확인
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

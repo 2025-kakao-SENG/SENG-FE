@@ -1,37 +1,53 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useUpdateUserNameMutation} from '@/redux/apiSlice/updateUserNameApiSlice';
 import {useUpdateUserPasswordMutation} from '@/redux/apiSlice/updateUserPasswordApiSlice';
 import {useSelector, useDispatch} from 'react-redux';
 import {setUserInfoByLogin} from '@/redux/slice/userSlice';
 import {useNavigate} from 'react-router-dom';
-import {getUserLoginData} from '@/redux/selector';
+import {getUserId, getUserLoginData} from '@/redux/selector';
 import useLogout from '@/hooks/useLogout';
 import useAuthDeregisterApi from '@/hooks/apis/auth/useAuthDeregisterApi';
 import {AuthDeregisterApiRequest} from '@/types/apis/auth/deregisterApiTypes';
+import {FetchBaseQueryError} from '@reduxjs/toolkit/query';
+import {
+    UpdateUserPasswordApiResponse,
+    UpdateUserPasswordRequest,
+} from '@/types/apis/user/updateUserPasswordApiTypes';
+import {
+    UpdateUserNameApiRequest,
+    UpdateUserNameApiResponse,
+} from '@/types/apis/user/updateUserNameApiTypes';
 
 function MyPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector(getUserLoginData);
+    const userId = useSelector(getUserId);
     const logout = useLogout();
     const userLoginDate = useSelector(getUserLoginData);
     const {authDeregisterApi, isLoading: deregisterLoading} =
         useAuthDeregisterApi();
+    const [isLogoutLoading, setIsLogoutLoading] = useState(false);
 
     const [successModal, setSuccessModal] = useState('');
     const [errorMessageModal, setErrorMessage] = useState('');
 
     // 닉네임 변경
     const [nickname, setNickname] = useState(user.name || '');
-    const [updateUserName, {isLoading, error}] = useUpdateUserNameMutation();
+    const [updateUserName, {isLoading: isUpdatingUserName}] =
+        useUpdateUserNameMutation();
 
     // 비밀번호 변경
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
-    const [
-        updateUserPassword,
-        {isLoading: isUpdatingPassword, error: passwordError},
-    ] = useUpdateUserPasswordMutation();
+    const [updateUserPassword, {isLoading: isUpdatingPassword}] =
+        useUpdateUserPasswordMutation();
+
+    useEffect(() => {
+        if (!user.isLogined) {
+            setErrorMessage('로그인 정보가 없습니다.');
+        }
+    }, [user]);
 
     const handleLogout = () => {
         if (userLoginDate.kakaoPid) {
@@ -39,7 +55,11 @@ function MyPage() {
         } else if (userLoginDate.pid) {
             logout('default');
         }
-        setSuccessModal('로그아웃 되었습니다.');
+        setIsLogoutLoading(true);
+        setTimeout(() => {
+            setIsLogoutLoading(false);
+            setSuccessModal('로그아웃 되었습니다.');
+        }, 1000);
         setTimeout(() => {
             setSuccessModal('');
             navigate('/home');
@@ -112,238 +132,293 @@ function MyPage() {
 
     const handleUpdateNickname = async () => {
         if (!nickname.trim()) {
-            alert('닉네임을 입력하세요.');
+            setErrorMessage('닉네임을 입력하세요.');
             return;
         }
 
+        if (nickname === user.name) {
+            setErrorMessage('현재 닉네임과 같습니다.');
+            return;
+        }
+
+        const request: UpdateUserNameApiRequest = {
+            id: Number(userId),
+            name: nickname,
+        };
+
         try {
-            const response = await updateUserName({
-                id: Number(user.id),
-                name: nickname,
-            }).unwrap();
-            dispatch(setUserInfoByLogin({...user, name: response.name}));
-            alert('닉네임이 성공적으로 변경되었습니다.');
-        } catch (err) {
-            console.error('닉네임 변경 실패:', err);
+            const response: UpdateUserNameApiResponse =
+                await updateUserName(request).unwrap();
 
-            let errorMessage = '닉네임 변경에 실패했습니다.';
-
-            if ('status' in err) {
-                if (err.status === 'FETCH_ERROR') {
-                    errorMessage =
-                        '서버에 연결할 수 없습니다. 네트워크 상태를 확인하세요.';
-                } else if (err.status === 400) {
-                    errorMessage = '잘못된 요청입니다.';
-                } else if (err.status === 500) {
-                    errorMessage = '서버 오류가 발생했습니다.';
-                }
-            } else if (err.message) {
-                errorMessage = err.message;
+            if (!('error' in response)) {
+                dispatch(setUserInfoByLogin({...user, name: response.name}));
+                setSuccessModal('닉네임이 변경되었습니다.');
+            } else {
+                setErrorMessage(String(response.error));
             }
-
-            alert(errorMessage);
+        } catch (err: unknown) {
+            if (err && typeof err === 'object' && 'status' in err) {
+                const fetchError = err as FetchBaseQueryError;
+                switch (fetchError.status) {
+                    case 400:
+                        setErrorMessage('잘못된 요청입니다.');
+                        break;
+                    case 401:
+                        setErrorMessage('로그인 정보가 잘못되었습니다.');
+                        break;
+                    case 403:
+                        setErrorMessage('접근 권한이 없습니다.');
+                        break;
+                    case 404:
+                        setErrorMessage('요청한 자원을 찾을 수 없습니다.');
+                        break;
+                    case 500:
+                        setErrorMessage('서버 내부 오류입니다.');
+                        break;
+                    default:
+                        setErrorMessage('알 수 없는 오류 발생했습니다.');
+                }
+            } else if (err instanceof Error) {
+                setErrorMessage(err.message);
+            } else {
+                setErrorMessage(
+                    '로그인 중 알 수 없는 타입의 오류 발생했습니다.',
+                );
+            }
         }
     };
 
     const handleUpdatePassword = async () => {
         if (!oldPassword || !newPassword) {
-            alert('현재 비밀번호와 새 비밀번호를 입력하세요.');
+            setErrorMessage('비밀번호를 입력하세요.');
             return;
         }
 
+        if (oldPassword === newPassword) {
+            setErrorMessage('현재 비밀번호와 새 비밀번호가 같습니다.');
+            return;
+        }
+
+        const request: UpdateUserPasswordRequest = {
+            id: Number(userId),
+            old_password: oldPassword,
+            new_password: newPassword,
+        };
+
         try {
-            const response = await updateUserPassword({
-                id: Number(user.id),
-                old_password: oldPassword,
-                new_password: newPassword,
-            }).unwrap();
+            const response: UpdateUserPasswordApiResponse =
+                await updateUserPassword(request).unwrap();
 
             if (response.status === 'success') {
-                alert('비밀번호가 성공적으로 변경되었습니다.');
+                setSuccessModal('비밀번호가 변경되었습니다.');
                 setOldPassword('');
                 setNewPassword('');
             } else {
-                alert(response.message || '비밀번호 변경에 실패했습니다.');
+                setErrorMessage(response.message);
             }
-        } catch (err) {
-            console.error('비밀번호 변경 실패:', err);
-
-            let errorMessage = '비밀번호 변경에 실패했습니다.';
-
-            if (err.data?.message) {
-                if (err.data.message === '비밀번호가 틀렸습니다.') {
-                    errorMessage = '비밀번호가 틀렸습니다.';
-                } else if (err.data.message === '존재하지 않는 사용자입니다.') {
-                    errorMessage = '존재하지 않는 사용자입니다.';
-                } else if (
-                    err.data.message === '필수 파라미터가 누락되었습니다.'
-                ) {
-                    errorMessage = '필수 파라미터가 누락되었습니다.';
-                } else if (
-                    err.data.message ===
-                    '서버 오류가 발생했습니다. 관리자에게 문의하세요.'
-                ) {
-                    errorMessage =
-                        '서버 오류가 발생했습니다. 관리자에게 문의하세요.';
-                } else {
-                    errorMessage = err.data.message;
+        } catch (err: unknown) {
+            if (err && typeof err === 'object' && 'status' in err) {
+                const fetchError = err as FetchBaseQueryError;
+                switch (fetchError.status) {
+                    case 400:
+                        setErrorMessage('잘못된 요청입니다.');
+                        break;
+                    case 401:
+                        setErrorMessage('비밀번호가 틀렸습니다.');
+                        break;
+                    case 403:
+                        setErrorMessage('접근 권한이 없습니다.');
+                        break;
+                    case 404:
+                        setErrorMessage('존재하지 않는 사용자입니다.');
+                        break;
+                    case 500:
+                        setErrorMessage(
+                            '서버 오류가 발생했습니다. 관리자에게 문의하세요.',
+                        );
+                        break;
+                    default:
+                        setErrorMessage('비밀번호 변경에 실패했습니다.');
                 }
-            } else if (err.status === 'FETCH_ERROR') {
-                errorMessage =
-                    '서버에 연결할 수 없습니다. 네트워크 상태를 확인하세요.';
-            } else if (err.status === 400) {
-                errorMessage = '잘못된 요청입니다.';
-            } else if (err.status === 500) {
-                errorMessage = '서버 오류가 발생했습니다.';
+            } else if (err instanceof Error) {
+                setErrorMessage(err.message);
+            } else {
+                setErrorMessage(
+                    '서버에 연결할 수 없습니다. 네트워크 상태를 확인하세요.',
+                );
             }
-
-            alert(errorMessage);
         }
     };
     return (
-        <div className="flex flex-col gap-[1.125rem] pr-[18.4374rem]">
-            {/* 닉네임 변경 */}
-            <div className="flex flex-col gap-[0.5625rem]">
-                <h2 className="text-sm font-semibold text-[#F5F5F5]">
-                    닉네임 변경하기
-                </h2>
-                <div className="flex items-center justify-between">
-                    <input
-                        type="text"
-                        className="w-[16rem] bg-[#292929] px-[0.5625rem] py-1 text-[0.625rem] font-medium text-[#999999]"
-                        placeholder="변경할 닉네임을 입력하세요"
-                        value={nickname}
-                        onChange={e => setNickname(e.target.value)}
-                    />
-                    <button
-                        type="button"
-                        className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs text-[#CACACA] hover:bg-[#4a4a4a]"
-                        onClick={handleUpdateNickname}
-                        disabled={isLoading}>
-                        {isLoading ? '저장 중...' : '저장'}
-                    </button>
-                </div>
-                {error && (
-                    <p className="text-xs text-red-500">
-                        닉네임 변경에 실패했습니다.
-                    </p>
-                )}
-            </div>
-
-            <div className="flex flex-col gap-[0.5625rem]">
-                <h2 className="text-sm font-semibold text-[#F5F5F5]">이메일</h2>
-                <div className="text-xs font-medium text-[#999999]">
-                    {user.email}
-                </div>
-            </div>
-
-            <div className="flex flex-col gap-[0.5625rem]">
-                <h2 className="text-sm font-semibold text-[#F5F5F5]">이름</h2>
-                <div className="text-xs font-medium text-[#999999]">
-                    {user.name}
-                </div>
-            </div>
-
-            <div className="flex flex-col gap-[0.5625rem]">
-                <h2 className="text-sm font-semibold text-[#F5F5F5]">
-                    생년월일
-                </h2>
-                <div className="text-xs font-medium text-[#999999]">
-                    {user.birth}
-                </div>
-            </div>
-
-            {/* 비밀번호 변경 */}
-            <div className="flex flex-col gap-[0.5625rem]">
-                <h2 className="text-sm font-semibold text-[#F5F5F5]">
-                    비밀번호 변경
-                </h2>
-
-                <input
-                    type="password"
-                    placeholder="현재 비밀번호"
-                    className="w-[16rem] bg-[#292929] px-[0.5625rem] py-1 text-[0.625rem] font-medium text-[#999999]"
-                    value={oldPassword}
-                    onChange={e => setOldPassword(e.target.value)}
-                />
-
-                <div className="flex items-center justify-between">
-                    <input
-                        type="password"
-                        placeholder="새 비밀번호"
-                        className="w-[16rem] bg-[#292929] px-[0.5625rem] py-1 text-[0.625rem] font-medium text-[#999999]"
-                        value={newPassword}
-                        onChange={e => setNewPassword(e.target.value)}
-                    />
-                    <button
-                        type="button"
-                        className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs text-[#CACACA] hover:bg-[#4a4a4a]"
-                        onClick={handleUpdatePassword}
-                        disabled={isUpdatingPassword}>
-                        {isUpdatingPassword ? '변경 중...' : '변경'}
-                    </button>
-                </div>
-
-                {passwordError && (
-                    <p className="text-xs text-red-500">
-                        비밀번호 변경에 실패했습니다.
-                    </p>
-                )}
-            </div>
-
-            <div className="flex flex-col">
-                <h2 className="text-sm font-medium text-[#F5F5F5]">로그아웃</h2>
-                <div className="flex items-center justify-between">
-                    <div className="text-xs font-medium text-[#999999]">
-                        현재 로그인된 기기에서 로그아웃합니다.
+        // eslint-disable-next-line react/jsx-no-useless-fragment
+        <>
+            {user.name ? (
+                <div className="flex flex-col gap-[1.125rem] pr-[18.4374rem]">
+                    {/* 닉네임 변경 */}
+                    <div className="flex flex-col gap-[0.5625rem]">
+                        <h2 className="text-sm font-semibold text-[#F5F5F5]">
+                            닉네임 변경하기
+                        </h2>
+                        <div className="flex items-center justify-between">
+                            <input
+                                type="text"
+                                className="w-[16rem] bg-[#292929] px-[0.5625rem] py-1 text-[0.625rem] font-medium text-[#999999]"
+                                placeholder="변경할 닉네임을 입력하세요"
+                                value={nickname}
+                                onChange={e => setNickname(e.target.value)}
+                            />
+                            <button
+                                type="button"
+                                className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs text-[#CACACA] hover:bg-[#4a4a4a]"
+                                onClick={handleUpdateNickname}
+                                disabled={isUpdatingUserName}>
+                                {isUpdatingUserName ? '저장 중...' : '저장'}
+                            </button>
+                        </div>
                     </div>
-                    <button
-                        type="button"
-                        className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs text-[#CACACA] hover:bg-[#4a4a4a]"
-                        onClick={handleLogout}>
-                        로그아웃
-                    </button>
-                </div>
-            </div>
 
-            <div className="flex flex-col">
-                <h2 className="text-sm font-medium text-[#F5F5F5]">회원탈퇴</h2>
-                <div className="flex items-center justify-between">
-                    <div className="text-xs font-medium text-[#999999]">
-                        현재 계정을 영구적으로 삭제하고 생성된 모든 도서의
-                        액세스 권한을 제거합니다.
+                    <div className="flex flex-col gap-[0.5625rem]">
+                        <h2 className="text-sm font-semibold text-[#F5F5F5]">
+                            이메일
+                        </h2>
+                        <div className="text-xs font-medium text-[#999999]">
+                            {user.email}
+                        </div>
                     </div>
-                    <button
-                        type="button"
-                        className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#482323] text-xs text-[#CACACA] hover:bg-[#813a3a]"
-                        onClick={handleDeregister}>
-                        회원탈퇴
-                    </button>
-                </div>
-            </div>
 
-            {successModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="flex flex-col items-center gap-3 rounded-lg bg-[#1B1B1B] p-5">
-                        <p className="text-[#DBAC4A]">{successModal}</p>
+                    <div className="flex flex-col gap-[0.5625rem]">
+                        <h2 className="text-sm font-semibold text-[#F5F5F5]">
+                            이름
+                        </h2>
+                        <div className="text-xs font-medium text-[#999999]">
+                            {user.name}
+                        </div>
                     </div>
+
+                    <div className="flex flex-col gap-[0.5625rem]">
+                        <h2 className="text-sm font-semibold text-[#F5F5F5]">
+                            생년월일
+                        </h2>
+                        <div className="text-xs font-medium text-[#999999]">
+                            {user.birth}
+                        </div>
+                    </div>
+
+                    {/* 비밀번호 변경 */}
+                    <div className="flex flex-col gap-[0.5625rem]">
+                        <h2 className="text-sm font-semibold text-[#F5F5F5]">
+                            비밀번호 변경
+                        </h2>
+
+                        <input
+                            type="password"
+                            placeholder="현재 비밀번호"
+                            className="w-[16rem] bg-[#292929] px-[0.5625rem] py-1 text-[0.625rem] font-medium text-[#999999]"
+                            value={oldPassword}
+                            onChange={e => setOldPassword(e.target.value)}
+                        />
+
+                        <div className="flex items-center justify-between">
+                            <input
+                                type="password"
+                                placeholder="새 비밀번호"
+                                className="w-[16rem] bg-[#292929] px-[0.5625rem] py-1 text-[0.625rem] font-medium text-[#999999]"
+                                value={newPassword}
+                                onChange={e => setNewPassword(e.target.value)}
+                            />
+                            <button
+                                type="button"
+                                className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs text-[#CACACA] hover:bg-[#4a4a4a]"
+                                onClick={handleUpdatePassword}
+                                disabled={isUpdatingPassword}>
+                                {isUpdatingPassword ? '변경 중...' : '변경'}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col">
+                        <h2 className="text-sm font-medium text-[#F5F5F5]">
+                            로그아웃
+                        </h2>
+                        <div className="flex items-center justify-between">
+                            <div className="text-xs font-medium text-[#999999]">
+                                현재 로그인된 기기에서 로그아웃합니다.
+                            </div>
+                            <button
+                                type="button"
+                                className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs text-[#CACACA] hover:bg-[#4a4a4a]"
+                                onClick={handleLogout}>
+                                로그아웃
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col">
+                        <h2 className="text-sm font-medium text-[#F5F5F5]">
+                            회원탈퇴
+                        </h2>
+                        <div className="flex items-center justify-between">
+                            <div className="text-xs font-medium text-[#999999]">
+                                현재 계정을 영구적으로 삭제하고 생성된 모든
+                                도서의 액세스 권한을 제거합니다.
+                            </div>
+                            <button
+                                type="button"
+                                className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#482323] text-xs text-[#CACACA] hover:bg-[#813a3a]"
+                                onClick={handleDeregister}>
+                                회원탈퇴
+                            </button>
+                        </div>
+                    </div>
+
+                    {successModal && (
+                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                            <div className="flex w-[20rem] flex-col items-center gap-3 rounded-lg bg-[#1B1B1B] p-5">
+                                <p className="text-center text-[#DBAC4A]">
+                                    {successModal}
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
+                    {errorMessageModal && (
+                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                            <div className="flex w-[20rem] flex-col items-center gap-3 rounded-lg bg-[#1B1B1B] p-5">
+                                <p className="text-center text-[#DBAC4A]">
+                                    {errorMessageModal}
+                                </p>
+                                <button
+                                    type="button"
+                                    className="h-[2.5rem] w-[7.5rem] rounded-[0.3125rem] bg-[#2D2F39] text-[#DBAC4A] hover:bg-[#292929]"
+                                    onClick={() => setErrorMessage('')}>
+                                    확인
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {(isUpdatingUserName ||
+                        isUpdatingPassword ||
+                        deregisterLoading ||
+                        isLogoutLoading) && (
+                        <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+                            <div className="flex flex-col items-center justify-center">
+                                <div className="border-b-5 h-32 w-32 animate-spin rounded-full border-t-[7px] border-[#DBAC4A]" />
+                                <p className="mt-5 text-[#DBAC4A]">
+                                    {isUpdatingUserName && '닉네임 변경 중...'}
+                                    {isUpdatingPassword &&
+                                        '비밀번호 변경 중...'}
+                                    {deregisterLoading && '회원 탈퇴 중...'}
+                                    {isLogoutLoading && '로그아웃 중...'}
+                                </p>
+                            </div>
+                        </div>
+                    )}
                 </div>
+            ) : (
+                <div className="flex h-full w-full items-center justify-center" />
             )}
-
-            {errorMessageModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="flex flex-col items-center gap-3 rounded-lg bg-[#1B1B1B] p-5">
-                        <p className="text-[#DBAC4A]">{errorMessageModal}</p>
-                        <button
-                            type="button"
-                            className="h-[2.5rem] w-[7.5rem] rounded-[0.3125rem] bg-[#2D2F39] text-[#DBAC4A] hover:bg-[#292929]"
-                            onClick={() => setErrorMessage('')}>
-                            확인
-                        </button>
-                    </div>
-                </div>
-            )}
-        </div>
+        </>
     );
 }
 

@@ -59,28 +59,6 @@ function LibraryManagementPage() {
         }
     };
 
-    /*  const ChargeLeaf = async () => {
-        if (!userId) {
-            setErrorMessage('로그인 정보가 없습니다.');
-            return;
-        }
-
-        try {
-            const response = await chargeLeafApi({
-                id: parseInt(userId, 10),
-                leaf: 100,
-            });
-
-            if (!('error' in response)) {
-                console.log('리프 충전 결과', response);
-            } else {
-                setErrorMessage(response.error);
-            }
-        } catch {
-            setErrorMessage('리프를 충전하는 중 오류가 발생했습니다.');
-        }
-    }; */
-
     const handleSearchBook = (Pid: number) => {
         dispatch(setDisplayBookInfo(Pid));
         navigate('/home/ai');
@@ -122,8 +100,11 @@ function LibraryManagementPage() {
             </h2>
             {booksLoading ? (
                 <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-                    <div className="flex items-center justify-center">
+                    <div className="flex flex-col items-center justify-center">
                         <div className="border-b-5 h-32 w-32 animate-spin rounded-full border-t-[7px] border-[#DBAC4A]" />
+                        <p className="mt-5 text-[#DBAC4A]">
+                            책 정보를 불러오는 중...
+                        </p>
                     </div>
                 </div>
             ) : (
@@ -143,8 +124,13 @@ function LibraryManagementPage() {
                 </div>
             )}
             {deleteBookLoading && (
-                <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-                    <div className="loader" />
+                <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="border-b-5 h-32 w-32 animate-spin rounded-full border-t-[7px] border-[#DBAC4A]" />
+                        <p className="mt-5 text-[#DBAC4A]">
+                            책 정보를 삭제하는 중...
+                        </p>
+                    </div>
                 </div>
             )}
             {errorMessage && (

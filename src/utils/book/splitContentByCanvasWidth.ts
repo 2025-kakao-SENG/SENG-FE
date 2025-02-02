@@ -4,7 +4,7 @@ function splitContentByCanvasWidth(
     contents: string[],
     canvasConfig: CanvasConfig,
 ): string[] {
-    const canvasMaxWidth = canvasConfig.canvas.width * 1.05; // 5%는 더 넓게 기준 설정
+    const canvasMaxWidth = canvasConfig.canvas.width * 1.1; // 10%는 더 넓게 기준 설정
     const canvasWordWidth =
         canvasConfig.canvas.bodySizeRatio * canvasConfig.canvas.width;
     const lines: string[] = [];

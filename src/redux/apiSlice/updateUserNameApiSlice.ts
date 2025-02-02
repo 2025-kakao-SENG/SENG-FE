@@ -1,19 +1,23 @@
+import {
+    UpdateUserNameApiRequest,
+    UpdateUserNameApiResponse,
+} from '@/types/apis/user/updateUserNameApiTypes';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
-const SERVER_URL = 'http://185.170.198.89';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
         baseUrl: SERVER_URL,
-        mode: 'cors',
+        credentials: 'include',
     }),
     endpoints: builder => ({
         updateUserName: builder.mutation<
-            {id: number; name: string},
-            {id: number; name: string}
+            UpdateUserNameApiRequest,
+            UpdateUserNameApiResponse
         >({
-            query: request => ({
+            query: (request: UpdateUserNameApiRequest) => ({
                 url: '/update_name.php',
                 method: 'POST',
                 headers: {

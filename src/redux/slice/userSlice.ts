@@ -46,9 +46,14 @@ export const userSlice = createSlice({
             email: action.payload.email,
             leaf: action.payload.leaf,
         }),
+        setUserLeaf: (state, action: PayloadAction<number>) => ({
+            ...state,
+            leaf: action.payload,
+        }),
         resetUserInfo: () => initialState,
     },
 });
 
 // Action creator
-export const {setUserInfoByLogin, resetUserInfo} = userSlice.actions;
+export const {setUserInfoByLogin, setUserLeaf, resetUserInfo} =
+    userSlice.actions;

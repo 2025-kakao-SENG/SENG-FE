@@ -94,7 +94,7 @@ function LibraryPage() {
     return (
         <div className="h-full w-full">
             <div
-                className="bookshelf flex h-full w-full flex-wrap justify-center gap-[2.3125rem] overflow-y-scroll py-[4.8125rem] pl-5"
+                className="bookshelf flex h-full w-full flex-wrap gap-[2.3125rem] overflow-y-scroll py-[4.8125rem] pl-5"
                 style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
                 {libraryItems.map(book => (
                     <LibraryItem
@@ -108,8 +108,12 @@ function LibraryPage() {
             </div>
             {(booksLoading || deleteBookLoading) && (
                 <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-                    <div className="flex items-center justify-center">
+                    <div className="flex flex-col items-center justify-center">
                         <div className="border-b-5 h-32 w-32 animate-spin rounded-full border-t-[7px] border-[#DBAC4A]" />
+                        <p className="mt-5 text-[#DBAC4A]">
+                            {booksLoading && '책 정보를 불러오는 중...'}
+                            {deleteBookLoading && '책 정보를 삭제하는 중...'}
+                        </p>
                     </div>
                 </div>
             )}

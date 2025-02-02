@@ -26,9 +26,9 @@ export interface UpdateUserPasswordSuccessResponse {
 
 export interface UpdateUserPasswordErrorResponse {
     status: 'error';
-    message:
-        | '비밀번호가 틀렸습니다.'
-        | '존재하지 않는 사용자입니다.'
-        | '필수 파라미터가 누락되었습니다.'
-        | '서버 오류가 발생했습니다. 관리자에게 문의하세요.';
+    message: string;
 }
+
+export type UpdateUserPasswordApiResponse =
+    | UpdateUserPasswordSuccessResponse
+    | UpdateUserPasswordErrorResponse;

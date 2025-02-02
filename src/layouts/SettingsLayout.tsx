@@ -138,7 +138,7 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
             </div>
 
             {/* 오른쪽 컨텐츠 */}
-            <div className="flex flex-1 flex-col overflow-hidden p-5">
+            <div className="flex h-full flex-1 flex-col overflow-hidden p-5">
                 <h1 className="pl-5 text-lg font-medium text-[#DBAC4A]">
                     {menuItems.find(item => item.name === activeTab)?.label}
                 </h1>
