@@ -392,9 +392,10 @@ function Book() {
             {(isBookHeadLoading ||
                 isBookContentLoading ||
                 isSearchBookLoading) && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="rounded bg-gray-900 p-4 shadow-lg">
-                        <div className="flex flex-col text-[#DBAC4A]">
+                <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="border-b-5 h-32 w-32 animate-spin rounded-full border-t-[7px] border-[#DBAC4A]" />
+                        <div className="mt-5 flex flex-col text-[#DBAC4A]">
                             {isBookHeadLoading && '책 정보를 가져오는 중...'}
                             {isBookContentLoading && '콘텐츠를 생성하는 중...'}
                             {isSearchBookLoading && '책 정보를 가져오는 중...'}

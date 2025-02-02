@@ -149,8 +149,14 @@ function LibraryManagementPage() {
             )}
             {errorMessage && (
                 <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-                    <div className="rounded-2xl bg-[#111111] p-5">
+                    <div className="flex flex-col items-center justify-center rounded-2xl bg-[#111111] p-5">
                         <p className="text-lg text-[#DBAC4A]">{errorMessage}</p>
+                        <button
+                            type="button"
+                            onClick={() => setErrorMessage('')}
+                            className="mt-2 rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-white hover:bg-[#b88a3a]">
+                            확인
+                        </button>
                     </div>
                 </div>
             )}
