@@ -102,7 +102,7 @@ export default function MenuBar() {
                     className={`relative flex h-full w-full flex-col justify-items-center rounded-xl bg-[#111111] p-6 shadow-right ${
                         isDarkMode
                             ? 'bg-[#111111] text-white shadow-[#292929]'
-                            : 'bg-[#fdfdfd] text-black shadow-[#a5a5a5]'
+                            : 'bg-[#fdfdfd] text-black shadow-md shadow-[#a5a5a5]'
                     }`}>
                     {/* 로고 */}
                     <div className="flex w-full items-center justify-center">
