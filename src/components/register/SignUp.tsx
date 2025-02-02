@@ -5,9 +5,10 @@ import {
     AuthRegisterApiResponse,
 } from '@/types/apis/auth/registerApiTypes';
 import useAuthRegisterApi from '@/hooks/apis/auth/useAuthRegisterApi';
-import logoCircle from '@/assets/images/login/logoCircle.svg';
+import logo from '@/assets/images/logo.svg';
 import calendar from '@/assets/images/calendar.svg';
 import close from '@/assets/images/login/close.svg';
+import {useTheme} from '@/constants/ThemeProvider';
 
 interface SignUpProps {
     backgroundLocation: string;
@@ -16,6 +17,7 @@ interface SignUpProps {
 function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
     const navigate = useNavigate();
     const {authRegisterApi, isLoading} = useAuthRegisterApi();
+    const {isDarkMode} = useTheme();
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -65,9 +67,23 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
     }
 
     return (
-        <div className="flex h-[34.5rem] w-[51.9375rem] items-start justify-between bg-[#1B1B1B]">
+        <div
+            className={`flex h-[34.5rem] w-[51.9375rem] items-start justify-between shadow-lg transition-colors duration-300 ${
+                isDarkMode
+                    ? 'bg-[#1B1B1B] text-[#F5F5F5]'
+                    : 'bg-[#e9e9e9] text-black'
+            }`}>
             {/* 로고 */}
-            <img src={logoCircle} alt="Logo" className="pl-8 pt-8" />
+            <div
+                className={`ml-8 mt-8 rounded-full p-3 px-2.5 transition-colors duration-300 ${
+                    isDarkMode ? 'bg-black' : 'bg-white'
+                }`}>
+                <img
+                    src={logo}
+                    alt="StoryBreeze Logo"
+                    className="w-[3.54312rem]"
+                />
+            </div>
 
             {/* 본문 */}
             <div className="flex flex-col gap-2.5 pt-[3.125rem]">
@@ -84,9 +100,13 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
                 <div className="flex flex-col gap-2.5">
                     {/* 이메일 */}
                     <div className="flex items-center justify-between">
-                        <p className="text-[0.66875rem] text-[#F5F5F5]">
+                        <p
+                            className={`text-[0.66875rem] transition-colors duration-300 ${
+                                isDarkMode ? 'text-[#F5F5F5]' : 'text-black'
+                            }`}>
                             이메일
                         </p>
+
                         <input
                             type="text"
                             placeholder="이메일을 입력해주세요."
@@ -99,9 +119,13 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
                     {/* 비밀번호 */}
                     <div className="flex justify-between gap-[0.8775rem]">
                         <div className="flex items-center justify-between gap-[1.85rem]">
-                            <p className="text-[0.66875rem] text-[#F5F5F5]">
+                            <p
+                                className={`text-[0.66875rem] transition-colors duration-300 ${
+                                    isDarkMode ? 'text-[#F5F5F5]' : 'text-black'
+                                }`}>
                                 비밀번호
                             </p>
+
                             <input
                                 type="password"
                                 placeholder="비밀번호를 입력해주세요."
@@ -112,9 +136,13 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
                         </div>
 
                         <div className="flex items-center justify-between gap-[1.6425rem]">
-                            <p className="text-[0.66875rem] text-[#F5F5F5]">
+                            <p
+                                className={`text-[0.66875rem] transition-colors duration-300 ${
+                                    isDarkMode ? 'text-[#F5F5F5]' : 'text-black'
+                                }`}>
                                 비밀번호 확인
                             </p>
+
                             <input
                                 type="password"
                                 placeholder="비밀번호를 한번 더 입력해주세요."
@@ -127,7 +155,13 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
 
                     {/* 이름 */}
                     <div className="flex items-center justify-between">
-                        <p className="text-[0.66875rem] text-[#F5F5F5]">이름</p>
+                        <p
+                            className={`text-[0.66875rem] transition-colors duration-300 ${
+                                isDarkMode ? 'text-[#F5F5F5]' : 'text-black'
+                            }`}>
+                            이름
+                        </p>
+
                         <input
                             type="text"
                             placeholder="이름을 입력해주세요."
@@ -139,9 +173,13 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
 
                     {/* 생년월일 */}
                     <div className="relative flex items-center justify-between">
-                        <p className="text-[0.66875rem] text-[#F5F5F5]">
+                        <p
+                            className={`text-[0.66875rem] transition-colors duration-300 ${
+                                isDarkMode ? 'text-[#F5F5F5]' : 'text-black'
+                            }`}>
                             생년월일
                         </p>
+
                         <input
                             type="text"
                             placeholder="연도-월-일"
@@ -158,9 +196,13 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
 
                     {/* 연락처 */}
                     <div className="flex items-center justify-between">
-                        <p className="text-[0.66875rem] text-[#F5F5F5]">
+                        <p
+                            className={`text-[0.66875rem] transition-colors duration-300 ${
+                                isDarkMode ? 'text-[#F5F5F5]' : 'text-black'
+                            }`}>
                             연락처
                         </p>
+
                         <input
                             type="text"
                             placeholder="010 1234 1234"
@@ -172,7 +214,13 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
 
                     {/* 주소 */}
                     <div className="flex items-center justify-between">
-                        <p className="text-[0.66875rem] text-[#F5F5F5]">주소</p>
+                        <p
+                            className={`text-[0.66875rem] transition-colors duration-300 ${
+                                isDarkMode ? 'text-[#F5F5F5]' : 'text-black'
+                            }`}>
+                            주소
+                        </p>
+
                         <div className="flex items-center gap-[0.46rem]">
                             <input
                                 type="text"

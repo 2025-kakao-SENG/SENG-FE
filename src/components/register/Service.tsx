@@ -1,7 +1,8 @@
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import logoCircle from '@/assets/images/login/logoCircle.svg';
+import logo from '@/assets/images/logo.svg';
 import close from '@/assets/images/login/close.svg';
+import {useTheme} from '@/constants/ThemeProvider';
 
 function Service({renderSignUp}: {renderSignUp: () => void}) {
     const navigate = useNavigate();
@@ -10,6 +11,7 @@ function Service({renderSignUp}: {renderSignUp: () => void}) {
 
     const [checked1Error, setChecked1Error] = useState(''); // 첫 번째 체크박스 에러 상태
     const [checked2Error, setChecked2Error] = useState(''); // 두 번째 체크박스 에러 상태
+    const {isDarkMode} = useTheme();
 
     // 회원가입 버튼 클릭 시
     const handleNextButton = () => {
@@ -23,13 +25,23 @@ function Service({renderSignUp}: {renderSignUp: () => void}) {
     };
 
     return (
-        <div className="flex h-[53.5625rem] w-[64.4375rem] items-start justify-between gap-6 bg-[#1B1B1B]">
+        <div
+            className={`flex h-[53.5625rem] w-[64.4375rem] items-start justify-between gap-6 shadow-md transition-colors duration-300 ${
+                isDarkMode
+                    ? 'bg-[#1B1B1B] text-[#F5F5F5]'
+                    : 'bg-[#F3F3F3] text-black'
+            }`}>
             {/* 로고 */}
-            <img
-                src={logoCircle}
-                alt="SENG Logo"
-                className="ml-8 mt-8 w-[3.625rem]"
-            />
+            <div
+                className={`ml-8 mt-8 rounded-full p-3 px-2.5 transition-colors duration-300 ${
+                    isDarkMode ? 'bg-black' : 'bg-white'
+                }`}>
+                <img
+                    src={logo}
+                    alt="StoryBreeze Logo"
+                    className="w-[3.625rem]"
+                />
+            </div>
 
             {/* 약관 내용 및 버튼 */}
             <div className="flex flex-col gap-2.5 pt-[3.125rem]">
@@ -38,7 +50,10 @@ function Service({renderSignUp}: {renderSignUp: () => void}) {
                     이용약관
                 </h1>
 
-                <p className="text-[0.625rem] font-medium text-[#E6E6E6]">
+                <p
+                    className={`text-[0.625rem] font-medium ${
+                        isDarkMode ? 'text-[#E6E6E6]' : 'text-black'
+                    }`}>
                     이용약관을 읽고 동의하시면 서비스를 이용하실 수 있습니다.
                 </p>
 
@@ -134,12 +149,19 @@ function Service({renderSignUp}: {renderSignUp: () => void}) {
                 <div className="flex items-center gap-1.5">
                     <input
                         type="checkbox"
-                        className="flex h-2.5 w-2.5 appearance-none items-center justify-center border border-[#D1D1D1] bg-transparent checked:bg-[#FAC453] checked:text-black checked:content-['✔'] focus:outline-none"
+                        className={`flex h-2.5 w-2.5 appearance-none items-center justify-center border ${
+                            isDarkMode ? 'border-[#D1D1D1]' : 'border-black'
+                        } bg-transparent transition-colors duration-300 checked:bg-[#FAC453] checked:text-black checked:content-['✔'] focus:outline-none`}
                         onChange={e => setIsChecked1(e.target.checked)}
                     />
-                    <p className="text-[0.6875rem] font-medium text-[#D1D1D1]">
+
+                    <p
+                        className={`text-[0.6875rem] font-medium ${
+                            isDarkMode ? 'text-[#D1D1D1]' : 'text-black'
+                        }`}>
                         위 내용에 동의합니다.
                     </p>
+
                     {checked1Error && (
                         <p className="text-[0.6875rem] font-medium text-[#FF0000]">
                             {checked1Error}
@@ -151,7 +173,10 @@ function Service({renderSignUp}: {renderSignUp: () => void}) {
                 <p className="text-lg font-extrabold text-[#FAC453]">
                     개인정보처리방침
                 </p>
-                <p className="text-[0.625rem] font-medium text-[#E6E6E6]">
+                <p
+                    className={`text-[0.625rem] font-medium ${
+                        isDarkMode ? 'text-[#E6E6E6]' : 'text-black'
+                    }`}>
                     이용약관을 읽고 동의하시면 서비스를 이용하실 수 있습니다.
                 </p>
 
@@ -247,9 +272,12 @@ function Service({renderSignUp}: {renderSignUp: () => void}) {
                 <div className="flex items-center gap-1.5">
                     <input
                         type="checkbox"
-                        className="flex h-2.5 w-2.5 appearance-none items-center justify-center border border-[#D1D1D1] bg-transparent checked:bg-[#FAC453] checked:text-black checked:content-['✔'] focus:outline-none"
+                        className={`flex h-2.5 w-2.5 appearance-none items-center justify-center border ${
+                            isDarkMode ? 'border-[#D1D1D1]' : 'border-black'
+                        } bg-transparent transition-colors duration-300 checked:bg-[#FAC453] checked:text-black checked:content-['✔'] focus:outline-none`}
                         onChange={e => setIsChecked2(e.target.checked)}
                     />
+
                     <p className="text-[0.6875rem] font-medium text-[#D1D1D1]">
                         위 내용에 동의합니다.
                     </p>

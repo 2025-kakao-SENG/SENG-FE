@@ -9,9 +9,10 @@ import useAuthKaKaoLoginApi from '@/hooks/apis/auth/useAuthKakaoLoginApi';
 import {useDispatch} from 'react-redux';
 import {AuthKakaoLoginApiResponse} from '@/types/apis/auth/kakaoLoginApiTypes';
 import {setUserInfoByLogin, UserSliceState} from '@/redux/slice/userSlice';
-import logoCircle from '@/assets/images/login/logoCircle.svg';
+import logo from '@/assets/images/logo.svg';
 import close from '@/assets/images/login/close.svg';
 import kakao from '@/assets/images/login/kakao.svg';
+import {useTheme} from '@/constants/ThemeProvider';
 
 interface LoginPageProps {
     backgroundLocation: string;
@@ -29,6 +30,7 @@ function LoginPage({
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const {isDarkMode} = useTheme();
 
     function successLogin() {
         navigate('/home');
@@ -116,12 +118,19 @@ function LoginPage({
     }
 
     return (
-        <div className="absolute left-1/2 top-1/2 z-10 flex h-[30.9375rem] w-[25.8125rem] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center bg-[#1B1B1B] pb-8 text-[#9C9C9C]">
-            <img
-                src={logoCircle}
-                alt="StoryBreeze Logo"
-                className="mt-[1.375rem]"
-            />
+        <div
+            className={`absolute left-1/2 top-1/2 z-10 flex h-[30.9375rem] w-[25.8125rem] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center ${isDarkMode ? 'bg-[#1B1B1B] text-[#9C9C9C]' : 'bg-[#F3F3F3] text-black shadow-md'} pb-8 transition-colors duration-300`}>
+            <div
+                className={`rounded-full p-3 px-2.5 transition-colors duration-300 ${
+                    isDarkMode ? 'bg-black' : 'bg-white'
+                }`}>
+                <img
+                    src={logo}
+                    alt="StoryBreeze Logo"
+                    className="w-[3.54312rem]"
+                />
+            </div>
+
             <button
                 type="button"
                 className="absolute right-[1.9375rem] top-[1.9375rem]"
@@ -140,7 +149,11 @@ function LoginPage({
                     type="text"
                     placeholder="이메일"
                     onChange={handleEmailChange}
-                    className="h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] border-[#9C9C9C] bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none"
+                    className={`h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] ${
+                        isDarkMode
+                            ? 'border-[#9C9C9C] bg-[#1B1B1B] text-[#9C9C9C]'
+                            : 'border-gray-300 bg-white text-black'
+                    } px-3 text-[0.875rem] placeholder-gray-400 transition-colors duration-300 focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none`}
                 />
                 <input
                     id="password"
@@ -148,7 +161,11 @@ function LoginPage({
                     type="password"
                     placeholder="비밀번호"
                     onChange={handlePasswordChange}
-                    className="h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] border-[#9C9C9C] bg-[#1B1B1B] px-3 text-[0.875rem] placeholder-[#9C9C9C] focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none"
+                    className={`h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] ${
+                        isDarkMode
+                            ? 'border-[#9C9C9C] bg-[#1B1B1B] text-[#9C9C9C]'
+                            : 'border-gray-300 bg-white text-black'
+                    } px-3 text-[0.875rem] placeholder-gray-400 transition-colors duration-300 focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none`}
                 />
                 {errorMessage && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -175,13 +192,13 @@ function LoginPage({
                 } text-[0.875rem] text-black`}>
                 {isLoginLoading ? '로딩 중...' : '로그인'}
             </button>
-            <div className="mb-[1.625rem] mt-[0.875rem] flex items-center">
+            <div className="mb-[1.625rem] mt-[0.875rem] flex items-center text-[#9C9C9C]">
                 <button type="button" className="px-1 text-xs">
                     아이디 찾기
                 </button>
                 <button
                     type="button"
-                    className="border-[1px] border-black border-x-[#9C9C9C] px-1 text-xs">
+                    className="border border-y-0 border-x-[#9C9C9C] px-1 text-xs">
                     비밀번호 찾기
                 </button>
                 <button
