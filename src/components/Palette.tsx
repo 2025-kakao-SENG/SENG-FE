@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
+import {useTheme} from '@/constants/ThemeProvider';
 import highlight from '../assets/images/palette/highlight.svg';
-import highlightLight from '../assets/images/palette/highlightLight.svg';
+import highlightLight from '../assets/images/palette/highlightLIght.svg';
 import downArrow from '../assets/images/palette/downArrow.svg';
 import downArrowLight from '../assets/images/palette/downArrowLight.svg';
 import grid from '../assets/images/palette/grid.svg';
@@ -17,7 +18,6 @@ import interests from '../assets/images/palette/interests.svg';
 import interestsLight from '../assets/images/palette/interestsLight.svg';
 import aiYellow from '../assets/images/aiYellow.svg';
 import transform from '../assets/images/transform.svg';
-import {useTheme} from '@/constants/ThemeProvider';
 
 export default function Palette() {
     const [activeButton, setActiveButton] = useState(null);
