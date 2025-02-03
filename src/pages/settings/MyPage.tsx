@@ -47,7 +47,7 @@ function MyPage() {
 
     useEffect(() => {
         if (!user.isLogined) {
-            setErrorMessage('로그인 정보가 없습니다.');
+            setErrorMessage('로그인이 필요합니다.');
         }
     }, [user]);
 
@@ -469,7 +469,7 @@ function MyPage() {
             ) : (
                 <div className="flex h-full w-full">
                     <p className="text-lg text-[#DBAC4A]">
-                        로그인 정보가 없습니다.
+                        로그인이 필요합니다.
                     </p>
                 </div>
             )}

@@ -99,7 +99,7 @@ function LibraryManagementPage() {
             </h2>
             {!userId ? (
                 <div className="mt-[2.375rem] flex h-[32vw] flex-wrap gap-[2.625rem] overflow-y-scroll pl-[0.5625rem] text-lg">
-                    <p className="text-[#DBAC4A]">로그인 정보가 없습니다.</p>
+                    <p className="text-[#DBAC4A]">로그인이 필요합니다.</p>
                 </div>
             ) : (
                 <div

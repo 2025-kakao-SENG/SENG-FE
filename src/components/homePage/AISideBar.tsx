@@ -264,160 +264,188 @@ export default function SideBar() {
                             <h3 className="text-[0.6875rem] font-extrabold text-[#D4D4D4]">
                                 카테고리를 선택해주세요.
                             </h3>
+                            {userId ? (
+                                <>
+                                    <div className="mb-[1.625rem] mt-3 flex flex-wrap gap-x-2 gap-y-[0.4375rem] py-[0.4375rem] pr-[1.125rem] text-[0.6875rem] font-medium text-[#FAC453]">
+                                        {categoriesLoading ? (
+                                            <div className="flex h-[10rem] w-full items-center justify-center">
+                                                <p className="text-[#BEBEBE]">
+                                                    카테고리 로딩중...
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            categoriesView.map(
+                                                (category, index) => (
+                                                    <button
+                                                        type="button"
+                                                        // eslint-disable-next-line react/no-array-index-key
+                                                        key={`${category}-${index}`}
+                                                        onClick={() =>
+                                                            handleCategoryClick(
+                                                                category,
+                                                            )
+                                                        }
+                                                        className={`rounded-[0.6875rem] px-[1.125rem] py-[0.4375rem] transition ${
+                                                            activeCategoryName ===
+                                                            category
+                                                                ? 'bg-gradient-to-r from-[#FFDD87] to-[#FFC752] text-black'
+                                                                : isDarkMode
+                                                                  ? 'bg-[#1C1C1C] hover:bg-[#2D2D2D]'
+                                                                  : 'bg-[#eeeeee] hover:bg-[#e1e1e1]'
+                                                        }`}>
+                                                        {category}
+                                                    </button>
+                                                ),
+                                            )
+                                        )}
+                                    </div>
 
-                            <div className="mb-[1.625rem] mt-3 flex flex-wrap gap-x-2 gap-y-[0.4375rem] py-[0.4375rem] pr-[1.125rem] text-[0.6875rem] font-medium text-[#FAC453]">
-                                {categoriesLoading ? (
-                                    <div className="flex h-[10rem] w-full items-center justify-center">
-                                        <p className="text-[#BEBEBE]">
-                                            카테고리 로딩중...
+                                    <div className="flex items-center justify-between gap-2.5">
+                                        <button
+                                            type="button"
+                                            className={`z-10 h-[2.1875rem] w-full rounded-[0.25rem] text-[0.6875rem] font-medium ${
+                                                isDarkMode
+                                                    ? 'bg-[#2D2D2D] text-[#BEBEBE] hover:bg-[#3D3D3D]'
+                                                    : 'bg-[#747474] text-[#FFFFFF] hover:bg-[#b5b5b5]'
+                                            }`}
+                                            onClick={handlePreviousClick}>
+                                            이전 카테고리
+                                        </button>
+
+                                        {subCategoryLoading ? (
+                                            <div className="flex h-[2.1875rem] w-full items-center justify-center rounded-[0.25rem] bg-[#2D2D2D] text-[0.6875rem] font-medium text-[#BEBEBE]">
+                                                카테고리 로딩중...
+                                            </div>
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                className="z-10 h-[2.1875rem] w-full rounded-[0.25rem] bg-[#FFC752] text-[0.6875rem] font-medium text-[#111111] hover:bg-[#EEB02F]"
+                                                onClick={handleNextClick}>
+                                                다음으로
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    <div className="mb-3 mt-6">
+                                        <p className="text-[0.6875rem] font-extrabold text-[#D4D4D4]">
+                                            현재 카테고리
                                         </p>
                                     </div>
-                                ) : (
-                                    categoriesView.map((category, index) => (
-                                        <button
-                                            type="button"
-                                            // eslint-disable-next-line react/no-array-index-key
-                                            key={`${category}-${index}`}
-                                            onClick={() =>
-                                                handleCategoryClick(category)
-                                            }
-                                            className={`rounded-[0.6875rem] px-[1.125rem] py-[0.4375rem] transition ${
-                                                activeCategoryName === category
-                                                    ? 'bg-gradient-to-r from-[#FFDD87] to-[#FFC752] text-black'
-                                                    : isDarkMode
-                                                      ? 'bg-[#1C1C1C] hover:bg-[#2D2D2D]'
-                                                      : 'bg-[#eeeeee] hover:bg-[#e1e1e1]'
+
+                                    <div className="mb-7 w-full">
+                                        <div
+                                            className={`flex items-center justify-start gap-2 rounded-[0.25rem] px-2.5 py-[0.875rem] text-[0.6875rem] font-medium ${
+                                                isDarkMode
+                                                    ? 'bg-[#1C1C1C] text-[#F6F6F6]'
+                                                    : 'bg-[#EEEEEE] text-[#111111]'
                                             }`}>
-                                            {category}
-                                        </button>
-                                    ))
-                                )}
-                            </div>
-
-                            <div className="flex items-center justify-between gap-2.5">
-                                <button
-                                    type="button"
-                                    className={`z-10 h-[2.1875rem] w-full rounded-[0.25rem] text-[0.6875rem] font-medium ${
-                                        isDarkMode
-                                            ? 'bg-[#2D2D2D] text-[#BEBEBE] hover:bg-[#3D3D3D]'
-                                            : 'bg-[#747474] text-[#FFFFFF] hover:bg-[#b5b5b5]'
-                                    }`}
-                                    onClick={handlePreviousClick}>
-                                    이전 카테고리
-                                </button>
-
-                                {subCategoryLoading ? (
-                                    <div className="flex h-[2.1875rem] w-full items-center justify-center rounded-[0.25rem] bg-[#2D2D2D] text-[0.6875rem] font-medium text-[#BEBEBE]">
-                                        카테고리 로딩중...
+                                            {[...currentCategoryNamePath]
+                                                .reverse()
+                                                .map((path, index) => (
+                                                    <React.Fragment key={path}>
+                                                        <button
+                                                            type="button"
+                                                            className={
+                                                                index ===
+                                                                currentCategoryNamePath.length -
+                                                                    1
+                                                                    ? 'text-[#FAC453]'
+                                                                    : isDarkMode
+                                                                      ? 'text-[#F6F6F6]'
+                                                                      : 'text-[#333333]'
+                                                            }
+                                                            onClick={() =>
+                                                                handlePathClick(
+                                                                    currentCategoryNamePath.length -
+                                                                        1 -
+                                                                        index,
+                                                                )
+                                                            }>
+                                                            {path}
+                                                        </button>
+                                                        {index !==
+                                                            currentCategoryNamePath.length -
+                                                                1 && (
+                                                            <img
+                                                                src={
+                                                                    rightArrow2
+                                                                }
+                                                                alt="arrow"
+                                                            />
+                                                        )}
+                                                    </React.Fragment>
+                                                ))}
+                                        </div>
                                     </div>
-                                ) : (
+
                                     <button
                                         type="button"
-                                        className="z-10 h-[2.1875rem] w-full rounded-[0.25rem] bg-[#FFC752] text-[0.6875rem] font-medium text-[#111111] hover:bg-[#EEB02F]"
-                                        onClick={handleNextClick}>
-                                        다음으로
+                                        className="relative z-10 mb-7 flex h-[2.1875rem] w-full items-center justify-center gap-1.5 rounded-[0.25rem] bg-[#FFC752] hover:bg-[#EEB02F]"
+                                        onClick={handleCreateBook}>
+                                        <img
+                                            src={aiBlack}
+                                            alt=""
+                                            className=""
+                                        />
+                                        <p className="text-[0.6875rem] font-medium text-[#000000]">
+                                            생성하기
+                                        </p>
                                     </button>
-                                )}
-                            </div>
 
-                            <div className="mb-3 mt-6">
-                                <p className="text-[0.6875rem] font-extrabold text-[#D4D4D4]">
-                                    현재 카테고리
-                                </p>
-                            </div>
-
-                            <div className="mb-7 w-full">
-                                <div
-                                    className={`flex items-center justify-start gap-2 rounded-[0.25rem] px-2.5 py-[0.875rem] text-[0.6875rem] font-medium ${
-                                        isDarkMode
-                                            ? 'bg-[#1C1C1C] text-[#F6F6F6]'
-                                            : 'bg-[#EEEEEE] text-[#111111]'
-                                    }`}>
-                                    {[...currentCategoryNamePath]
-                                        .reverse()
-                                        .map((path, index) => (
-                                            <React.Fragment key={path}>
-                                                <button
-                                                    type="button"
-                                                    className={
-                                                        index ===
-                                                        currentCategoryNamePath.length -
-                                                            1
-                                                            ? 'text-[#FAC453]'
-                                                            : isDarkMode
-                                                              ? 'text-[#F6F6F6]'
-                                                              : 'text-[#333333]'
-                                                    }
-                                                    onClick={() =>
-                                                        handlePathClick(
-                                                            currentCategoryNamePath.length -
-                                                                1 -
-                                                                index,
-                                                        )
-                                                    }>
-                                                    {path}
-                                                </button>
-                                                {index !==
-                                                    currentCategoryNamePath.length -
-                                                        1 && (
-                                                    <img
-                                                        src={rightArrow2}
-                                                        alt="arrow"
-                                                    />
-                                                )}
-                                            </React.Fragment>
-                                        ))}
-                                </div>
-                            </div>
-
-                            <button
-                                type="button"
-                                className="relative z-10 mb-7 flex h-[2.1875rem] w-full items-center justify-center gap-1.5 rounded-[0.25rem] bg-[#FFC752] hover:bg-[#EEB02F]"
-                                onClick={handleCreateBook}>
-                                <img src={aiBlack} alt="" className="" />
-                                <p className="text-[0.6875rem] font-medium text-[#000000]">
-                                    생성하기
-                                </p>
-                            </button>
-
-                            {createContentPid && (
-                                <button
-                                    type="button"
-                                    className="relative z-10 mb-7 flex h-[2.1875rem] w-full items-center justify-center gap-1.5 rounded-[0.25rem] bg-[#FFC752] hover:bg-[#EEB02F]"
-                                    onClick={handleCreateContent}>
-                                    <img src={aiBlack} alt="" className="" />
-                                    <p className="text-[0.6875rem] font-medium text-[#000000]">
-                                        컨텐츠 생성하기
-                                    </p>
-                                </button>
-                            )}
-
-                            {errorMessage && (
-                                <div className="fixed inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50">
-                                    <div
-                                        className={`rounded-lg p-6 text-center shadow-lg transition-colors duration-300 ${
-                                            isDarkMode
-                                                ? 'bg-[#2D2D2D] text-white'
-                                                : 'bg-white text-black'
-                                        }`}>
-                                        <p className="mb-4">{errorMessage}</p>
+                                    {createContentPid && (
                                         <button
                                             type="button"
-                                            className="rounded bg-[#FFC752] px-4 py-2 text-[#111111] hover:bg-[#EEB02F] focus:outline-none focus:ring-2 focus:ring-[#EEB02F] focus:ring-opacity-50"
-                                            onClick={() => setErrorMessage('')}>
-                                            닫기
+                                            className="relative z-10 mb-7 flex h-[2.1875rem] w-full items-center justify-center gap-1.5 rounded-[0.25rem] bg-[#FFC752] hover:bg-[#EEB02F]"
+                                            onClick={handleCreateContent}>
+                                            <img
+                                                src={aiBlack}
+                                                alt=""
+                                                className=""
+                                            />
+                                            <p className="text-[0.6875rem] font-medium text-[#000000]">
+                                                컨텐츠 생성하기
+                                            </p>
                                         </button>
+                                    )}
+
+                                    {errorMessage && (
+                                        <div className="fixed inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50">
+                                            <div
+                                                className={`rounded-lg p-6 text-center shadow-lg transition-colors duration-300 ${
+                                                    isDarkMode
+                                                        ? 'bg-[#2D2D2D] text-white'
+                                                        : 'bg-white text-black'
+                                                }`}>
+                                                <p className="mb-4">
+                                                    {errorMessage}
+                                                </p>
+                                                <button
+                                                    type="button"
+                                                    className="rounded bg-[#FFC752] px-4 py-2 text-[#111111] hover:bg-[#EEB02F] focus:outline-none focus:ring-2 focus:ring-[#EEB02F] focus:ring-opacity-50"
+                                                    onClick={() =>
+                                                        setErrorMessage('')
+                                                    }>
+                                                    닫기
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <div className="absolute bottom-0 left-2/3 -translate-x-1/2">
+                                        <img
+                                            src={logoTransparent}
+                                            alt="logo"
+                                            className="md:max-w-[10rem] lg:max-w-[8rem] xl:max-w-[6rem] h-auto w-auto max-w-[20rem] transition-all duration-300 ease-in-out"
+                                        />
                                     </div>
+                                </>
+                            ) : (
+                                <div className="flex h-[10rem] w-full items-center justify-center">
+                                    <p className="text-bold text-[#FFC752]">
+                                        로그인이 필요합니다.
+                                    </p>
                                 </div>
                             )}
-
-                            <div className="absolute bottom-0 left-2/3 -translate-x-1/2">
-                                <img
-                                    src={logoTransparent}
-                                    alt="logo"
-                                    className="md:max-w-[10rem] lg:max-w-[8rem] xl:max-w-[6rem] h-auto w-auto max-w-[20rem] transition-all duration-300 ease-in-out"
-                                />
-                            </div>
                         </div>
                     </div>
                 </div>
