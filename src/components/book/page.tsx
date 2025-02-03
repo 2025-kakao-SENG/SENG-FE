@@ -123,11 +123,12 @@ function Page(
         }
 
         // 캔버스 화질 개선
-/*         const dpi = window.devicePixelRatio || 1;
+        const dpi = Math.max(window.devicePixelRatio, 1);
         const style = getComputedStyle(canvas);
         canvas.width = parseInt(style.width, 10) * dpi;
         canvas.height = parseInt(style.height, 10) * dpi;
-        ctx.scale(dpi, dpi); */
+        ctx.scale(dpi, dpi);
+        ctx.imageSmoothingEnabled = true;
 
         // 텍스트 공통 설정
         ctx.textAlign = canvasConfig.contents.textAlign;

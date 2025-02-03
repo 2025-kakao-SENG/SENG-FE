@@ -421,6 +421,12 @@ function MyPage() {
                                 <p className="text-center text-[#DBAC4A]">
                                     {successModal}
                                 </p>
+                                <button
+                                    type="button"
+                                    className="h-[2.5rem] w-[7.5rem] rounded-[0.3125rem] bg-[#2D2F39] text-[#DBAC4A] hover:bg-[#292929]"
+                                    onClick={() => setSuccessModal('')}>
+                                    확인
+                                </button>
                             </div>
                         </div>
                     )}
@@ -450,14 +456,6 @@ function MyPage() {
                                 <div className="flex gap-3">
                                     <button
                                         type="button"
-                                        onClick={() =>
-                                            setOpenLogoutModal(false)
-                                        }
-                                        className="rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]">
-                                        취소
-                                    </button>
-                                    <button
-                                        type="button"
                                         onClick={() => {
                                             setOpenLogoutModal(false);
                                             setIsLogoutLoading(true);
@@ -465,6 +463,14 @@ function MyPage() {
                                         }}
                                         className="rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]">
                                         확인
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            setOpenLogoutModal(false)
+                                        }
+                                        className="rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]">
+                                        취소
                                     </button>
                                 </div>
                             </div>
@@ -480,14 +486,6 @@ function MyPage() {
                                 <div className="flex gap-3">
                                     <button
                                         type="button"
-                                        onClick={() =>
-                                            setOpenDeregisterModal(false)
-                                        }
-                                        className="rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]">
-                                        취소
-                                    </button>
-                                    <button
-                                        type="button"
                                         onClick={() => {
                                             setOpenDeregisterModal(false);
                                             setIsDeregisterLoading(true);
@@ -495,6 +493,14 @@ function MyPage() {
                                         }}
                                         className="rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]">
                                         확인
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            setOpenDeregisterModal(false)
+                                        }
+                                        className="rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]">
+                                        취소
                                     </button>
                                 </div>
                             </div>

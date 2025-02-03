@@ -198,6 +198,7 @@ export default function MenuBar() {
                         <button
                             type="button"
                             onClick={handleCommunityClick}
+                            disabled
                             className={getMenuClass('/settings/community')}>
                             <img
                                 src={getMenuIcon(

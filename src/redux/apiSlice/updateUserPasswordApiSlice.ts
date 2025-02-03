@@ -17,7 +17,7 @@ export const userPasswordApi = createApi({
             UpdateUserPasswordRequest
         >({
             query: request => ({
-                url: '/update_password.php',
+                url: '/update_pw.php',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

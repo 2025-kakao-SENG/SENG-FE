@@ -101,7 +101,10 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
                     <button
                         key={item.name}
                         type="button"
-                        disabled={item.name === 'community'}
+                        disabled={
+                            item.name === 'community' ||
+                            item.name === 'notification'
+                        }
                         className={`flex h-[2.375rem] w-full items-center gap-2.5 rounded-[0.3125rem] pl-[0.65rem] transition-colors duration-200 ${
                             activeTab === item.name
                                 ? isDarkMode
@@ -110,9 +113,12 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
                                 : isDarkMode
                                   ? 'text-[#B1B1B1] hover:bg-[#292929] hover:text-[#text-[#B1B1B1]]'
                                   : 'text-[#B1B1B1] hover:bg-[#EEEEEE] hover:text-[#B1B1B1]'
-                        } ${item.name === 'community' ? 'cursor-not-allowed opacity-50' : ''}`}
+                        } ${item.name === 'community' || item.name === 'notification' ? 'cursor-not-allowed opacity-50' : ''}`}
                         onClick={() => {
-                            if (item.name !== 'community') {
+                            if (
+                                item.name !== 'community' &&
+                                item.name !== 'notification'
+                            ) {
                                 setActiveTab(item.name);
                                 navigate(item.path, {
                                     state: {
