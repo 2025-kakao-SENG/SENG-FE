@@ -288,9 +288,9 @@ function Book() {
 
     useEffect(() => {
         if (location.pathname === '/home') {
-            setBooksizeRatioPC(0.35);
+            setBooksizeRatioPC(0.32);
         } else if (location.pathname === '/home/ai') {
-            setBooksizeRatioPC(0.31);
+            setBooksizeRatioPC(0.32);
         }
     }, [location.pathname]);
 
