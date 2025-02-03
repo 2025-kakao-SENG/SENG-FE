@@ -20,7 +20,7 @@ function LeafCharge({onClose}: {onClose: () => void}) {
 
     const ChargeLeaf10 = async () => {
         if (!userId) {
-            setErrorMessage('로그인 정보가 없습니다.');
+            setErrorMessage('로그인이 필요합니다.');
             return;
         }
 
@@ -46,7 +46,7 @@ function LeafCharge({onClose}: {onClose: () => void}) {
 
     const ChargeGoldenLeaf = async () => {
         if (!userId) {
-            setErrorMessage('로그인 정보가 없습니다.');
+            setErrorMessage('로그인이 필요합니다.');
             return;
         }
 
