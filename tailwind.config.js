@@ -11,6 +11,10 @@ module.exports = {
         //     primary: '#DBAC4A',
         // },
         extend: {
+            height: {
+                // 기본 h-screen을 var(--content-height)로 재정의
+                screen: 'var(--content-height)',
+            },
             dropShadow: {
                 'glow-yellow': '0 0 10px #FFD06D', // 바깥쪽 빛 효과
             },

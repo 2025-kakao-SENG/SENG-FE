@@ -16,6 +16,26 @@ import LogoutPage from '@/pages/auth/LogoutPage.tsx';
 import NotFoundPage from '@/pages/NotFoundPage';
 
 function Router() {
+    // 실제 화면의 높이를 계산하여 CSS 변수로 설정
+    useEffect(() => {
+        const setContentHeight = () => {
+            const contentHeight = document.documentElement.clientHeight;
+            document.documentElement.style.setProperty(
+                '--content-height',
+                `${contentHeight}px`,
+            );
+        };
+
+        // 페이지가 처음 로드될 때 한 번 실행
+        setContentHeight();
+
+        // 창 크기가 변경될 때마다 업데이트
+        window.addEventListener('resize', setContentHeight);
+
+        // 컴포넌트 언마운트 시 이벤트 리스너 제거
+        return () => window.removeEventListener('resize', setContentHeight);
+    }, []);
+
     const location = useLocation();
 
     // backgroundLocation 상태 저장

@@ -36,7 +36,6 @@ import {
 } from '@/types/apis/library/searchBookApiTypes';
 import useSearchBookApi from '@/hooks/apis/library/useSearchBookApi';
 import {resetDisplayBookInfo} from '@/redux/slice/displayBookSlice';
-import {useLocation} from 'react-router-dom';
 
 // [만들 것들]
 // 만들 함수 및 데이터 타입(서재 고려 해야함)
@@ -62,7 +61,6 @@ import {useLocation} from 'react-router-dom';
 
 function Book() {
     const dispatch = useDispatch();
-    const location = useLocation();
     const createBookData = useSelector(getBookCreatingData);
     const createContentSignal = useSelector(getCreateContentSignal);
     const displayBookSignal = useSelector(getDisplayBookSignal);
@@ -72,7 +70,7 @@ function Book() {
         useBookContentApi();
     const {searchBookApi, isLoading: isSearchBookLoading} = useSearchBookApi();
 
-    const [bookSizeRatioPC, setBooksizeRatioPC] = useState(0.31);
+    const bookSizeRatioPC = 0.32; // 0.34가 최선
     const bookSizeRatioTablet = 0.7;
     const boundaryWidth = 1100;
     const initialWidth = useRef<number>(Math.max(window.innerWidth, 1400));
@@ -285,14 +283,6 @@ function Book() {
             setErrorMessage('책 정보를 불러오는 중 오류가 발생했습니다.');
         }
     };
-
-    useEffect(() => {
-        if (location.pathname === '/home') {
-            setBooksizeRatioPC(0.34);
-        } else if (location.pathname === '/home/ai') {
-            setBooksizeRatioPC(0.34);
-        }
-    }, [location.pathname]);
 
     // 캔버스 초기 설정 업데이트 & 리사이즈 함수 등록
     useEffect(() => {
