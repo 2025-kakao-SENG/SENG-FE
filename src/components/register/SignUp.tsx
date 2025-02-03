@@ -67,6 +67,12 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
             return;
         }
 
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            setErrorMessage('이메일을 형식에 맞게 입력해주세요.');
+            return;
+        }
+
         const birthRegex = /^[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]$/;
         if (!birthRegex.test(birth)) {
             setErrorMessage('생년월일을 형식에 맞게 입력해주세요.');

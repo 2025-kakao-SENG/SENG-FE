@@ -48,6 +48,8 @@ export default function SideBar() {
 
     const [subCategoryLoading, setSubCategoriesLoading] = useState(false);
 
+    const [isContentCreating, setIsContentCreating] = useState(false);
+
     // 화면 크기 감지 (태블릿 여부 체크 + 깜빡임 방지)
     useEffect(() => {
         const checkScreenSize = () => {
@@ -125,7 +127,6 @@ export default function SideBar() {
                             subcategory => subcategory.subcategory_name,
                         ),
                     ]);
-
                 } else {
                     setErrorMessage('카테고리를 찾을 수 없습니다.');
                 }
@@ -179,11 +180,6 @@ export default function SideBar() {
     };
 
     const handlePreviousClick = () => {
-        if (depth.current === 0) {
-            setErrorMessage('첫 번째 카테고리입니다.');
-            return;
-        }
-
         if (currentCategoryNamePath.length > 0) {
             setActiveCategoryName('');
             setCurrentCategoryNamePath(currentCategoryNamePath.slice(1));
@@ -203,12 +199,19 @@ export default function SideBar() {
             return;
         }
 
+        if (currentCategoryNamePath.length === 0) {
+            setErrorMessage('카테고리를 선택해주세요.');
+            return;
+        }
+
         dispatch(
             setCreateBookInfo({
                 user_pid: parseInt(userId, 10),
                 category_arr: currentCategoryNamePath,
             }),
         );
+
+        setIsContentCreating(true);
     };
 
     const handleCreateContent = () => {
@@ -337,6 +340,9 @@ export default function SideBar() {
                                                 isDarkMode
                                                     ? 'bg-[#2D2D2D] text-[#BEBEBE] hover:bg-[#3D3D3D]'
                                                     : 'bg-[#747474] text-[#FFFFFF] hover:bg-[#b5b5b5]'
+                                            } ${depth.current === 0 && 'cursor-not-allowed'} ${
+                                                isContentCreating &&
+                                                'cursor-not-allowed opacity-50'
                                             }`}
                                             onClick={handlePreviousClick}>
                                             이전 카테고리
@@ -349,7 +355,10 @@ export default function SideBar() {
                                         ) : (
                                             <button
                                                 type="button"
-                                                className="z-10 h-[2.1875rem] w-full rounded-[0.25rem] bg-[#FFC752] text-[0.6875rem] font-medium text-[#111111] hover:bg-[#EEB02F]"
+                                                className={`z-10 h-[2.1875rem] w-full rounded-[0.25rem] bg-[#FFC752] text-[0.6875rem] font-medium text-[#111111] hover:bg-[#EEB02F] ${
+                                                    isContentCreating &&
+                                                    'cursor-not-allowed opacity-50'
+                                                }`}
                                                 onClick={handleNextClick}>
                                                 다음으로
                                             </button>
@@ -410,8 +419,12 @@ export default function SideBar() {
 
                                     <button
                                         type="button"
-                                        className="relative z-10 mb-7 flex h-[2.1875rem] w-full items-center justify-center gap-1.5 rounded-[0.25rem] bg-[#FFC752] hover:bg-[#EEB02F]"
-                                        onClick={handleCreateBook}>
+                                        className={`relative z-10 mb-7 flex h-[2.1875rem] w-full items-center justify-center gap-1.5 rounded-[0.25rem] bg-[#FFC752] hover:bg-[#EEB02F] ${
+                                            isContentCreating &&
+                                            'cursor-not-allowed opacity-50'
+                                        }`}
+                                        onClick={handleCreateBook}
+                                        disabled={isContentCreating}>
                                         <img
                                             src={aiBlack}
                                             alt=""

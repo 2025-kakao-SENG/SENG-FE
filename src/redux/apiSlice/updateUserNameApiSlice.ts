@@ -20,12 +20,12 @@ export const userApi = createApi({
                 url: '/update_name.php',
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
                 },
-                body: new URLSearchParams({
-                    id: request.id.toString(),
+                body: {
+                    id: request.id,
                     name: request.name,
-                }),
+                },
             }),
         }),
     }),

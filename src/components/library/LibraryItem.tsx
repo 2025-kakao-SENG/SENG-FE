@@ -5,7 +5,7 @@ interface BookItemProps {
     pid: number;
     image: string;
     handleSearchBook: (Pid: number) => void;
-    handleDeleteBook: (Pid: number) => Promise<void>;
+    handleDeleteBook: (Pid: number) => void;
 }
 
 function LibraryItem({

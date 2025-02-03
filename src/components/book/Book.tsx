@@ -70,7 +70,7 @@ function Book() {
         useBookContentApi();
     const {searchBookApi, isLoading: isSearchBookLoading} = useSearchBookApi();
 
-    const bookSizeRatioPC = 0.34;
+    const bookSizeRatioPC = 0.325;
     const bookSizeRatioTablet = 0.7;
     const boundaryWidth = 1100;
     // initialWidth는 1400~ 1800px 사이로 제한
@@ -450,7 +450,7 @@ function Book() {
                             clickEventForward
                             useMouseEvents
                             swipeDistance={0.5}
-                            showPageCorners
+                            showPageCorners={false}
                             disableFlipByClick={false}
                             className="h-full w-full"
                             style={{}}>
@@ -496,12 +496,17 @@ function Book() {
             </div>
 
             {createCompleteMessage && (
-                <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-                    <div className="flex flex-col items-center justify-center">
-                        <div className="border-b-5 h-32 w-32 animate-spin rounded-full border-t-[7px] border-[#DBAC4A]" />
-                        <p className="mt-5 text-[#DBAC4A]">
+                <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+                    <div className="flex flex-col items-center justify-center rounded-2xl bg-[#111111] p-5">
+                        <p className="text-lg text-[#DBAC4A]">
                             {createCompleteMessage}
                         </p>
+                        <button
+                            type="button"
+                            onClick={() => setCreateCompleteMessage('')}
+                            className="mt-2 rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-white hover:bg-[#b88a3a]">
+                            확인
+                        </button>
                     </div>
                 </div>
             )}

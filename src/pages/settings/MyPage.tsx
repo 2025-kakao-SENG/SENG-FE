@@ -26,9 +26,9 @@ function MyPage() {
     const userId = useSelector(getUserId);
     const logout = useLogout();
     const userLoginDate = useSelector(getUserLoginData);
-    const {authDeregisterApi, isLoading: deregisterLoading} =
-        useAuthDeregisterApi();
+    const {authDeregisterApi} = useAuthDeregisterApi();
     const [isLogoutLoading, setIsLogoutLoading] = useState(false);
+    const [isDeregisterLoading, setIsDeregisterLoading] = useState(false);
     const {isDarkMode} = useTheme();
 
     const [successModal, setSuccessModal] = useState('');
@@ -45,6 +45,9 @@ function MyPage() {
     const [updateUserPassword, {isLoading: isUpdatingPassword}] =
         useUpdateUserPasswordMutation();
 
+    const [openLogoutModal, setOpenLogoutModal] = useState(false);
+    const [openDeregisterModal, setOpenDeregisterModal] = useState(false);
+
     useEffect(() => {
         if (!user.isLogined) {
             setErrorMessage('로그인이 필요합니다.');
@@ -57,13 +60,7 @@ function MyPage() {
         } else if (userLoginDate.pid) {
             logout('default');
         }
-        setIsLogoutLoading(true);
         setTimeout(() => {
-            setIsLogoutLoading(false);
-            setSuccessModal('로그아웃 되었습니다.');
-        }, 1000);
-        setTimeout(() => {
-            setSuccessModal('');
             navigate('/home');
         }, 2000);
     };
@@ -88,9 +85,7 @@ function MyPage() {
                     });
 
                     logout('kakao');
-                    setSuccessModal('회원 탈퇴 되었습니다.');
                     setTimeout(() => {
-                        setSuccessModal('');
                         navigate('/home');
                     }, 2000);
                 } else {
@@ -111,9 +106,7 @@ function MyPage() {
 
                 if (serverResponse.status === 'success') {
                     logout('default');
-                    setSuccessModal('회원 탈퇴 되었습니다.');
                     setTimeout(() => {
-                        setSuccessModal('');
                         navigate('/home');
                     }, 2000);
                 } else {
@@ -391,7 +384,7 @@ function MyPage() {
                                         ? 'bg-[#2D2F39] text-[#CACACA] hover:bg-[#4a4a4a]'
                                         : 'bg-[#999999] text-white hover:bg-[#7a7a7a]' // 수정됨
                                 }`}
-                                onClick={handleLogout}>
+                                onClick={() => setOpenLogoutModal(true)}>
                                 로그아웃
                             </button>
                         </div>
@@ -416,7 +409,7 @@ function MyPage() {
                                         ? 'bg-[#482323] text-[#CACACA] hover:bg-[#813a3a]'
                                         : 'bg-red-600 text-white hover:bg-red-700' // 수정됨
                                 }`}
-                                onClick={handleDeregister}>
+                                onClick={() => setOpenDeregisterModal(true)}>
                                 회원탈퇴
                             </button>
                         </div>
@@ -448,20 +441,62 @@ function MyPage() {
                         </div>
                     )}
 
-                    {(isUpdatingUserName ||
-                        isUpdatingPassword ||
-                        deregisterLoading ||
-                        isLogoutLoading) && (
-                        <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-                            <div className="flex flex-col items-center justify-center">
-                                <div className="border-b-5 h-32 w-32 animate-spin rounded-full border-t-[7px] border-[#DBAC4A]" />
-                                <p className="mt-5 text-[#DBAC4A]">
-                                    {isUpdatingUserName && '닉네임 변경 중...'}
-                                    {isUpdatingPassword &&
-                                        '비밀번호 변경 중...'}
-                                    {deregisterLoading && '회원 탈퇴 중...'}
-                                    {isLogoutLoading && '로그아웃 중...'}
+                    {openLogoutModal && (
+                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                            <div className="flex w-[20rem] flex-col items-center gap-3 rounded-lg bg-[#1B1B1B] p-5">
+                                <p className="text-center text-[#DBAC4A]">
+                                    로그아웃 하시겠습니까?
                                 </p>
+                                <div className="flex gap-3">
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            setOpenLogoutModal(false)
+                                        }
+                                        className="rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]">
+                                        취소
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setOpenLogoutModal(false);
+                                            setIsLogoutLoading(true);
+                                            handleLogout();
+                                        }}
+                                        className="rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]">
+                                        확인
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {openDeregisterModal && (
+                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                            <div className="flex w-[20rem] flex-col items-center gap-3 rounded-lg bg-[#1B1B1B] p-5">
+                                <p className="text-center text-[#DBAC4A]">
+                                    회원탈퇴 하시겠습니까?
+                                </p>
+                                <div className="flex gap-3">
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            setOpenDeregisterModal(false)
+                                        }
+                                        className="rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]">
+                                        취소
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setOpenDeregisterModal(false);
+                                            setIsDeregisterLoading(true);
+                                            handleDeregister();
+                                        }}
+                                        className="rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]">
+                                        확인
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     )}
@@ -471,6 +506,23 @@ function MyPage() {
                     <p className="text-lg text-[#DBAC4A]">
                         로그인이 필요합니다.
                     </p>
+                </div>
+            )}
+
+            {(isUpdatingUserName ||
+                isUpdatingPassword ||
+                isDeregisterLoading ||
+                isLogoutLoading) && (
+                <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="border-b-5 h-32 w-32 animate-spin rounded-full border-t-[7px] border-[#DBAC4A]" />
+                        <p className="mt-5 text-[#DBAC4A]">
+                            {isUpdatingUserName && '닉네임 변경 중...'}
+                            {isUpdatingPassword && '비밀번호 변경 중...'}
+                            {isDeregisterLoading && '회원 탈퇴 중...'}
+                            {isLogoutLoading && '로그아웃 중...'}
+                        </p>
+                    </div>
                 </div>
             )}
         </>
