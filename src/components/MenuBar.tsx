@@ -106,7 +106,7 @@ export default function MenuBar() {
     return (
         <>
             <div
-                className={`relative h-full w-full py-[2.375rem] transition-transform duration-300 ${
+                className={`relative h-[200px] w-full py-[2.375rem] transition-transform duration-300 ${
                     isOpen ? 'translate-x-0' : '-translate-x-[90%]'
                 }`}>
                 <ul
