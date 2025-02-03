@@ -59,18 +59,33 @@ function LoginPage({
                 };
                 dispatch(setUserInfoByLogin(dispatchData));
                 successLogin();
+            } else if (response.status === 'error') {
+                if (response.message.includes('Invalid email or password')) {
+                    setErrorMessage('잘못된 이메일 혹은 비밀번호입니다.');
+                } else if (
+                    response.message.includes('Email and password are required')
+                ) {
+                    setErrorMessage(
+                        '이메일과 비밀번호는 필수 입력 항목입니다.',
+                    );
+                } else if (
+                    response.message.includes('Only POST method is allowed')
+                ) {
+                    setErrorMessage(
+                        '허용되지 않는 메서드 요청입니다. (POST 메서드만 허용됩니다)',
+                    );
+                } else {
+                    setErrorMessage(`로그인 오류: ${response.message}`);
+                }
             } else {
-                setErrorMessage('아이디 혹은 비밀번호가 잘못되었습니다.');
-                // 세부 에러 항목 활성화
-                /* setErrorMessage(response.message); */
+                setErrorMessage('알 수 없는 응답이 수신되었습니다.');
             }
-        } catch /* (error: unknown) */ {
-            setErrorMessage('아이디 혹은 비밀번호가 잘못되었습니다.');
-            /*             if (error instanceof Error) {
+        } catch (error: unknown) {
+            if (error instanceof Error) {
                 setErrorMessage(error.message);
             } else {
                 setErrorMessage('로그인 통신 오류');
-            } */
+            }
         }
     }
 
@@ -95,17 +110,14 @@ function LoginPage({
                 dispatch(setUserInfoByLogin(dispatchData));
                 successLogin();
             } else {
-                setErrorMessage('아이디 혹은 비밀번호가 잘못되었습니다.');
-                // 세부 에러 항목 활성화
-                // setErrorMessage(response.message);
+                setErrorMessage(response.message);
             }
-        } catch /* (error: unknown) */ {
-            setErrorMessage('아이디 혹은 비밀번호가 잘못되었습니다.');
-            /* if (error instanceof Error) {
+        } catch (error: unknown) {
+            if (error instanceof Error) {
                 setErrorMessage(error.message);
             } else {
                 setErrorMessage('카카오 로그인 통신 오류');
-            } */
+            }
         }
     }
 

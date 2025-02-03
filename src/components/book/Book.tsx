@@ -70,8 +70,8 @@ function Book() {
         useBookContentApi();
     const {searchBookApi, isLoading: isSearchBookLoading} = useSearchBookApi();
 
-    const bookSizeRatioPC = 0.27;
-    const bookSizeRatioTablet = 0.6;
+    const bookSizeRatioPC = 0.45;
+    const bookSizeRatioTablet = 0.45;
     const boundaryWidth = 1000;
     const initialWidth = useRef<number>(Math.max(window.innerWidth, 1500));
     const prevWidthRef = useRef<number>(window.innerWidth);
@@ -337,11 +337,10 @@ function Book() {
                 (prevWidth <= boundaryWidth && currentWidth > boundaryWidth) ||
                 (prevWidth > boundaryWidth && currentWidth <= boundaryWidth)
             ) {
+                // 경계선을 넘었으면 새로운 너비로 업데이트
                 if (currentWidth > boundaryWidth) {
-                    // Tablet -> PC
-                    updateCanvasConfig(initialWidth.current * bookSizeRatioPC);
+                    updateCanvasConfig(currentWidth * bookSizeRatioPC);
                 } else {
-                    // PC -> Tablet
                     updateCanvasConfig(currentWidth * bookSizeRatioTablet);
                 }
             }

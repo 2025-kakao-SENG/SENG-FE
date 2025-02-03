@@ -4,7 +4,7 @@ module.exports = {
     content: ['./src/**/*.{ts,tsx}'],
     theme: {
         screens: {
-            TB: '768px',
+            TB: '1000px',
             DEFAULT: 'calc(986 / 1920 * 100dvh)',
         },
         // colors: {

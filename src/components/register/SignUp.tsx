@@ -83,8 +83,43 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
 
             if (response.status === 'success') {
                 successRegister();
+            } else if (response.status === 'error') {
+                // 에러 메시지에 따라 분기 처리
+                if (response.message.includes('Missing required field')) {
+                    // 예: 'Missing required field: <필드명>'
+                    setErrorMessage(response.message);
+                } else if (
+                    response.message.includes('The email is already registered')
+                ) {
+                    // 중복 이메일
+                    setErrorMessage('이미 등록된 이메일입니다.');
+                } else if (
+                    response.message.includes(
+                        'The phone number is already registered',
+                    )
+                ) {
+                    // 중복 전화번호
+                    setErrorMessage('이미 등록된 전화번호입니다.');
+                } else if (
+                    response.message.includes('Only POST method is allowed')
+                ) {
+                    // 지원되지 않는 메서드
+                    setErrorMessage('허용되지 않는 메서드 요청입니다.');
+                } else if (response.message.startsWith('Error:')) {
+                    // 기타 데이터베이스 오류
+                    // message 예: "Error: <구체적인 오류 메시지>"
+                    setErrorMessage(
+                        `서버 오류가 발생했습니다. (${response.message})`,
+                    );
+                } else {
+                    // 기타 예상치 못한 에러 메시지 처리
+                    setErrorMessage(
+                        `알 수 없는 오류가 발생했습니다. (${response.message})`,
+                    );
+                }
             } else {
-                setErrorMessage('회원가입 중 오류가 발생했습니다.');
+                // status가 'success'도 'error'도 아닌 경우
+                setErrorMessage('알 수 없는 응답이 수신되었습니다.');
             }
         } catch /* (error: unknown) */ {
             setErrorMessage('회원가입 중 오류가 발생했습니다.');
