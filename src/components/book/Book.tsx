@@ -73,7 +73,10 @@ function Book() {
     const bookSizeRatioPC = 0.31; // 0.34가 최선
     const bookSizeRatioTablet = 0.7;
     const boundaryWidth = 1100;
-    const initialWidth = useRef<number>(Math.max(window.innerWidth, 1400));
+    // initialWidth는 1400~ 1800px 사이로 제한
+    const initialWidth = useRef<number>(
+        Math.min(Math.max(window.innerWidth, 1400), 1800),
+    );
     const prevWidthRef = useRef<number>(window.innerWidth);
     const [canvasConfig, setCanvasConfig] = useState(defaultCanvasConfig);
 
