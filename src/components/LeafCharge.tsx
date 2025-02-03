@@ -2,71 +2,10 @@ import leafWhite from '@/assets/images/leafCharge/leafWhite.svg';
 import leafGold from '@/assets/images/leafCharge/leafGold.svg';
 import leafGray from '@/assets/images/leafCharge/leafGray.svg';
 import close from '@/assets/images/login/close.svg';
-import useChargeLeafApi from '@/hooks/apis/useChargeLeafApi';
-import {useDispatch, useSelector} from 'react-redux';
-import {getUserId} from '@/redux/selector';
-import {useState} from 'react';
-import {setUserLeaf} from '@/redux/slice/userSlice';
+import {useTheme} from '@/constants/ThemeProvider';
 
 function LeafCharge({onClose}: {onClose: () => void}) {
-    const userId = useSelector(getUserId);
-    const dispatch = useDispatch();
-    const {chargeLeafApi, isLoading} = useChargeLeafApi();
-
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-
-    const ChargeLeaf10 = async () => {
-        if (!userId) {
-            setErrorMessage('로그인 정보가 없습니다.');
-            return;
-        }
-
-        try {
-            const response = await chargeLeafApi({
-                id: parseInt(userId, 10),
-                leaf: 10,
-            });
-
-            if (!('error' in response)) {
-                dispatch(setUserLeaf(response.leaf));
-                setIsSuccess(true);
-                setTimeout(() => {
-                    onClose();
-                }, 2000);
-            } else {
-                setErrorMessage(response.error);
-            }
-        } catch {
-            setErrorMessage('리프를 충전하는 중 오류가 발생했습니다.');
-        }
-    };
-
-    const ChargeGoldenLeaf = async () => {
-        if (!userId) {
-            setErrorMessage('로그인 정보가 없습니다.');
-            return;
-        }
-
-        try {
-            const response = await chargeLeafApi({
-                id: parseInt(userId, 10),
-                leaf: 100,
-            });
-
-            if (!('error' in response)) {
-                dispatch(setUserLeaf(response.leaf));
-                setIsSuccess(true);
-                setTimeout(() => {
-                    onClose();
-                }, 2000);
-            } else {
-                setErrorMessage(response.error);
-            }
-        } catch {
-            setErrorMessage('리프를 충전하는 중 오류가 발생했습니다.');
-        }
-    };
+    const {isDarkMode} = useTheme();
 
     return (
         <div className="relative flex h-full max-w-[43.375rem] items-start justify-center rounded-lg bg-[#1b1b1b] px-[5.9375rem] py-[2.8125rem] shadow">
@@ -95,8 +34,7 @@ function LeafCharge({onClose}: {onClose: () => void}) {
                     <div className="mb-[1.4375rem] mt-2.5 flex items-center justify-center">
                         <button
                             type="button"
-                            className="h-[1.8125rem] w-full rounded-full border text-[0.5rem] text-[#D8D8D8] transition-colors hover:border-none hover:bg-[#FAC453] hover:text-black active:bg-[#ffc240]"
-                            onClick={ChargeLeaf10}>
+                            className="h-[1.8125rem] w-full rounded-full border text-[0.5rem] text-[#D8D8D8] transition-colors hover:border-none hover:bg-[#FAC453] hover:text-black active:bg-[#ffc240]">
                             구매하기
                         </button>
                     </div>
@@ -123,7 +61,7 @@ function LeafCharge({onClose}: {onClose: () => void}) {
                 </div>
 
                 {/* 가운데 border */}
-                <div className="border-l" />
+                <div className="border-l"></div>
 
                 {/* 가운데 border 기준 - 오른쪽 */}
                 <div className="flex flex-col p-[1.0625rem]">
@@ -156,8 +94,7 @@ function LeafCharge({onClose}: {onClose: () => void}) {
                     <div className="mb-[1.4375rem] mt-2.5 flex items-center justify-center">
                         <button
                             type="button"
-                            className="h-[1.8125rem] w-full rounded-full border text-[0.5rem] text-[#D8D8D8] transition-colors hover:border-none hover:bg-[#FAC453] hover:text-black active:bg-[#ffc240]"
-                            onClick={ChargeGoldenLeaf}>
+                            className="h-[1.8125rem] w-full rounded-full border text-[0.5rem] text-[#D8D8D8] transition-colors hover:border-none hover:bg-[#FAC453] hover:text-black active:bg-[#ffc240]">
                             구매하기
                         </button>
                     </div>
@@ -190,49 +127,9 @@ function LeafCharge({onClose}: {onClose: () => void}) {
             </div>
 
             {/* 닫기 버튼 */}
-            <button
-                type="button"
-                onClick={onClose}
-                className="absolute right-5 top-5">
+            <button onClick={onClose} className="absolute right-5 top-5">
                 <img src={close} alt="닫기" className="w-3" />
             </button>
-
-            {isLoading && (
-                <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-                    <div className="flex flex-col items-center justify-center">
-                        <div className="border-b-5 h-32 w-32 animate-spin rounded-full border-t-[7px] border-[#DBAC4A]" />
-                        <p className="mt-5 text-[#DBAC4A]">
-                            리프를 충전하는 중입니다.
-                        </p>
-                    </div>
-                </div>
-            )}
-
-            {isSuccess && (
-                <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-                    <div className="flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] bg-[#1E1E1E] p-5">
-                        <p className="text-lg text-[#DBAC4A]">알림</p>
-                        <p className="text-sm text-[#C9C9C9]">
-                            리프를 충전했습니다.
-                        </p>
-                    </div>
-                </div>
-            )}
-
-            {errorMessage && (
-                <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-                    <div className="flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] bg-[#1E1E1E] p-5">
-                        <p className="text-lg text-[#DBAC4A]">알림</p>
-                        <p className="text-sm text-[#C9C9C9]">{errorMessage}</p>
-                        <button
-                            type="button"
-                            onClick={() => setErrorMessage('')}
-                            className="mt-2 rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-white hover:bg-[#b88a3a]">
-                            확인
-                        </button>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

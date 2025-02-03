@@ -30,6 +30,10 @@ function Page(
     const subChapterContent =
         chapterData.subChapters[subChapterIndex]?.subChapterContent || [];
 
+    const getTextColor = (originalColor: string) => {
+        return isDarkMode ? originalColor : '#000000'; // 다크 모드는 기존 유지, 라이트 모드는 블랙 적용
+    };
+
     // 초기화: 컴포넌트가 업데이트될 때마다 불투명도 배열을 초기화
     useEffect(() => {
         opacityBodiesRef.current = subChapterContent.map(() => 0);
@@ -40,7 +44,7 @@ function Page(
     const renderChapter = (ctx: CanvasRenderingContext2D) => {
         const {header} = canvasConfig.contents;
         ctx.font = header.font;
-        ctx.fillStyle = header.fillStyle;
+        ctx.fillStyle = getTextColor(header.fillStyle);
         ctx.fillText(
             chapterData.chapterTitle,
             canvasConfig.coordinateCriteria.xRatio * canvasConfig.canvas.width, // 좌측에서 xRatio 위치
@@ -51,7 +55,7 @@ function Page(
     const renderSubChapter = (ctx: CanvasRenderingContext2D) => {
         const {subHeader} = canvasConfig.contents;
         ctx.font = subHeader.font;
-        ctx.fillStyle = subHeader.fillStyle;
+        ctx.fillStyle = getTextColor(subHeader.fillStyle);
         ctx.fillText(
             chapterData.subChapters[subChapterIndex].subChapterTitle,
             canvasConfig.canvas.width * canvasConfig.coordinateCriteria.xRatio, // 좌측에서 xRatio 위치
@@ -65,7 +69,7 @@ function Page(
     const renderSubChapterContents = (ctx: CanvasRenderingContext2D) => {
         const {body} = canvasConfig.contents;
         ctx.font = body.font;
-        ctx.fillStyle = body.fillStyle;
+        ctx.fillStyle = getTextColor(body.fillStyle);
 
         subChapterContent.forEach((content: string, index: number) => {
             const opacity = opacityBodiesRef.current[index] || 0;
@@ -91,7 +95,7 @@ function Page(
     const renderPageNumber = (ctx: CanvasRenderingContext2D) => {
         const {pageNumber: pageStyle} = canvasConfig.contents;
         ctx.font = pageStyle.font;
-        ctx.fillStyle = pageStyle.fillStyle;
+        ctx.fillStyle = getTextColor(pageStyle.fillStyle); // 변경된 코드
 
         const isOdd = pageNumber % 2 === 1; // 홀수 페이지 여부
 
