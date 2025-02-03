@@ -288,9 +288,9 @@ function Book() {
 
     useEffect(() => {
         if (location.pathname === '/home') {
-            setBooksizeRatioPC(0.32);
+            setBooksizeRatioPC(0.3);
         } else if (location.pathname === '/home/ai') {
-            setBooksizeRatioPC(0.32);
+            setBooksizeRatioPC(0.3);
         }
     }, [location.pathname]);
 
@@ -426,7 +426,7 @@ function Book() {
             )}
             {/* PC 용 FlipBook - PC 이상에서만 표시 */}
             <div className="hidden h-full w-auto items-center justify-center TB:flex">
-                <div className="flex h-full w-auto flex-none items-center justify-center gap-x-8 p-2">
+                <div className="flex h-full w-auto items-center justify-center">
                     {/* 이전 페이지 버튼 */}
                     {/* <FlipButton direction="prev" onClick={handleFlipPrev} /> */}
 
