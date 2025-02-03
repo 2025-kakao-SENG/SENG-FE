@@ -40,6 +40,9 @@ export default function SideBar() {
     const depth = useRef(0);
     const [categoriesView, setCategoriesView] = useState<string[]>([]);
     const [dafaultCategories, setDefaultCategories] = useState<Category[]>([]);
+
+    const [categortiesAllData, setCategoriesAllData] = useState<string[][]>();
+
     const [errorMessage, setErrorMessage] = useState('');
     const [isSidebarPartiallyOpen, setIsSidebarPartiallyOpen] = useState(true);
 
@@ -69,6 +72,9 @@ export default function SideBar() {
                     await fetchCategoriesApi();
                 if (response && !('error' in response)) {
                     setDefaultCategories(response);
+                    setCategoriesAllData([
+                        response.map(category => category.category_name),
+                    ]);
                     setCategoriesView(
                         response.map(category => category.category_name),
                     );
@@ -113,6 +119,13 @@ export default function SideBar() {
                             subcategory => subcategory.subcategory_name,
                         ),
                     );
+                    setCategoriesAllData([
+                        ...categortiesAllData!,
+                        categoryTemp.subcategories.map(
+                            subcategory => subcategory.subcategory_name,
+                        ),
+                    ]);
+
                 } else {
                     setErrorMessage('카테고리를 찾을 수 없습니다.');
                 }
@@ -130,6 +143,10 @@ export default function SideBar() {
                         !('info' in response)
                     ) {
                         setCategoriesView(response);
+                        setCategoriesAllData([
+                            ...(categortiesAllData || []),
+                            response,
+                        ]);
                     } else {
                         if ('error' in response) {
                             setErrorMessage(response.error);
@@ -162,8 +179,21 @@ export default function SideBar() {
     };
 
     const handlePreviousClick = () => {
-        if (currentCategoryNamePath.length > 1) {
+        if (depth.current === 0) {
+            setErrorMessage('첫 번째 카테고리입니다.');
+            return;
+        }
+
+        if (currentCategoryNamePath.length > 0) {
+            setActiveCategoryName('');
             setCurrentCategoryNamePath(currentCategoryNamePath.slice(1));
+            depth.current -= 1;
+            setCategoriesView(
+                categortiesAllData && categortiesAllData.length > 1
+                    ? categortiesAllData[categortiesAllData.length - 2]
+                    : [],
+            );
+            setCategoriesAllData(categortiesAllData!.slice(0, -1));
         }
     };
 

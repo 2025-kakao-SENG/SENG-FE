@@ -70,12 +70,12 @@ function Book() {
         useBookContentApi();
     const {searchBookApi, isLoading: isSearchBookLoading} = useSearchBookApi();
 
-    const bookSizeRatioPC = 0.31; // 0.34가 최선
+    const bookSizeRatioPC = 0.34;
     const bookSizeRatioTablet = 0.7;
     const boundaryWidth = 1100;
     // initialWidth는 1400~ 1800px 사이로 제한
     const initialWidth = useRef<number>(
-        Math.min(Math.max(window.innerWidth, 1400), 1800),
+        Math.min(Math.max(window.innerWidth, 1400), 2500),
     );
     const prevWidthRef = useRef<number>(window.innerWidth);
     const [canvasConfig, setCanvasConfig] = useState(defaultCanvasConfig);
@@ -418,8 +418,8 @@ function Book() {
                 </div>
             )}
             {/* PC 용 FlipBook - PC 이상에서만 표시 */}
-            <div className="hidden h-full w-auto items-center justify-center TB:flex">
-                <div className="flex h-full w-auto items-center justify-center">
+            <div className="hidden h-full w-auto items-center justify-center TB:flex TB:flex-col">
+                <div className="flex h-full w-auto flex-col items-center justify-center">
                     {/* 이전 페이지 버튼 */}
                     {/* <FlipButton direction="prev" onClick={handleFlipPrev} /> */}
 

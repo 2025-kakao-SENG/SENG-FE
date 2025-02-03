@@ -1,5 +1,4 @@
 import {Outlet, useLocation} from 'react-router-dom';
-import Palette from '@/components/Palette';
 import Book from '@/components/book/Book';
 
 function Home() {
@@ -8,7 +7,6 @@ function Home() {
         <div className="flex h-full w-full">
             <div
                 className={`flex h-full ${location.pathname === '/home' ? 'w-full' : 'ml-5 w-auto'} flex-none flex-col items-center justify-center gap-y-[3%]`}>
-                <Palette />
                 <Book />
             </div>
             <Outlet />
