@@ -16,7 +16,8 @@ import chat from '../assets/images/palette/chat.svg';
 import chatLight from '../assets/images/palette/chatLight.svg';
 import interests from '../assets/images/palette/interests.svg';
 import interestsLight from '../assets/images/palette/interestsLight.svg';
-import aiYellow from '../assets/images/aiYellow.svg';
+import aiWhite from '../assets/images/palette/aiWhite.svg';
+import aiBlack from '../assets/images/palette/aiBlack.svg';
 import transform from '../assets/images/transform.svg';
 
 export default function Palette() {
@@ -68,7 +69,7 @@ export default function Palette() {
                         ? 'bg-[#111111] text-white'
                         : 'bg-[#fdfdfd] text-black'
                 }`}>
-                <div className="flex items-center gap-[0.43125rem] py-[0.2875rem] pl-[0.2875rem] pr-[0.43125rem]">
+                <div className="flex items-center gap-[0.43125rem] py-[0.2875rem] pl-[0.5rem] pr-[0.43125rem]">
                     <div className="flex items-center">
                         <img
                             src={isDarkMode ? highlight : highlightLight}
@@ -158,12 +159,12 @@ export default function Palette() {
                         isDarkMode ? 'border-[#444444]' : 'border-[#B1B1B1]'
                     }`}>
                     {!isTablet ? (
-                        // 기본 화면에서는 AiYellow 유지
+                        // 기본 화면에서는 aiWhite 유지
                         <img
-                            src={aiYellow}
+                            src={isDarkMode ? aiWhite : aiBlack}
                             alt="Yellow Ai Button"
-                            className={getButtonClass('aiYellow')}
-                            onClick={() => handleButtonClick('aiYellow')}
+                            className={`${getButtonClass('aiWhite')} h-[2.5rem]`}
+                            onClick={() => handleButtonClick('aiWhite')}
                         />
                     ) : (
                         // 태블릿 모드에서는 Transform 아이콘 표시
