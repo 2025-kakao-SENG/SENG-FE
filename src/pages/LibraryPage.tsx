@@ -17,11 +17,13 @@ import useSearchBooksApi from '@/hooks/apis/library/useSearchBooksApi';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {getUserId} from '@/redux/selector';
+import {useTheme} from '@/constants/ThemeProvider';
 
 function LibraryPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const userId = useSelector(getUserId);
+    const {isDarkMode} = useTheme();
 
     const {searchBooksApi, isLoading: booksLoading} = useSearchBooksApi();
     const {deleteBookApi, isLoading: deleteBookLoading} = useDeleteBookApi();
@@ -119,13 +121,21 @@ function LibraryPage() {
             )}
             {errorMessage && (
                 <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-                    <div className="flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] bg-[#1E1E1E] p-5">
+                    <div
+                        className={`flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] p-5 transition-colors duration-300 ${
+                            isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'
+                        }`}>
                         <p className="text-lg text-[#DBAC4A]">알림</p>
-                        <p className="text-sm text-[#C9C9C9]">{errorMessage}</p>
+                        <p
+                            className={`text-sm transition-colors duration-300 ${
+                                isDarkMode ? 'text-[#C9C9C9]' : 'text-black'
+                            }`}>
+                            {errorMessage}
+                        </p>
                         <button
                             type="button"
                             onClick={() => setErrorMessage('')}
-                            className="mt-2 rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-white hover:bg-[#b88a3a]">
+                            className="mt-2 rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]">
                             확인
                         </button>
                     </div>

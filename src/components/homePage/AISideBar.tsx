@@ -394,7 +394,12 @@ export default function SideBar() {
 
                             {errorMessage && (
                                 <div className="fixed inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50">
-                                    <div className="rounded-lg bg-[#2D2D2D] p-6 text-center text-white shadow-lg">
+                                    <div
+                                        className={`rounded-lg p-6 text-center shadow-lg transition-colors duration-300 ${
+                                            isDarkMode
+                                                ? 'bg-[#2D2D2D] text-white'
+                                                : 'bg-white text-black'
+                                        }`}>
                                         <p className="mb-4">{errorMessage}</p>
                                         <button
                                             type="button"
