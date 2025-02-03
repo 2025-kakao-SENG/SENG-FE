@@ -36,6 +36,7 @@ import {
 } from '@/types/apis/library/searchBookApiTypes';
 import useSearchBookApi from '@/hooks/apis/library/useSearchBookApi';
 import {resetDisplayBookInfo} from '@/redux/slice/displayBookSlice';
+import {useLocation} from 'react-router-dom';
 
 // [만들 것들]
 // 만들 함수 및 데이터 타입(서재 고려 해야함)
@@ -61,6 +62,7 @@ import {resetDisplayBookInfo} from '@/redux/slice/displayBookSlice';
 
 function Book() {
     const dispatch = useDispatch();
+    const location = useLocation();
     const createBookData = useSelector(getBookCreatingData);
     const createContentSignal = useSelector(getCreateContentSignal);
     const displayBookSignal = useSelector(getDisplayBookSignal);
@@ -70,7 +72,7 @@ function Book() {
         useBookContentApi();
     const {searchBookApi, isLoading: isSearchBookLoading} = useSearchBookApi();
 
-    const bookSizeRatioPC = 0.31;
+    const [bookSizeRatioPC, setBooksizeRatioPC] = useState(0.31);
     const bookSizeRatioTablet = 0.7;
     const boundaryWidth = 1100;
     const initialWidth = useRef<number>(Math.max(window.innerWidth, 1400));
@@ -284,6 +286,14 @@ function Book() {
         }
     };
 
+    useEffect(() => {
+        if (location.pathname === '/home') {
+            setBooksizeRatioPC(0.35);
+        } else if (location.pathname === '/home/ai') {
+            setBooksizeRatioPC(0.31);
+        }
+    }, [location.pathname]);
+
     // 캔버스 초기 설정 업데이트 & 리사이즈 함수 등록
     useEffect(() => {
         const updateCanvasConfig = (newWidth: number) => {
@@ -364,7 +374,7 @@ function Book() {
 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    }, [bookSizeRatioPC]);
 
     // 책 생성하기 (AISideBar 에서 클릭) or 라이브러리에서 책 가져오기
     useEffect(() => {
