@@ -17,6 +17,7 @@ import {
     UpdateUserNameApiRequest,
     UpdateUserNameApiResponse,
 } from '@/types/apis/user/updateUserNameApiTypes';
+import {useTheme} from '@/constants/ThemeProvider';
 
 function MyPage() {
     const dispatch = useDispatch();
@@ -28,6 +29,7 @@ function MyPage() {
     const {authDeregisterApi, isLoading: deregisterLoading} =
         useAuthDeregisterApi();
     const [isLogoutLoading, setIsLogoutLoading] = useState(false);
+    const {isDarkMode} = useTheme();
 
     const [successModal, setSuccessModal] = useState('');
     const [errorMessageModal, setErrorMessage] = useState('');
@@ -256,20 +258,31 @@ function MyPage() {
                 <div className="flex flex-col gap-[1.125rem] pr-[18.4374rem]">
                     {/* 닉네임 변경 */}
                     <div className="flex flex-col gap-[0.5625rem]">
-                        <h2 className="text-sm font-semibold text-[#F5F5F5]">
+                        <h2
+                            className={`text-sm font-semibold ${
+                                isDarkMode ? 'text-[#F5F5F5]' : 'text-black' // 수정됨
+                            }`}>
                             닉네임 변경하기
                         </h2>
                         <div className="flex items-center justify-between">
                             <input
                                 type="text"
-                                className="w-[16rem] bg-[#292929] px-[0.5625rem] py-1 text-[0.625rem] font-medium text-[#999999]"
+                                className={`w-[16rem] px-[0.5625rem] py-1 text-[0.625rem] font-medium transition-colors duration-300 ${
+                                    isDarkMode
+                                        ? 'bg-[#292929] text-[#999999] placeholder-[#F9F9F9]'
+                                        : 'bg-[#F3F3F3] text-[#A9A9A9]' // 수정됨
+                                }`}
                                 placeholder="변경할 닉네임을 입력하세요"
                                 value={nickname}
                                 onChange={e => setNickname(e.target.value)}
                             />
                             <button
                                 type="button"
-                                className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs text-[#CACACA] hover:bg-[#4a4a4a]"
+                                className={`h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] text-xs transition-colors duration-300 ${
+                                    isDarkMode
+                                        ? 'bg-[#2D2F39] text-[#CACACA] hover:bg-[#4a4a4a]'
+                                        : 'bg-[#999999] text-white hover:bg-[#7a7a7a]' // 수정됨
+                                }`}
                                 onClick={handleUpdateNickname}
                                 disabled={isUpdatingUserName}>
                                 {isUpdatingUserName ? '저장 중...' : '저장'}
@@ -278,7 +291,10 @@ function MyPage() {
                     </div>
 
                     <div className="flex flex-col gap-[0.5625rem]">
-                        <h2 className="text-sm font-semibold text-[#F5F5F5]">
+                        <h2
+                            className={`text-sm font-semibold ${
+                                isDarkMode ? 'text-[#F5F5F5]' : 'text-black' // 수정됨
+                            }`}>
                             이메일
                         </h2>
                         <div className="text-xs font-medium text-[#999999]">
@@ -287,7 +303,10 @@ function MyPage() {
                     </div>
 
                     <div className="flex flex-col gap-[0.5625rem]">
-                        <h2 className="text-sm font-semibold text-[#F5F5F5]">
+                        <h2
+                            className={`text-sm font-semibold ${
+                                isDarkMode ? 'text-[#F5F5F5]' : 'text-black' // 수정됨
+                            }`}>
                             이름
                         </h2>
                         <div className="text-xs font-medium text-[#999999]">
@@ -296,7 +315,10 @@ function MyPage() {
                     </div>
 
                     <div className="flex flex-col gap-[0.5625rem]">
-                        <h2 className="text-sm font-semibold text-[#F5F5F5]">
+                        <h2
+                            className={`text-sm font-semibold ${
+                                isDarkMode ? 'text-[#F5F5F5]' : 'text-black' // 수정됨
+                            }`}>
                             생년월일
                         </h2>
                         <div className="text-xs font-medium text-[#999999]">
@@ -306,14 +328,21 @@ function MyPage() {
 
                     {/* 비밀번호 변경 */}
                     <div className="flex flex-col gap-[0.5625rem]">
-                        <h2 className="text-sm font-semibold text-[#F5F5F5]">
+                        <h2
+                            className={`text-sm font-semibold ${
+                                isDarkMode ? 'text-[#F5F5F5]' : 'text-black' // 수정됨
+                            }`}>
                             비밀번호 변경
                         </h2>
 
                         <input
                             type="password"
                             placeholder="현재 비밀번호"
-                            className="w-[16rem] bg-[#292929] px-[0.5625rem] py-1 text-[0.625rem] font-medium text-[#999999]"
+                            className={`w-[16rem] px-[0.5625rem] py-1 text-[0.625rem] font-medium transition-colors duration-300 ${
+                                isDarkMode
+                                    ? 'bg-[#292929] text-[#999999] placeholder-[#F9F9F9]'
+                                    : 'bg-[#F3F3F3] text-black placeholder-[#A9A9A9]'
+                            }`}
                             value={oldPassword}
                             onChange={e => setOldPassword(e.target.value)}
                         />
@@ -322,13 +351,21 @@ function MyPage() {
                             <input
                                 type="password"
                                 placeholder="새 비밀번호"
-                                className="w-[16rem] bg-[#292929] px-[0.5625rem] py-1 text-[0.625rem] font-medium text-[#999999]"
+                                className={`w-[16rem] px-[0.5625rem] py-1 text-[0.625rem] font-medium transition-colors duration-300 ${
+                                    isDarkMode
+                                        ? 'bg-[#292929] text-[#999999] placeholder-[#F9F9F9]'
+                                        : 'bg-[#F3F3F3] text-black placeholder-[#A9A9A9]'
+                                }`}
                                 value={newPassword}
                                 onChange={e => setNewPassword(e.target.value)}
                             />
                             <button
                                 type="button"
-                                className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs text-[#CACACA] hover:bg-[#4a4a4a]"
+                                className={`h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] text-xs transition-colors duration-300 ${
+                                    isDarkMode
+                                        ? 'bg-[#2D2F39] text-[#CACACA] hover:bg-[#4a4a4a]'
+                                        : 'bg-[#999999] text-white hover:bg-[#7a7a7a]' // 수정됨
+                                }`}
                                 onClick={handleUpdatePassword}
                                 disabled={isUpdatingPassword}>
                                 {isUpdatingPassword ? '변경 중...' : '변경'}
@@ -337,7 +374,10 @@ function MyPage() {
                     </div>
 
                     <div className="flex flex-col">
-                        <h2 className="text-sm font-medium text-[#F5F5F5]">
+                        <h2
+                            className={`text-sm font-medium ${
+                                isDarkMode ? 'text-[#F5F5F5]' : 'text-black' // 수정됨
+                            }`}>
                             로그아웃
                         </h2>
                         <div className="flex items-center justify-between">
@@ -346,7 +386,11 @@ function MyPage() {
                             </div>
                             <button
                                 type="button"
-                                className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#2D2F39] text-xs text-[#CACACA] hover:bg-[#4a4a4a]"
+                                className={`h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] text-xs transition-colors duration-300 ${
+                                    isDarkMode
+                                        ? 'bg-[#2D2F39] text-[#CACACA] hover:bg-[#4a4a4a]'
+                                        : 'bg-[#999999] text-white hover:bg-[#7a7a7a]' // 수정됨
+                                }`}
                                 onClick={handleLogout}>
                                 로그아웃
                             </button>
@@ -354,7 +398,10 @@ function MyPage() {
                     </div>
 
                     <div className="flex flex-col">
-                        <h2 className="text-sm font-medium text-[#F5F5F5]">
+                        <h2
+                            className={`text-sm font-medium ${
+                                isDarkMode ? 'text-[#F5F5F5]' : 'text-black' // 수정됨
+                            }`}>
                             회원탈퇴
                         </h2>
                         <div className="flex items-center justify-between">
@@ -364,7 +411,11 @@ function MyPage() {
                             </div>
                             <button
                                 type="button"
-                                className="h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] bg-[#482323] text-xs text-[#CACACA] hover:bg-[#813a3a]"
+                                className={`h-[1.5625rem] w-[5.4375rem] rounded-[0.1875rem] text-xs transition-colors duration-300 ${
+                                    isDarkMode
+                                        ? 'bg-[#482323] text-[#CACACA] hover:bg-[#813a3a]'
+                                        : 'bg-red-600 text-white hover:bg-red-700' // 수정됨
+                                }`}
                                 onClick={handleDeregister}>
                                 회원탈퇴
                             </button>

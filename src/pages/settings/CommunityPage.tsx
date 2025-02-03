@@ -1,5 +1,6 @@
 import view from '@/assets/images/view.svg';
 import bin from '@/assets/images/bin.svg';
+import {useTheme} from '@/constants/ThemeProvider';
 
 const dummyPosts = [
     {
@@ -50,9 +51,16 @@ const dummyPosts = [
 ];
 
 function Community() {
+    const {isDarkMode} = useTheme();
+
     return (
         <div>
-            <h2 className="text-sm font-semibold text-[#F5F5F5]">작성한 글</h2>
+            <h2
+                className={`text-sm font-semibold ${
+                    isDarkMode ? 'text-[#F5F5F5]' : 'text-black' // 수정됨
+                }`}>
+                작성한 글
+            </h2>
 
             <div
                 className="mt-[0.8125rem] flex h-[34.5vw] flex-col gap-[0.9375rem] overflow-y-scroll"
@@ -70,8 +78,20 @@ function Community() {
                             {group.posts.map((post, postIndex) => (
                                 <div
                                     key={postIndex}
-                                    className="flex w-[28.3125rem] items-center justify-between rounded-[0.1875rem] bg-[#292929] px-[0.9375rem] py-[0.6875rem]">
-                                    <div>{post.title}</div>
+                                    key={postIndex}
+                                    className={`flex w-[28.3125rem] items-center justify-between rounded-[0.1875rem] px-[0.9375rem] py-[0.6875rem] ${
+                                        isDarkMode
+                                            ? 'bg-[#292929]'
+                                            : 'bg-[#999999]' // 수정됨
+                                    }`}>
+                                    <div
+                                        className={`${
+                                            isDarkMode
+                                                ? 'text-white'
+                                                : 'text-[#ffe9bb]' // 수정됨
+                                        }`}>
+                                        {post.title}
+                                    </div>
                                     <div className="flex gap-3.5">
                                         <button type="button">
                                             <img src={view} alt="보기" />

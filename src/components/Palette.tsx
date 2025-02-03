@@ -59,7 +59,7 @@ export default function Palette() {
         <>
             {/* 기본 Palette (데스크톱 & 태블릿 모드) */}
             <div
-                className={`flex w-fit overflow-hidden rounded-[0.575rem] border border-[#DBAC4A] bg-[#111111] transition-all duration-300 ${
+                className={`flex w-fit overflow-hidden rounded-[0.575rem] border border-[#DBAC4A] bg-[#111111] shadow-md transition-all duration-300 ${
                     isTablet
                         ? 'absolute bottom-10 left-1/2 -translate-x-1/2 transform'
                         : ''
