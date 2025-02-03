@@ -11,7 +11,6 @@ export const categoriesApi = createApi({
     reducerPath: 'categoriesApi',
     baseQuery: fetchBaseQuery({
         baseUrl: `${SERVER_URL}`,
-        credentials: 'include',
     }),
     endpoints: builder => ({
         fetchCategories: builder.query<CategoriesApiResponse, void>({

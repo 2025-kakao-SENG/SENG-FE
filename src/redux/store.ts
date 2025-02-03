@@ -12,6 +12,7 @@ import {createContentSlice} from './slice/createContentSlice';
 import {libraryApiSlice} from './apiSlice/libraryApiSlice';
 import {LeafApiSlice} from './apiSlice/leafApiSlice';
 import {displayBookSlice} from './slice/displayBookSlice';
+import {etcSlice} from './slice/etcSlice';
 
 const persistConfig = {
     key: 'login',
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
     createBook: createBookSlice.reducer,
     createContent: createContentSlice.reducer,
     displayBook: displayBookSlice.reducer,
+    etc: etcSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -33,7 +33,6 @@ function LibraryManagementPage() {
 
     const FetchSearchBooksApi = async () => {
         if (!userId) {
-            setErrorMessage('로그인 정보가 없습니다.');
             return;
         }
 
@@ -98,14 +97,9 @@ function LibraryManagementPage() {
                 <p className="text-[#DBAC4A]">{userData.name}</p>
                 <p className="text-[#C9C9C9]">님의 책장</p>
             </h2>
-            {booksLoading ? (
-                <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-                    <div className="flex flex-col items-center justify-center">
-                        <div className="border-b-5 h-32 w-32 animate-spin rounded-full border-t-[7px] border-[#DBAC4A]" />
-                        <p className="mt-5 text-[#DBAC4A]">
-                            책 정보를 불러오는 중...
-                        </p>
-                    </div>
+            {!userId ? (
+                <div className="mt-[2.375rem] flex h-[32vw] flex-wrap gap-[2.625rem] overflow-y-scroll pl-[0.5625rem] text-lg">
+                    <p className="text-[#DBAC4A]">로그인 정보가 없습니다.</p>
                 </div>
             ) : (
                 <div
@@ -123,12 +117,13 @@ function LibraryManagementPage() {
                     ))}
                 </div>
             )}
-            {deleteBookLoading && (
+            {(deleteBookLoading || booksLoading) && (
                 <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
                     <div className="flex flex-col items-center justify-center">
                         <div className="border-b-5 h-32 w-32 animate-spin rounded-full border-t-[7px] border-[#DBAC4A]" />
                         <p className="mt-5 text-[#DBAC4A]">
-                            책 정보를 삭제하는 중...
+                            {deleteBookLoading && '책 정보를 삭제하는 중...'}
+                            {booksLoading && '책 정보를 불러오는 중...'}
                         </p>
                     </div>
                 </div>

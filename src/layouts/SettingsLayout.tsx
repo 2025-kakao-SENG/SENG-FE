@@ -12,17 +12,18 @@ import ringYellow from '@/assets/images/MyPage/ringYellow.svg';
 import setting from '@/assets/images/menuBar/setting.svg';
 import settingYellow from '@/assets/images/MyPage/settingYellow.svg';
 import close from '@/assets/images/login/close.svg';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getUserLoginData} from '@/redux/selector';
 import {useTheme} from '@/constants/ThemeProvider';
+import {setSettingClose} from '@/redux/slice/etcSlice';
 
 interface SettingLayoutProps {
     backgroundLocation: string;
 }
 
 function SettingLayout({backgroundLocation}: SettingLayoutProps) {
+    const dispatch = useDispatch();
     const [activeTab, setActiveTab] = useState('myPage');
-    const [clickedButton, setClickedButton] = useState<string | null>(null);
     const navigate = useNavigate();
     const location = useLocation();
     const userData = useSelector(getUserLoginData);
@@ -41,10 +42,6 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
             setActiveTab('display');
         }
     }, [location]);
-
-    useEffect(() => {
-        console.log(userData);
-    }, [userData]);
 
     const menuItems = [
         {
@@ -115,7 +112,6 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
                         }`}
                         onClick={() => {
                             setActiveTab(item.name);
-                            setClickedButton(item.name);
                             navigate(item.path, {
                                 state: {
                                     backgroundLocation: location,
@@ -159,7 +155,10 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
             <button
                 type="button"
                 className="p-8"
-                onClick={() => navigate(backgroundLocation)}>
+                onClick={() => {
+                    dispatch(setSettingClose());
+                    navigate(backgroundLocation);
+                }}>
                 <img src={close} alt="닫기" />
             </button>
         </div>

@@ -19,7 +19,6 @@ export const libraryApiSlice = createApi({
     reducerPath: 'libraryApi',
     baseQuery: fetchBaseQuery({
         baseUrl: SERVER_URL,
-        credentials: 'include',
     }),
     endpoints: builder => ({
         searchBooks: builder.mutation<

@@ -252,7 +252,7 @@ function MyPage() {
     return (
         // eslint-disable-next-line react/jsx-no-useless-fragment
         <>
-            {user.name ? (
+            {userId ? (
                 <div className="flex flex-col gap-[1.125rem] pr-[18.4374rem]">
                     {/* 닉네임 변경 */}
                     <div className="flex flex-col gap-[0.5625rem]">
@@ -416,7 +416,11 @@ function MyPage() {
                     )}
                 </div>
             ) : (
-                <div className="flex h-full w-full items-center justify-center" />
+                <div className="flex h-full w-full">
+                    <p className="text-lg text-[#DBAC4A]">
+                        로그인 정보가 없습니다.
+                    </p>
+                </div>
             )}
         </>
     );

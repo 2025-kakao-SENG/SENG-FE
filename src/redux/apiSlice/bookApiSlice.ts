@@ -14,7 +14,6 @@ export const bookApi = createApi({
     reducerPath: 'bookApi',
     baseQuery: fetchBaseQuery({
         baseUrl: `${SERVER_URL}`,
-        credentials: 'include',
     }),
     endpoints: builder => ({
         bookHeadApi: builder.mutation<BookHeadApiResponse, BookHeadApiRequest>({

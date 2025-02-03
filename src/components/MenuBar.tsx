@@ -1,7 +1,11 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
-import {getLeafCount, getUserLoginData} from '@/redux/selector';
+import {
+    getLeafCount,
+    getSettingCloseSignal,
+    getUserLoginData,
+} from '@/redux/selector';
 import logo from '@/assets/images/logo.svg';
 import homeYellow from '@/assets/images/menuBar/homeYellow.svg';
 import home from '@/assets/images/menuBar/home.svg';
@@ -31,11 +35,17 @@ export default function MenuBar() {
     const navigate = useNavigate();
     const userLoginData = useSelector(getUserLoginData);
     const location = useLocation();
+    const settingCloseSignal = useSelector(getSettingCloseSignal);
     const {isDarkMode} = useTheme();
 
     const [activeMenu, setActiveMenu] = useState('/home');
     const [isOpen, setIsOpen] = useState(true); // MenuBar 상태 관리
     const [isLeafModalOpen, setIsLeafModalOpen] = useState(false);
+
+    // 메뉴 활성화 상태 관리
+    useEffect(() => {
+        setActiveMenu(location.pathname);
+    }, [settingCloseSignal]);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -241,7 +251,7 @@ export default function MenuBar() {
                                 className="rounded-lg px-3 py-2.5"
                             />
                             <p className="text-[0.6875rem] text-[#FAC453]">
-                                {leafCount / 100}
+                                {Math.floor(leafCount / 100)}
                             </p>
                         </button>
                         <button

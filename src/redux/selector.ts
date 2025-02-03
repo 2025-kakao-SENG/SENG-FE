@@ -5,7 +5,10 @@ export const getUserId = (state: RootState) => {
     if (state.user.pid) {
         return state.user.pid;
     }
-    return state.user.kakaoPid;
+    if (state.user.kakaoPid) {
+        return state.user.kakaoPid;
+    }
+    return null;
 };
 export const getLeafCount = (state: RootState) => state.user.leaf;
 
@@ -21,6 +24,10 @@ export const getCreateContentSignal = (state: RootState) => {
 export const getDisplayBookPid = (state: RootState) => state.displayBook.pid;
 export const getDisplayBookSignal = (state: RootState) => {
     return state.displayBook.displayBookSignal;
+};
+
+export const getSettingCloseSignal = (state: RootState) => {
+    return state.etc.settingCloseSignal;
 };
 
 export const selectorTest: string = 'selectorTest';

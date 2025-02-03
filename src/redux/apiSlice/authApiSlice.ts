@@ -22,7 +22,6 @@ export const authApi = createApi({
     reducerPath: 'authApi',
     baseQuery: fetchBaseQuery({
         baseUrl: `${SERVER_URL}`,
-        credentials: 'include',
     }),
     endpoints: builder => ({
         authLoginApi: builder.mutation<

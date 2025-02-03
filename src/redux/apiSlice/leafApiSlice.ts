@@ -12,7 +12,6 @@ export const LeafApiSlice = createApi({
     reducerPath: 'LeafApi', // 슬라이스 이름
     baseQuery: fetchBaseQuery({
         baseUrl: SERVER_URL,
-        credentials: 'include',
     }),
     endpoints: builder => ({
         // chargeLeaf: leaf 충전 API

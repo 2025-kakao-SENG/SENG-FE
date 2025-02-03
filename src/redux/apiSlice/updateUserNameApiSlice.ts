@@ -10,7 +10,6 @@ export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
         baseUrl: SERVER_URL,
-        credentials: 'include',
     }),
     endpoints: builder => ({
         updateUserName: builder.mutation<
