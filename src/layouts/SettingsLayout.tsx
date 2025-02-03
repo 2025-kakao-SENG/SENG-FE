@@ -106,10 +106,10 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
                             activeTab === item.name
                                 ? isDarkMode
                                     ? 'bg-[#2D2F39] text-[#DBAC4A]'
-                                    : 'bg-[#D4D4D4] text-[#000000]'
+                                    : 'bg-[#D4D4D4] text-[#DBAC4A]'
                                 : isDarkMode
-                                  ? 'hover:bg-[#292929] hover:text-[#DBAC4A]'
-                                  : 'hover:bg-[#EEEEEE] hover:text-[#DBAC4A]'
+                                  ? 'text-[#B1B1B1] hover:bg-[#292929] hover:text-[#text-[#B1B1B1]]'
+                                  : 'text-[#B1B1B1] hover:bg-[#EEEEEE] hover:text-[#B1B1B1]'
                         } ${item.name === 'community' ? 'cursor-not-allowed opacity-50' : ''}`}
                         onClick={() => {
                             if (item.name !== 'community') {

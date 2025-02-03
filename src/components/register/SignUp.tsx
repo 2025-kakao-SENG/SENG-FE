@@ -335,12 +335,21 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
 
             {errorMessage && (
                 <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-                    <div className="flex flex-col items-center justify-center rounded-2xl bg-[#111111] p-5">
-                        <p className="text-lg text-[#DBAC4A]">{errorMessage}</p>
+                    <div
+                        className={`flex flex-col items-center justify-center rounded-2xl p-5 transition-colors duration-300 ${
+                            isDarkMode
+                                ? 'bg-[#111111] text-[#DBAC4A]'
+                                : 'bg-white text-black'
+                        }`}>
+                        <p className="">{errorMessage}</p>
                         <button
                             type="button"
                             onClick={() => setErrorMessage('')}
-                            className="mt-2 rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-white hover:bg-[#b88a3a]">
+                            className={`mt-5 rounded px-4 py-1 text-[0.7rem] font-semibold text-black transition-colors duration-300 ${
+                                isDarkMode
+                                    ? 'bg-[#DBAC4A] hover:bg-[#b88a3a]'
+                                    : 'bg-[#DBAC4A] hover:bg-[#f0c14b]'
+                            }`}>
                             확인
                         </button>
                     </div>
