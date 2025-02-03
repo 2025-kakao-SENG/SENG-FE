@@ -93,7 +93,7 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
                 <div className="mb-4 flex items-center gap-[0.8125rem]">
                     <img src={logo} alt="" className="h-[1.875rem]" />
                     <div className="font-semibold text-[#DBAC4A]">
-                        {userData.name}님
+                        {userData.name ? `${userData.name} 님` : 'Guest 님'}
                     </div>
                 </div>
                 {/* 메뉴 리스트 */}
@@ -101,6 +101,7 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
                     <button
                         key={item.name}
                         type="button"
+                        disabled={item.name === 'community'}
                         className={`flex h-[2.375rem] w-full items-center gap-2.5 rounded-[0.3125rem] pl-[0.65rem] transition-colors duration-200 ${
                             activeTab === item.name
                                 ? isDarkMode
@@ -109,15 +110,17 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
                                 : isDarkMode
                                   ? 'hover:bg-[#292929] hover:text-[#DBAC4A]'
                                   : 'hover:bg-[#EEEEEE] hover:text-[#DBAC4A]'
-                        }`}
+                        } ${item.name === 'community' ? 'cursor-not-allowed opacity-50' : ''}`}
                         onClick={() => {
-                            setActiveTab(item.name);
-                            navigate(item.path, {
-                                state: {
-                                    backgroundLocation: location,
-                                    user_data: userData,
-                                },
-                            });
+                            if (item.name !== 'community') {
+                                setActiveTab(item.name);
+                                navigate(item.path, {
+                                    state: {
+                                        backgroundLocation: location,
+                                        user_data: userData,
+                                    },
+                                });
+                            }
                         }}>
                         <img
                             src={
