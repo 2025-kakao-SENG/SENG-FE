@@ -13,6 +13,7 @@ import logo from '@/assets/images/logo.svg';
 import close from '@/assets/images/login/close.svg';
 import kakao from '@/assets/images/login/kakao.svg';
 import {useTheme} from '@/constants/ThemeProvider';
+import { setLoginClose } from '@/redux/slice/etcSlice';
 
 interface LoginPageProps {
     backgroundLocation: string;
@@ -146,7 +147,10 @@ function LoginPage({
             <button
                 type="button"
                 className="absolute right-[1.9375rem] top-[1.9375rem]"
-                onClick={() => navigate(loginBackgroundLocation)}>
+                onClick={() => {
+                    dispatch(setLoginClose());
+                    navigate(loginBackgroundLocation);
+                }}>
                 <img src={close} alt="Close Button" />
             </button>
             <form

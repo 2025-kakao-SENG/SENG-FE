@@ -3,9 +3,12 @@ import {useNavigate} from 'react-router-dom';
 import logo from '@/assets/images/logo.svg';
 import close from '@/assets/images/login/close.svg';
 import {useTheme} from '@/constants/ThemeProvider';
+import {setLoginClose} from '@/redux/slice/etcSlice';
+import {useDispatch} from 'react-redux';
 
 function Service({renderSignUp}: {renderSignUp: () => void}) {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [isChecked1, setIsChecked1] = useState(false); // 첫 번째 체크박스 상태
     const [isChecked2, setIsChecked2] = useState(false); // 두 번째 체크박스 상태
 
@@ -305,7 +308,10 @@ function Service({renderSignUp}: {renderSignUp: () => void}) {
             {/* 닫기 버튼 */}
             <button
                 type="button"
-                onClick={() => navigate(-1)}
+                onClick={() => {
+                    dispatch(setLoginClose());
+                    navigate(-1);
+                }}
                 className="mr-[1.9375rem] mt-[1.9375rem]">
                 <img src={close} alt="Close Button" className="" />
             </button>

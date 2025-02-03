@@ -9,6 +9,8 @@ import logo from '@/assets/images/logo.svg';
 import calendar from '@/assets/images/calendar.svg';
 import close from '@/assets/images/login/close.svg';
 import {useTheme} from '@/constants/ThemeProvider';
+import {setLoginClose} from '@/redux/slice/etcSlice';
+import {useDispatch} from 'react-redux';
 
 interface SignUpProps {
     backgroundLocation: string;
@@ -16,6 +18,7 @@ interface SignUpProps {
 
 function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const {authRegisterApi, isLoading} = useAuthRegisterApi();
     const {isDarkMode} = useTheme();
 
@@ -308,7 +311,12 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
             </div>
 
             {/* 닫기 버튼 */}
-            <button type="button" onClick={() => navigate(-1)}>
+            <button
+                type="button"
+                onClick={() => {
+                    dispatch(setLoginClose());
+                    navigate(-1);
+                }}>
                 <img
                     src={close}
                     alt="Close Button"

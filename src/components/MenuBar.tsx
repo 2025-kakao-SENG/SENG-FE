@@ -3,6 +3,7 @@ import {useSelector} from 'react-redux';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {
     getLeafCount,
+    getLoginCloseSignal,
     getSettingCloseSignal,
     getUserLoginData,
 } from '@/redux/selector';
@@ -36,6 +37,7 @@ export default function MenuBar() {
     const userLoginData = useSelector(getUserLoginData);
     const location = useLocation();
     const settingCloseSignal = useSelector(getSettingCloseSignal);
+    const loginCloseSignal = useSelector(getLoginCloseSignal);
     const {isDarkMode} = useTheme();
 
     const [activeMenu, setActiveMenu] = useState('/home');
@@ -45,7 +47,7 @@ export default function MenuBar() {
     // 메뉴 활성화 상태 관리
     useEffect(() => {
         setActiveMenu(location.pathname);
-    }, [settingCloseSignal]);
+    }, [settingCloseSignal, loginCloseSignal]);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);

@@ -29,5 +29,8 @@ export const getDisplayBookSignal = (state: RootState) => {
 export const getSettingCloseSignal = (state: RootState) => {
     return state.etc.settingCloseSignal;
 };
+export const getLoginCloseSignal = (state: RootState) => {
+    return state.etc.loginCloseSignal;
+};
 
 export const selectorTest: string = 'selectorTest';
