@@ -45,6 +45,38 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
             address,
         };
 
+        if (password !== checkPassword) {
+            setErrorMessage('비밀번호가 일치하지 않습니다.');
+            return;
+        }
+
+        // 유효성 검증
+        if (
+            !name ||
+            !email ||
+            !password ||
+            !checkPassword ||
+            !birth ||
+            !phone ||
+            !address
+        ) {
+            setErrorMessage('모든 항목을 입력해주세요.');
+            return;
+        }
+
+        const birthRegex = /^[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]$/;
+        if (!birthRegex.test(birth)) {
+            setErrorMessage('생년월일을 형식에 맞게 입력해주세요.');
+            return;
+        }
+
+        // ex) 01012341234, 010 고정
+        const phoneRegex = /^010[0-9]{8}$/;
+        if (!phoneRegex.test(phone)) {
+            setErrorMessage('연락처를 형식에 맞게 입력해주세요.');
+            return;
+        }
+
         try {
             const response: AuthRegisterApiResponse =
                 await authRegisterApi(request);
@@ -53,16 +85,9 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
                 successRegister();
             } else {
                 setErrorMessage('회원가입 중 오류가 발생했습니다.');
-                // 세부 에러 항목 활성화
-                /* setErrorMessage(response.message); */
             }
         } catch /* (error: unknown) */ {
             setErrorMessage('회원가입 중 오류가 발생했습니다.');
-            /* if (error instanceof Error) {
-                setErrorMessage(error.message);
-            } else {
-                setErrorMessage('회원가입 중 알 수 없는 오류가 발생했습니다.');
-            } */
         }
     }
 
@@ -242,24 +267,8 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
                         type="button"
                         onClick={handleSubmit}
                         className="h-[2.633125rem] w-[39.875rem] rounded-sm bg-[#EEB02F] text-black">
-                        {isLoading ? '회원가입 중...' : '회원가입'}
+                        회원가입
                     </button>
-
-                    {errorMessage && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                            <div className="flex flex-col items-center justify-center rounded-lg bg-[#2C2C2C] p-6 shadow-xl">
-                                <p className="text-lg font-semibold text-[#EEB02F]">
-                                    {errorMessage}
-                                </p>
-                                <button
-                                    type="button"
-                                    className="mt-4 rounded-md bg-[#EEB02F] px-6 py-2 text-sm font-medium text-black hover:bg-[#d9a020] focus:outline-none focus:ring-2 focus:ring-[#EEB02F] focus:ring-opacity-50"
-                                    onClick={() => setErrorMessage('')}>
-                                    닫기
-                                </button>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
 
@@ -271,6 +280,29 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
                     className="pr-[1.875rem] pt-[1.875rem] text-[0.83625rem] font-medium text-black"
                 />
             </button>
+
+            {isLoading && (
+                <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="border-b-5 h-32 w-32 animate-spin rounded-full border-t-[7px] border-[#DBAC4A]" />
+                        <p className="mt-5 text-[#DBAC4A]">회원가입 중...</p>
+                    </div>
+                </div>
+            )}
+
+            {errorMessage && (
+                <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+                    <div className="flex flex-col items-center justify-center rounded-2xl bg-[#111111] p-5">
+                        <p className="text-lg text-[#DBAC4A]">{errorMessage}</p>
+                        <button
+                            type="button"
+                            onClick={() => setErrorMessage('')}
+                            className="mt-2 rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-white hover:bg-[#b88a3a]">
+                            확인
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

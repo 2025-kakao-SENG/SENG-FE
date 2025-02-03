@@ -167,30 +167,12 @@ function LoginPage({
                             : 'border-gray-300 bg-white text-black'
                     } px-3 text-[0.875rem] placeholder-gray-400 transition-colors duration-300 focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none`}
                 />
-                {errorMessage && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                        <div className="flex flex-col items-center justify-center rounded-lg bg-[#2C2C2C] p-6 shadow-xl">
-                            <p className="text-lg font-semibold text-[#EEB02F]">
-                                {errorMessage}
-                            </p>
-                            <button
-                                type="button"
-                                className="mt-4 rounded-md bg-[#EEB02F] px-6 py-2 text-sm font-medium text-black hover:bg-[#d9a020] focus:outline-none focus:ring-2 focus:ring-[#EEB02F] focus:ring-opacity-50"
-                                onClick={() => setErrorMessage('')}>
-                                닫기
-                            </button>
-                        </div>
-                    </div>
-                )}
             </form>
             <button
                 type="button"
                 onClick={handleLoginSubmit}
-                disabled={isLoginLoading}
-                className={`mt-[1.5625rem] h-[3rem] w-[19.5rem] rounded-[0.1875rem] ${
-                    isLoginLoading ? 'bg-gray-500' : 'bg-[#EEB02F]'
-                } text-[0.875rem] text-black`}>
-                {isLoginLoading ? '로딩 중...' : '로그인'}
+                className="mt-[1.5625rem] h-[3rem] w-[19.5rem] rounded-[0.1875rem] bg-[#EEB02F] text-[0.875rem] text-black">
+                로그인
             </button>
             <div className="mb-[1.625rem] mt-[0.875rem] flex items-center text-[#9C9C9C]">
                 <button type="button" className="px-1 text-xs">
@@ -228,24 +210,39 @@ function LoginPage({
                 <button
                     type="button"
                     onClick={handleKaKaoLoginSubmit}
-                    disabled={isKakaoLoginLoading}
-                    className={`flex h-[3rem] w-[19.5rem] items-center justify-center gap-3 rounded-[0.1875rem] ${
-                        isKakaoLoginLoading ? 'bg-gray-500' : 'bg-[#EEB02F]'
-                    }`}>
-                    {isKakaoLoginLoading ? (
-                        <p className="text-[0.875rem] font-medium text-black">
-                            로딩 중...
-                        </p>
-                    ) : (
-                        <>
-                            <img src={kakao} alt="kakao" />
-                            <p className="text-[0.875rem] font-medium text-black">
-                                카카오 로그인
-                            </p>
-                        </>
-                    )}
+                    className="flex h-[3rem] w-[19.5rem] items-center justify-center gap-3 rounded-[0.1875rem] bg-[#EEB02F]">
+                    <img src={kakao} alt="kakao" />
+                    <p className="text-[0.875rem] font-medium text-black">
+                        카카오 로그인
+                    </p>
                 </button>
             </div>
+
+            {(isLoginLoading || isKakaoLoginLoading) && (
+                <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-20">
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="border-b-5 h-32 w-32 animate-spin rounded-full border-t-[7px] border-[#DBAC4A]" />
+                        <p className="mt-5 text-[#DBAC4A]">
+                            {isLoginLoading && '로그인 중...'}
+                            {isKakaoLoginLoading && '카카오 로그인 중...'}
+                        </p>
+                    </div>
+                </div>
+            )}
+
+            {errorMessage && (
+                <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+                    <div className="flex flex-col items-center justify-center rounded-2xl bg-[#111111] p-5">
+                        <p className="text-lg text-[#DBAC4A]">{errorMessage}</p>
+                        <button
+                            type="button"
+                            onClick={() => setErrorMessage('')}
+                            className="mt-2 rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-white hover:bg-[#b88a3a]">
+                            확인
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

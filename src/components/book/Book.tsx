@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef} from 'react';
 import HTMLFlipBook from 'react-pageflip';
-import bookMockData from '@/__test__/mocks/bookMockData';
+import bookMockData from '@/constants/bookMockData';
 import {resetCreateBookInfo} from '@/redux/slice/createBookSlice';
 import defaultCanvasConfig from '@/constants/canvasConfig';
 import {CanvasConfig} from '@/types/book/canvasType';
@@ -72,7 +72,7 @@ function Book() {
 
     const bookSizeRatioPC = 0.27;
     const bookSizeRatioTablet = 0.6;
-    const boundaryWidth = 768;
+    const boundaryWidth = 1000;
     const initialWidth = useRef<number>(Math.max(window.innerWidth, 1500));
     const prevWidthRef = useRef<number>(window.innerWidth);
     const [canvasConfig, setCanvasConfig] = useState(defaultCanvasConfig);
