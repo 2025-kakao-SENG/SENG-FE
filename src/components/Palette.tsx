@@ -19,11 +19,18 @@ import interestsLight from '../assets/images/palette/interestsLight.svg';
 import aiWhite from '../assets/images/palette/aiWhite.svg';
 import aiBlack from '../assets/images/palette/aiBlack.svg';
 import transform from '../assets/images/transform.svg';
+import {useNavigate} from 'react-router-dom';
 
 export default function Palette() {
     const [activeButton, setActiveButton] = useState(null);
     const [isTablet, setIsTablet] = useState(false);
+    const navigate = useNavigate();
     const {isDarkMode, toggleTheme} = useTheme();
+
+    const handleAiButtonClick = () => {
+        handleButtonClick('aiWhite'); // 버튼 활성화 상태 변경
+        navigate('/home/ai'); // AI 페이지로 이동
+    };
 
     //  화면 크기 감지하여 태블릿 모드 업데이트
     useEffect(() => {
@@ -164,7 +171,7 @@ export default function Palette() {
                             src={isDarkMode ? aiWhite : aiBlack}
                             alt="Yellow Ai Button"
                             className={`${getButtonClass('aiWhite')} h-[2.5rem]`}
-                            onClick={() => handleButtonClick('aiWhite')}
+                            onClick={handleAiButtonClick}
                         />
                     ) : (
                         // 태블릿 모드에서는 Transform 아이콘 표시
