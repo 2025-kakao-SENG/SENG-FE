@@ -1,13 +1,13 @@
 import {Outlet} from 'react-router-dom';
-import MenuBar from '../components/MenuBar';
 import {useTheme} from '@/constants/ThemeProvider';
+import MenuBar from '@/components/MenuBar';
 
 function Layout() {
     const {isDarkMode} = useTheme();
 
     return (
         <div
-            className={`absolute flex h-screen w-screen ${
+            className={`absolute flex h-full w-full ${
                 isDarkMode ? 'bg-black text-white' : 'bg-[#F3F3F3] text-black'
             }`}>
             <header className="h-full w-auto items-center justify-center">

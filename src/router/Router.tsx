@@ -45,7 +45,7 @@ function Router() {
     }
 
     return (
-        <div className="min-w-screen relative flex min-h-screen bg-black text-white">
+        <div className="relative flex h-screen w-screen bg-black text-white">
             {/* 배경 라우트 (이전 화면) */}
             <Routes location={backgroundLocation || location}>
                 <Route path="/" element={<Layout />}>
