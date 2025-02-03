@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import {useTheme} from '@/constants/ThemeProvider';
 import highlight from '../assets/images/palette/highlight.svg';
 import highlightLight from '../assets/images/palette/highlightLIght.svg';
@@ -27,7 +27,7 @@ export default function Palette() {
     //  화면 크기 감지하여 태블릿 모드 업데이트
     useEffect(() => {
         const checkScreenSize = () => {
-            setIsTablet(window.innerWidth <= 768);
+            setIsTablet(window.innerWidth <= 1100);
         };
 
         checkScreenSize(); // 초기 화면 크기 체크

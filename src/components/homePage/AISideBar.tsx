@@ -48,7 +48,7 @@ export default function SideBar() {
     // 화면 크기 감지 (태블릿 여부 체크 + 깜빡임 방지)
     useEffect(() => {
         const checkScreenSize = () => {
-            const isNowTablet = window.innerWidth <= 768;
+            const isNowTablet = window.innerWidth <= 1100;
             if (isNowTablet !== isTablet) {
                 setIsVisible(false); // 변경될 때 잠시 숨김
                 setTimeout(() => {

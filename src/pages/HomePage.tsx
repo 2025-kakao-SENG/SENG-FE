@@ -7,7 +7,7 @@ function Home() {
     return (
         <div className="flex h-full w-full">
             <div
-                className={`flex h-full ${location.pathname === '/home' ? 'w-full' : 'w-auto'} flex-none flex-col items-center justify-center`}>
+                className={`flex h-full ${location.pathname === '/home' ? 'w-full' : 'ml-5 w-auto'} flex-none flex-col items-center justify-center`}>
                 <Palette />
                 <Book />
             </div>

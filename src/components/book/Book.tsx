@@ -70,10 +70,10 @@ function Book() {
         useBookContentApi();
     const {searchBookApi, isLoading: isSearchBookLoading} = useSearchBookApi();
 
-    const bookSizeRatioPC = 0.28;
+    const bookSizeRatioPC = 0.29;
     const bookSizeRatioTablet = 0.7;
     const boundaryWidth = 1100;
-    const initialWidth = useRef<number>(Math.max(window.innerWidth, 1500));
+    const initialWidth = useRef<number>(Math.max(window.innerWidth, 1400));
     const prevWidthRef = useRef<number>(window.innerWidth);
     const [canvasConfig, setCanvasConfig] = useState(defaultCanvasConfig);
 
@@ -325,24 +325,37 @@ function Book() {
         if (initialWidth.current > boundaryWidth) {
             updateCanvasConfig(initialWidth.current * bookSizeRatioPC);
         } else {
-            updateCanvasConfig(initialWidth.current * bookSizeRatioTablet);
+            updateCanvasConfig(window.innerWidth * bookSizeRatioTablet);
         }
 
         const handleResize = () => {
             const currentWidth = window.innerWidth;
             const prevWidth = prevWidthRef.current;
 
+            // 캔버스 너비가 1100px 이상인지 확인
+            if (currentWidth > boundaryWidth) {
+                // 경계선을 넘었으면 새로운 너비로 업데이트
+                if (prevWidth <= boundaryWidth) {
+                    updateCanvasConfig(initialWidth.current * bookSizeRatioPC);
+                }
+            }
             // 경계선을 넘었는지 확인
-            if (
+            else if (
                 (prevWidth <= boundaryWidth && currentWidth > boundaryWidth) ||
                 (prevWidth > boundaryWidth && currentWidth <= boundaryWidth)
             ) {
                 // 경계선을 넘었으면 새로운 너비로 업데이트
                 if (currentWidth > boundaryWidth) {
+                    // 초기 너비로 돌아가기
                     updateCanvasConfig(initialWidth.current * bookSizeRatioPC);
                 } else {
-                    updateCanvasConfig(window.innerWidth * bookSizeRatioTablet);
+                    // 태블릿 너비로 업데이트
+                    updateCanvasConfig(currentWidth * bookSizeRatioTablet);
                 }
+            }
+            // 1100px 이하인지 확인
+            else if (currentWidth <= boundaryWidth) {
+                updateCanvasConfig(currentWidth * bookSizeRatioTablet);
             }
 
             // 이전 너비 업데이트
@@ -459,7 +472,7 @@ function Book() {
                 </div>
             </div>
             {/* 태블릿 및 모바일 용 ScrollBook - PC 미만에서만 표시 */}
-            <div className="block TB:hidden">
+            <div className="block h-full w-full TB:hidden">
                 <div className="hide-scrollbar flex h-full w-full flex-col items-start justify-start overflow-y-auto p-4">
                     {/* 페이지 목록 */}
                     {bookData?.chapters.map(chapter =>
