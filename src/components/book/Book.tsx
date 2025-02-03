@@ -72,7 +72,7 @@ function Book() {
 
     const bookSizeRatioPC = 0.45;
     const bookSizeRatioTablet = 0.6;
-    const boundaryWidth = 1000;
+    const boundaryWidth = 1200;
     const initialWidth = useRef<number>(Math.max(window.innerWidth, 1500));
     const prevWidthRef = useRef<number>(window.innerWidth);
     const [canvasConfig, setCanvasConfig] = useState(defaultCanvasConfig);
