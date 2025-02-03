@@ -270,7 +270,7 @@ function MyPage() {
                                 className={`w-[16rem] px-[0.5625rem] py-1 text-[0.625rem] font-medium transition-colors duration-300 ${
                                     isDarkMode
                                         ? 'bg-[#292929] text-[#999999] placeholder-[#F9F9F9]'
-                                        : 'bg-[#F3F3F3] text-[#A9A9A9]' // 수정됨
+                                        : 'bg-[#dcdcdc] text-[#7a7a7a]' // 수정됨
                                 }`}
                                 placeholder="변경할 닉네임을 입력하세요"
                                 value={nickname}
@@ -341,7 +341,7 @@ function MyPage() {
                             className={`w-[16rem] px-[0.5625rem] py-1 text-[0.625rem] font-medium transition-colors duration-300 ${
                                 isDarkMode
                                     ? 'bg-[#292929] text-[#999999] placeholder-[#F9F9F9]'
-                                    : 'bg-[#F3F3F3] text-black placeholder-[#A9A9A9]'
+                                    : 'bg-[#dcdcdc] text-black placeholder-[#7a7a7a]'
                             }`}
                             value={oldPassword}
                             onChange={e => setOldPassword(e.target.value)}
@@ -354,7 +354,7 @@ function MyPage() {
                                 className={`w-[16rem] px-[0.5625rem] py-1 text-[0.625rem] font-medium transition-colors duration-300 ${
                                     isDarkMode
                                         ? 'bg-[#292929] text-[#999999] placeholder-[#F9F9F9]'
-                                        : 'bg-[#F3F3F3] text-black placeholder-[#A9A9A9]'
+                                        : 'bg-[#dcdcdc] text-black placeholder-[#7a7a7a]'
                                 }`}
                                 value={newPassword}
                                 onChange={e => setNewPassword(e.target.value)}

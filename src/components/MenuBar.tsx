@@ -266,7 +266,7 @@ export default function MenuBar() {
                             <img
                                 src={logout}
                                 alt="logout"
-                                className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-[#EEEEEE]"
+                                className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-[#4a4a4a]"
                             />
                         </button>
                     </li>

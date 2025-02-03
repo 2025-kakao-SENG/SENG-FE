@@ -240,7 +240,10 @@ function LeafCharge({onClose}: {onClose: () => void}) {
             </div>
 
             {/* 닫기 버튼 */}
-            <button type="button">
+            <button
+                type="button"
+                onClick={onClose}
+                className="absolute right-5 top-5">
                 <img src={close} alt="닫기" className="w-3" />
             </button>
 
