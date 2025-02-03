@@ -38,6 +38,11 @@ function LoginPage({
     }
 
     async function handleLoginSubmit() {
+        if (!emailInput || !passwordInput) {
+            setErrorMessage('이메일과 비밀번호는 필수입니다.');
+            return;
+        }
+
         const request: AuthLoginApiRequest = {
             email: emailInput,
             password: passwordInput,
@@ -133,7 +138,7 @@ function LoginPage({
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-20">
             <div
-                className={`absolute left-1/2 top-1/2 z-10 flex h-[30.9375rem] w-[25.8125rem] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center ${isDarkMode ? 'bg-[#1B1B1B] text-[#9C9C9C]' : 'bg-[#F3F3F3] text-black shadow-md'} pb-8 transition-colors duration-300`}>
+                className={`absolute left-1/2 top-1/2 z-10 flex h-[30.9375rem] w-[25.8125rem] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center rounded-[0.9375rem] ${isDarkMode ? 'bg-[#1B1B1B] text-[#9C9C9C]' : 'bg-[#F3F3F3] text-black shadow-md'} pb-8 transition-colors duration-300`}>
                 <div
                     className={`rounded-full p-3 px-2.5 transition-colors duration-300 ${
                         isDarkMode ? 'bg-black' : 'bg-white'
@@ -249,7 +254,12 @@ function LoginPage({
 
                 {errorMessage && (
                     <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-                        <div className="flex flex-col items-center justify-center rounded-2xl bg-[#111111] p-5">
+                        <div
+                            className={`flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] p-5 transition-colors duration-300 ${
+                                isDarkMode
+                                    ? 'bg-[#1E1E1E]'
+                                    : 'bg-white shadow-xl'
+                            }`}>
                             <p className="text-lg text-[#DBAC4A]">
                                 {errorMessage}
                             </p>

@@ -137,10 +137,10 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
 
     return (
         <div
-            className={`flex h-[34.5rem] w-[51.9375rem] items-start justify-between shadow-lg transition-colors duration-300 ${
+            className={`flex h-[34.5rem] w-[51.9375rem] items-start justify-between rounded-[0.9375rem] shadow-lg transition-colors duration-300 ${
                 isDarkMode
                     ? 'bg-[#1B1B1B] text-[#F5F5F5]'
-                    : 'bg-[#e9e9e9] text-black'
+                    : 'bg-[#F3F3F3] text-black shadow-xl'
             }`}>
             {/* 로고 */}
             <div
@@ -155,7 +155,7 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
             </div>
 
             {/* 본문 */}
-            <div className="flex flex-col gap-2.5 pt-[3.125rem]">
+            <div className="flex flex-col gap-3 pt-[3.125rem]">
                 <h1 className="text-lg font-extrabold text-[#FAC453]">
                     회원가입
                 </h1>
@@ -166,11 +166,11 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
 
                 <p className="border-[0.041875rem] border-[#575757]" />
 
-                <div className="flex flex-col gap-2.5">
+                <div className="flex w-[40rem] flex-col gap-2.5">
                     {/* 이메일 */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex w-full items-center justify-between">
                         <p
-                            className={`text-[0.66875rem] transition-colors duration-300 ${
+                            className={`w-[10%] text-[0.66875rem] transition-colors duration-300 ${
                                 isDarkMode ? 'text-[#F5F5F5]' : 'text-black'
                             }`}>
                             이메일
@@ -179,34 +179,35 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
                         <input
                             type="text"
                             placeholder="이메일을 입력해주세요."
-                            className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
+                            className="h-[2.633125rem] w-[90%] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                             value={email}
                             onChange={e => setEmail(e.target.value)}
                         />
                     </div>
 
                     {/* 비밀번호 */}
-                    <div className="flex justify-between gap-[0.8775rem]">
-                        <div className="flex items-center justify-between gap-[1.68rem]">
+                    <div className="flex w-full justify-between gap-[0.8775rem]">
+                        <div className="flex w-1/2 items-center justify-between gap-[1.68rem]">
                             <p
-                                className={`text-[0.66875rem] transition-colors duration-300 ${
+                                className={`flex w-[13%] flex-col text-[0.66875rem] transition-colors duration-300 ${
                                     isDarkMode ? 'text-[#F5F5F5]' : 'text-black'
                                 }`}>
-                                비밀번호
+                                <p>비밀</p>
+                                <p>번호</p>
                             </p>
 
                             <input
                                 type="password"
                                 placeholder="비밀번호를 입력해주세요."
-                                className="h-[2.633125rem] w-[14.67125rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
+                                className="h-[2.633125rem] w-[87%] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
                             />
                         </div>
 
-                        <div className="flex items-center justify-between gap-[1.6425rem]">
+                        <div className="flex w-1/2 items-center justify-between gap-[1.6425rem]">
                             <p
-                                className={`text-[0.66875rem] transition-colors duration-300 ${
+                                className={`w-[13%] text-[0.66875rem] transition-colors duration-300 ${
                                     isDarkMode ? 'text-[#F5F5F5]' : 'text-black'
                                 }`}>
                                 비밀번호 확인
@@ -215,7 +216,7 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
                             <input
                                 type="password"
                                 placeholder="비밀번호를 한번 더 입력해주세요."
-                                className="h-[2.633125rem] w-[14.629375rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
+                                className="h-[2.633125rem] w-[87%] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                                 value={checkPassword}
                                 onChange={e => setCheckPassword(e.target.value)}
                             />
@@ -223,9 +224,9 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
                     </div>
 
                     {/* 이름 */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex w-full items-center justify-between">
                         <p
-                            className={`text-[0.66875rem] transition-colors duration-300 ${
+                            className={`w-[10%] text-[0.66875rem] transition-colors duration-300 ${
                                 isDarkMode ? 'text-[#F5F5F5]' : 'text-black'
                             }`}>
                             이름
@@ -234,16 +235,16 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
                         <input
                             type="text"
                             placeholder="이름을 입력해주세요."
-                            className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
+                            className="h-[2.633125rem] w-[90%] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                             value={name}
                             onChange={e => setName(e.target.value)}
                         />
                     </div>
 
                     {/* 생년월일 */}
-                    <div className="relative flex items-center justify-between">
+                    <div className="relative flex w-full items-center justify-between">
                         <p
-                            className={`text-[0.66875rem] transition-colors duration-300 ${
+                            className={`w-[10%] text-[0.66875rem] transition-colors duration-300 ${
                                 isDarkMode ? 'text-[#F5F5F5]' : 'text-black'
                             }`}>
                             생년월일
@@ -252,7 +253,7 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
                         <input
                             type="text"
                             placeholder="연도-월-일"
-                            className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
+                            className="h-[2.633125rem] w-[90%] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                             value={birth}
                             onChange={e => setBirth(e.target.value)}
                         />
@@ -264,9 +265,9 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
                     </div>
 
                     {/* 연락처 */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex w-full items-center justify-between">
                         <p
-                            className={`text-[0.66875rem] transition-colors duration-300 ${
+                            className={`w-[10%] text-[0.66875rem] transition-colors duration-300 ${
                                 isDarkMode ? 'text-[#F5F5F5]' : 'text-black'
                             }`}>
                             연락처
@@ -275,32 +276,32 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
                         <input
                             type="text"
                             placeholder="010 1234 1234"
-                            className="h-[2.633125rem] w-[35.695rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
+                            className="h-[2.633125rem] w-[90%] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                             value={phone}
                             onChange={e => setPhone(e.target.value)}
                         />
                     </div>
 
                     {/* 주소 */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex w-full items-center justify-between">
                         <p
-                            className={`text-[0.66875rem] transition-colors duration-300 ${
+                            className={`w-[10%] text-[0.66875rem] transition-colors duration-300 ${
                                 isDarkMode ? 'text-[#F5F5F5]' : 'text-black'
                             }`}>
                             주소
                         </p>
 
-                        <div className="flex items-center gap-[0.46rem]">
+                        <div className="flex w-[90%] items-center gap-[0.46rem]">
                             <input
                                 type="text"
                                 placeholder="주소를 입력해주세요."
-                                className="h-[2.633125rem] w-[28.965625rem] rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
+                                className="h-[2.633125rem] w-full rounded-sm border border-[#9C9C9C] bg-transparent p-2.5 text-[0.66875rem] placeholder:text-[0.66875rem] placeholder:text-[#9C9C9C] focus:border-[#DBAC4A] focus:outline-none focus:placeholder:text-[#DBAC4A]"
                                 value={address}
                                 onChange={e => setAddress(e.target.value)}
                             />
                             <button
                                 type="button"
-                                className="h-[2.633125rem] w-[6.269375rem] rounded-sm bg-[#EEB02F] px-[1.875rem] text-[0.66875rem] font-medium text-black">
+                                className="h-[2.633125rem] w-[6.269375rem] rounded-sm bg-[#EEB02F] px-[1.875rem] text-[0.66875rem] text-[9px] font-medium text-black">
                                 주소찾기
                             </button>
                         </div>
@@ -342,12 +343,10 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
             {errorMessage && (
                 <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
                     <div
-                        className={`flex flex-col items-center justify-center rounded-2xl p-5 transition-colors duration-300 ${
-                            isDarkMode
-                                ? 'bg-[#111111] text-[#DBAC4A]'
-                                : 'bg-white text-black'
+                        className={`flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] p-5 transition-colors duration-300 ${
+                            isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'
                         }`}>
-                        <p className="">{errorMessage}</p>
+                        <p className="text-lg text-[#DBAC4A]">{errorMessage}</p>
                         <button
                             type="button"
                             onClick={() => setErrorMessage('')}

@@ -32,5 +32,8 @@ export const getSettingCloseSignal = (state: RootState) => {
 export const getLoginCloseSignal = (state: RootState) => {
     return state.etc.loginCloseSignal;
 };
+export const getLogoutCloseSignal = (state: RootState) => {
+    return state.etc.logoutCloseSignal;
+};
 
 export const selectorTest: string = 'selectorTest';

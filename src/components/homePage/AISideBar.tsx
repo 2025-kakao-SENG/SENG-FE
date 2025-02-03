@@ -294,7 +294,10 @@ export default function SideBar() {
                                 />
                             </div>
 
-                            <h3 className="text-[0.6875rem] font-extrabold text-[#D4D4D4]">
+                            <h3
+                                className={`text-[0.6875rem] ${
+                                    isDarkMode ? 'text-[#B1B1B1]' : 'text-black'
+                                }`}>
                                 카테고리를 선택해주세요.
                             </h3>
                             {userId ? (
@@ -324,7 +327,7 @@ export default function SideBar() {
                                                                 ? 'bg-gradient-to-r from-[#FFDD87] to-[#FFC752] text-black'
                                                                 : isDarkMode
                                                                   ? 'bg-[#1C1C1C] hover:bg-[#2D2D2D]'
-                                                                  : 'bg-[#eeeeee] hover:bg-[#e1e1e1]'
+                                                                  : 'bg-[#eeeeee] text-black hover:bg-[#e1e1e1]'
                                                         }`}>
                                                         {category}
                                                     </button>
@@ -339,12 +342,16 @@ export default function SideBar() {
                                             className={`z-10 h-[2.1875rem] w-full rounded-[0.25rem] text-[0.6875rem] font-medium ${
                                                 isDarkMode
                                                     ? 'bg-[#2D2D2D] text-[#BEBEBE] hover:bg-[#3D3D3D]'
-                                                    : 'bg-[#747474] text-[#FFFFFF] hover:bg-[#b5b5b5]'
+                                                    : 'bg-[#EEEEEE] text-[#111111] hover:bg-[#b5b5b5]'
                                             } ${depth.current === 0 && 'cursor-not-allowed'} ${
                                                 isContentCreating &&
                                                 'cursor-not-allowed opacity-50'
                                             }`}
-                                            onClick={handlePreviousClick}>
+                                            onClick={handlePreviousClick}
+                                            disabled={
+                                                depth.current === 0 ||
+                                                isContentCreating
+                                            }>
                                             이전 카테고리
                                         </button>
 
@@ -359,14 +366,20 @@ export default function SideBar() {
                                                     isContentCreating &&
                                                     'cursor-not-allowed opacity-50'
                                                 }`}
-                                                onClick={handleNextClick}>
+                                                onClick={handleNextClick}
+                                                disabled={isContentCreating}>
                                                 다음으로
                                             </button>
                                         )}
                                     </div>
 
                                     <div className="mb-3 mt-6">
-                                        <p className="text-[0.6875rem] font-extrabold text-[#D4D4D4]">
+                                        <p
+                                            className={`text-[0.6875rem] ${
+                                                isDarkMode
+                                                    ? 'text-[#B1B1B1]'
+                                                    : 'text-black'
+                                            }`}>
                                             현재 카테고리
                                         </p>
                                     </div>

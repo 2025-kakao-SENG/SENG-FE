@@ -5,7 +5,12 @@ function DisplayPage() {
 
     return (
         <div>
-            <h2>화면 테마 설정하기</h2>
+            <h2
+                className={`font-semibold ${
+                    isDarkMode ? 'text-[#B1B1B1]' : 'text-black}'
+                }`}>
+                화면 테마 설정하기
+            </h2>
             <div className="mt-[1.1875rem] flex flex-col items-start gap-[0.6875rem] pl-[1.375rem] text-sm">
                 <button
                     type="button"
@@ -16,9 +21,6 @@ function DisplayPage() {
                     }`}
                     onClick={toggleTheme}>
                     {isDarkMode ? 'light 테마' : 'dark 테마'}
-                </button>
-                <button type="button" className="">
-                    사용자 설정 색상 선택하기
                 </button>
             </div>
         </div>

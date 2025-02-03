@@ -103,32 +103,45 @@ function LibraryManagementPage() {
     }, [checkDeleteNnumber]);
 
     return (
-        <div>
-            <h2 className="flex text-sm font-semibold">
-                <p className="text-[#DBAC4A]">{userData.name}</p>
-                <p className="text-[#C9C9C9]">님의 책장</p>
-            </h2>
+        <div className="h-full w-full">
             {!userId ? (
                 <div className="mt-[2.375rem] flex h-[32vw] flex-wrap gap-[2.625rem] overflow-y-scroll pl-[0.5625rem] text-lg">
                     <p className="text-[#DBAC4A]">로그인이 필요합니다.</p>
                 </div>
             ) : (
-                <div
-                    className="mt-[2.375rem] flex h-[32vw] flex-wrap gap-[2.625rem] overflow-y-scroll pl-[0.5625rem]"
-                    style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
-                    {libraryItems.map(book => (
-                        <LibraryManagementItem
-                            key={book.pid}
-                            pid={Number(book.pid)}
-                            image={bookTest}
-                            createdAt={book.created_at}
-                            handleSearchBook={handleSearchBook}
-                            handleDeleteBook={() =>
-                                setOpenDeleteCheck(Number(book.pid))
-                            }
-                        />
-                    ))}
-                </div>
+                <>
+                    <h2 className="flex text-sm font-semibold">
+                        <p className="text-[#DBAC4A]">
+                            {userData.name}
+                            <span
+                                className={`font-semibold ${
+                                    isDarkMode ? 'text-[#B1B1B1]' : 'text-black'
+                                }`}>
+                                {' '}
+                                님의 책장
+                            </span>
+                        </p>
+                    </h2>
+                    <div
+                        className="mt-[2.375rem] flex h-[32vw] flex-wrap gap-[2.625rem] overflow-y-scroll pl-[0.5625rem]"
+                        style={{
+                            scrollbarWidth: 'none',
+                            msOverflowStyle: 'none',
+                        }}>
+                        {libraryItems.map(book => (
+                            <LibraryManagementItem
+                                key={book.pid}
+                                pid={Number(book.pid)}
+                                image={bookTest}
+                                createdAt={book.created_at}
+                                handleSearchBook={handleSearchBook}
+                                handleDeleteBook={() =>
+                                    setOpenDeleteCheck(Number(book.pid))
+                                }
+                            />
+                        ))}
+                    </div>
+                </>
             )}
             {(deleteBookLoading || booksLoading) && (
                 <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">

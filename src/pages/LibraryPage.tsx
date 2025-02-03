@@ -134,7 +134,7 @@ function LibraryPage() {
                 <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
                     <div
                         className={`flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] p-5 transition-colors duration-300 ${
-                            isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'
+                            isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white shadow-xl'
                         }`}>
                         <p className="text-lg text-[#DBAC4A]">알림</p>
                         <p
@@ -156,7 +156,7 @@ function LibraryPage() {
                 <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
                     <div
                         className={`flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] p-5 transition-colors duration-300 ${
-                            isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'
+                            isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white shadow-xl'
                         }`}>
                         <p className="text-lg text-[#DBAC4A]">알림</p>
                         <p

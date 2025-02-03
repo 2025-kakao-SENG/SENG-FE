@@ -1,14 +1,12 @@
 import {useNavigate} from 'react-router-dom';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import useLogout from '@/hooks/useLogout';
 import {getUserLoginData} from '@/redux/selector';
 import {useTheme} from '@/constants/ThemeProvider';
+import {setLogoutClose} from '@/redux/slice/etcSlice';
 
-interface LogoutProps {
-    backgroundLocation: string;
-}
-
-function Logout({backgroundLocation: logoutBackgroundLocation}: LogoutProps) {
+function Logout() {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const logout = useLogout();
     const userLoginDate = useSelector(getUserLoginData);
@@ -20,9 +18,8 @@ function Logout({backgroundLocation: logoutBackgroundLocation}: LogoutProps) {
         } else if (userLoginDate.pid) {
             logout('default');
         }
-        navigate('/login', {
-            state: {backgroundLocation: logoutBackgroundLocation},
-        });
+        navigate('/home');
+        dispatch(setLogoutClose());
     };
 
     return (
@@ -30,7 +27,7 @@ function Logout({backgroundLocation: logoutBackgroundLocation}: LogoutProps) {
             className={`absolute left-1/2 top-1/2 flex h-[9.75rem] w-[27.75rem] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center rounded-2xl ${
                 isDarkMode
                     ? 'bg-[#1B1B1B] text-white'
-                    : 'bg-[#ffffff] text-black'
+                    : 'bg-[#ffffff] text-black shadow-xl'
             }`}>
             {userLoginDate.isLogined ? (
                 <>
@@ -51,7 +48,10 @@ function Logout({backgroundLocation: logoutBackgroundLocation}: LogoutProps) {
                                     ? 'bg-[#2D2D2D] text-[#C8C8C8] hover:bg-[#4c4c4c]'
                                     : 'bg-[#e1e1e1] text-[#5d5d5d] hover:bg-[#cccccc]'
                             }`}
-                            onClick={() => navigate('/home')}>
+                            onClick={() => {
+                                navigate(-1);
+                                dispatch(setLogoutClose());
+                            }}>
                             돌아가기
                         </button>
                         <button
@@ -80,7 +80,10 @@ function Logout({backgroundLocation: logoutBackgroundLocation}: LogoutProps) {
                                     ? 'bg-[#2D2D2D] text-[#C8C8C8] hover:bg-[#4c4c4c]'
                                     : 'bg-[#e1e1e1] text-[#5d5d5d] hover:bg-[#cccccc]'
                             }`}
-                            onClick={() => navigate('/home')}>
+                            onClick={() => {
+                                navigate(-1);
+                                dispatch(setLogoutClose());
+                            }}>
                             돌아가기
                         </button>
                     </div>

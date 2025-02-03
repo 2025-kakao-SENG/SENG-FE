@@ -4,6 +4,7 @@ import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {
     getLeafCount,
     getLoginCloseSignal,
+    getLogoutCloseSignal,
     getSettingCloseSignal,
     getUserLoginData,
 } from '@/redux/selector';
@@ -38,6 +39,7 @@ export default function MenuBar() {
     const location = useLocation();
     const settingCloseSignal = useSelector(getSettingCloseSignal);
     const loginCloseSignal = useSelector(getLoginCloseSignal);
+    const logoutCloseSignal = useSelector(getLogoutCloseSignal);
     const {isDarkMode} = useTheme();
 
     const [activeMenu, setActiveMenu] = useState('/home');
@@ -46,8 +48,12 @@ export default function MenuBar() {
 
     // 메뉴 활성화 상태 관리
     useEffect(() => {
+        if (!(settingCloseSignal || loginCloseSignal || logoutCloseSignal)) {
+            return;
+        }
+
         setActiveMenu(location.pathname);
-    }, [settingCloseSignal, loginCloseSignal]);
+    }, [settingCloseSignal, loginCloseSignal, logoutCloseSignal]);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -259,15 +265,16 @@ export default function MenuBar() {
                         </button>
                         <button
                             type="button"
-                            onClick={() =>
+                            onClick={() => {
                                 navigate('/logout', {
                                     state: {backgroundLocation: location},
-                                })
-                            }>
+                                });
+                                setActiveMenu('/logout');
+                            }}>
                             <img
                                 src={logout}
                                 alt="logout"
-                                className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-[#4a4a4a]"
+                                className={`cursor-pointer rounded-lg px-3 py-2.5 ${getMenuClass('/logout')}`}
                             />
                         </button>
                     </li>

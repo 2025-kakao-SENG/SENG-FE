@@ -29,9 +29,9 @@ function Service({renderSignUp}: {renderSignUp: () => void}) {
 
     return (
         <div
-            className={`flex h-[53.5625rem] w-[64.4375rem] items-start justify-between gap-6 shadow-md transition-colors duration-300 ${
+            className={`flex h-[53.5625rem] w-[64.4375rem] items-start justify-between gap-6 rounded-[0.9375rem] shadow-md transition-colors duration-300 ${
                 isDarkMode
-                    ? 'bg-[#1B1B1B] text-[#F5F5F5]'
+                    ? 'bg-[#1B1B1B] text-[#F5F5F5] shadow-xl'
                     : 'bg-[#F3F3F3] text-black'
             }`}>
             {/* 로고 */}
@@ -281,10 +281,7 @@ function Service({renderSignUp}: {renderSignUp: () => void}) {
                         onChange={e => setIsChecked2(e.target.checked)}
                     />
 
-                    <p
-                        className={`text-[0.6875rem] font-medium ${
-                            isDarkMode ? 'text-[#D1D1D1]' : 'text-black'
-                        }`}>
+                    <p className="text-[0.6875rem] font-medium text-[#D1D1D1]">
                         위 내용에 동의합니다.
                     </p>
                     {checked2Error && (

@@ -260,7 +260,7 @@ function MyPage() {
                         <div className="flex items-center justify-between">
                             <input
                                 type="text"
-                                className={`w-[16rem] px-[0.5625rem] py-1 text-[0.625rem] font-medium transition-colors duration-300 ${
+                                className={`w-[16rem] rounded-[0.3rem] px-[0.5625rem] py-1 text-[0.625rem] font-medium outline-none transition-colors duration-300 ${
                                     isDarkMode
                                         ? 'bg-[#292929] text-[#999999] placeholder-[#F9F9F9]'
                                         : 'bg-[#dcdcdc] text-[#7a7a7a]' // 수정됨
@@ -331,7 +331,7 @@ function MyPage() {
                         <input
                             type="password"
                             placeholder="현재 비밀번호"
-                            className={`w-[16rem] px-[0.5625rem] py-1 text-[0.625rem] font-medium transition-colors duration-300 ${
+                            className={`w-[16rem] rounded-[0.3rem] px-[0.5625rem] py-1 text-[0.625rem] font-medium outline-none transition-colors duration-300 ${
                                 isDarkMode
                                     ? 'bg-[#292929] text-[#999999] placeholder-[#F9F9F9]'
                                     : 'bg-[#dcdcdc] text-black placeholder-[#7a7a7a]'
@@ -344,7 +344,7 @@ function MyPage() {
                             <input
                                 type="password"
                                 placeholder="새 비밀번호"
-                                className={`w-[16rem] px-[0.5625rem] py-1 text-[0.625rem] font-medium transition-colors duration-300 ${
+                                className={`w-[16rem] rounded-[0.3rem] px-[0.5625rem] py-1 text-[0.625rem] font-medium outline-none transition-colors duration-300 ${
                                     isDarkMode
                                         ? 'bg-[#292929] text-[#999999] placeholder-[#F9F9F9]'
                                         : 'bg-[#dcdcdc] text-black placeholder-[#7a7a7a]'
@@ -417,13 +417,23 @@ function MyPage() {
 
                     {successModal && (
                         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                            <div className="flex w-[20rem] flex-col items-center gap-3 rounded-lg bg-[#1B1B1B] p-5">
-                                <p className="text-center text-[#DBAC4A]">
+                            <div
+                                className={`flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] p-5 transition-colors duration-300 ${
+                                    isDarkMode
+                                        ? 'bg-[#1E1E1E]'
+                                        : 'bg-white shadow-xl'
+                                }`}>
+                                <p
+                                    className={`text-sm transition-colors duration-300 ${
+                                        isDarkMode
+                                            ? 'text-[#C9C9C9]'
+                                            : 'text-black'
+                                    }`}>
                                     {successModal}
                                 </p>
                                 <button
                                     type="button"
-                                    className="h-[2.5rem] w-[7.5rem] rounded-[0.3125rem] bg-[#2D2F39] text-[#DBAC4A] hover:bg-[#292929]"
+                                    className="rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]"
                                     onClick={() => setSuccessModal('')}>
                                     확인
                                 </button>
@@ -433,13 +443,21 @@ function MyPage() {
 
                     {errorMessageModal && (
                         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                            <div className="flex w-[20rem] flex-col items-center gap-3 rounded-lg bg-[#1B1B1B] p-5">
-                                <p className="text-center text-[#DBAC4A]">
+                            <div
+                                className={`flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] p-5 transition-colors duration-300 ${
+                                    isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'
+                                }`}>
+                                <p
+                                    className={`text-sm transition-colors duration-300 ${
+                                        isDarkMode
+                                            ? 'text-[#C9C9C9] shadow-xl'
+                                            : 'text-black'
+                                    }`}>
                                     {errorMessageModal}
                                 </p>
                                 <button
                                     type="button"
-                                    className="h-[2.5rem] w-[7.5rem] rounded-[0.3125rem] bg-[#2D2F39] text-[#DBAC4A] hover:bg-[#292929]"
+                                    className="rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]"
                                     onClick={() => setErrorMessage('')}>
                                     확인
                                 </button>
@@ -449,8 +467,18 @@ function MyPage() {
 
                     {openLogoutModal && (
                         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                            <div className="flex w-[20rem] flex-col items-center gap-3 rounded-lg bg-[#1B1B1B] p-5">
-                                <p className="text-center text-[#DBAC4A]">
+                            <div
+                                className={`flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] p-5 transition-colors duration-300 ${
+                                    isDarkMode
+                                        ? 'bg-[#1E1E1E]'
+                                        : 'bg-white shadow-xl'
+                                }`}>
+                                <p
+                                    className={`text-sm transition-colors duration-300 ${
+                                        isDarkMode
+                                            ? 'text-[#C9C9C9]'
+                                            : 'text-black'
+                                    }`}>
                                     로그아웃 하시겠습니까?
                                 </p>
                                 <div className="flex gap-3">
@@ -479,8 +507,18 @@ function MyPage() {
 
                     {openDeregisterModal && (
                         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                            <div className="flex w-[20rem] flex-col items-center gap-3 rounded-lg bg-[#1B1B1B] p-5">
-                                <p className="text-center text-[#DBAC4A]">
+                            <div
+                                className={`flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] p-5 transition-colors duration-300 ${
+                                    isDarkMode
+                                        ? 'bg-[#1E1E1E]'
+                                        : 'bg-white shadow-xl'
+                                }`}>
+                                <p
+                                    className={`text-sm transition-colors duration-300 ${
+                                        isDarkMode
+                                            ? 'text-[#C9C9C9]'
+                                            : 'text-black'
+                                    }`}>
                                     회원탈퇴 하시겠습니까?
                                 </p>
                                 <div className="flex gap-3">

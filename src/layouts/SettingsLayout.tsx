@@ -93,7 +93,14 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
                 <div className="mb-4 flex items-center gap-[0.8125rem]">
                     <img src={logo} alt="" className="h-[1.875rem]" />
                     <div className="font-semibold text-[#DBAC4A]">
-                        {userData.name ? `${userData.name} 님` : 'Guest 님'}
+                        {userData.name ? `${userData.name}` : 'Guest'}
+                        <span
+                            className={`font-semibold ${
+                                isDarkMode ? 'text-[#B1B1B1]' : 'text-black'
+                            }`}>
+                            {' '}
+                            님
+                        </span>
                     </div>
                 </div>
                 {/* 메뉴 리스트 */}

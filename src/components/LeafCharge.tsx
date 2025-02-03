@@ -260,9 +260,15 @@ function LeafCharge({onClose}: {onClose: () => void}) {
 
             {isSuccess && (
                 <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-                    <div className="flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] bg-[#1E1E1E] p-5">
+                    <div
+                        className={`flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] p-5 transition-colors duration-300 ${
+                            isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white shadow-xl'
+                        }`}>
                         <p className="text-lg text-[#DBAC4A]">알림</p>
-                        <p className="text-sm text-[#C9C9C9]">
+                        <p
+                            className={`text-sm transition-colors duration-300 ${
+                                isDarkMode ? 'text-[#C9C9C9]' : 'text-black'
+                            }`}>
                             리프를 충전했습니다.
                         </p>
                     </div>
@@ -271,9 +277,17 @@ function LeafCharge({onClose}: {onClose: () => void}) {
 
             {errorMessage && (
                 <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-                    <div className="flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] bg-[#1E1E1E] p-5">
+                    <div
+                        className={`flex flex-col items-center justify-center gap-3 rounded-[0.9375rem] p-5 transition-colors duration-300 ${
+                            isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white shadow-xl'
+                        }`}>
                         <p className="text-lg text-[#DBAC4A]">알림</p>
-                        <p className="text-sm text-[#C9C9C9]">{errorMessage}</p>
+                        <p
+                            className={`text-sm transition-colors duration-300 ${
+                                isDarkMode ? 'text-[#C9C9C9]' : 'text-black'
+                            }`}>
+                            {errorMessage}
+                        </p>
                         <button
                             type="button"
                             onClick={() => setErrorMessage('')}
