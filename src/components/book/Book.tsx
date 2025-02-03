@@ -70,7 +70,7 @@ function Book() {
         useBookContentApi();
     const {searchBookApi, isLoading: isSearchBookLoading} = useSearchBookApi();
 
-    const bookSizeRatioPC = 0.32; // 0.34가 최선
+    const bookSizeRatioPC = 0.31; // 0.34가 최선
     const bookSizeRatioTablet = 0.7;
     const boundaryWidth = 1100;
     const initialWidth = useRef<number>(Math.max(window.innerWidth, 1400));
