@@ -7,7 +7,7 @@ function Layout() {
 
     return (
         <div
-            className={`absolute flex h-full w-full ${
+            className={`absolute flex h-screen w-screen ${
                 isDarkMode ? 'bg-black text-white' : 'bg-[#F3F3F3] text-black'
             }`}>
             <header className="h-full w-auto items-center justify-center">

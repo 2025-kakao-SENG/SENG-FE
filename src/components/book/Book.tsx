@@ -437,7 +437,7 @@ function Book() {
                             minHeight={0}
                             maxHeight={10000}
                             drawShadow
-                            flippingTime={1500}
+                            flippingTime={800}
                             usePortrait={false}
                             startZIndex={0}
                             autoSize
@@ -446,9 +446,9 @@ function Book() {
                             mobileScrollSupport
                             clickEventForward
                             useMouseEvents
-                            swipeDistance={1}
-                            showPageCorners={false}
-                            disableFlipByClick
+                            swipeDistance={0.5}
+                            showPageCorners
+                            disableFlipByClick={false}
                             className="h-full w-full"
                             style={{}}>
                             {bookData?.chapters.map(chapter =>
