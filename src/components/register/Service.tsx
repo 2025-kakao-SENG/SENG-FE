@@ -281,7 +281,10 @@ function Service({renderSignUp}: {renderSignUp: () => void}) {
                         onChange={e => setIsChecked2(e.target.checked)}
                     />
 
-                    <p className="text-[0.6875rem] font-medium text-[#D1D1D1]">
+                    <p
+                        className={`text-[0.6875rem] font-medium ${
+                            isDarkMode ? 'text-[#D1D1D1]' : 'text-black'
+                        }`}>
                         위 내용에 동의합니다.
                     </p>
                     {checked2Error && (
