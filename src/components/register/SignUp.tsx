@@ -181,7 +181,7 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
 
                     {/* 비밀번호 */}
                     <div className="flex justify-between gap-[0.8775rem]">
-                        <div className="flex items-center justify-between gap-[1.85rem]">
+                        <div className="flex items-center justify-between gap-[1.68rem]">
                             <p
                                 className={`text-[0.66875rem] transition-colors duration-300 ${
                                     isDarkMode ? 'text-[#F5F5F5]' : 'text-black'
@@ -304,7 +304,7 @@ function SignUp({backgroundLocation: registerBackgroundLocation}: SignUpProps) {
                     <button
                         type="button"
                         onClick={handleSubmit}
-                        className="h-[2.633125rem] w-[39.875rem] rounded-sm bg-[#EEB02F] text-black">
+                        className="h-[2.633125rem] w-full rounded-sm bg-[#EEB02F] text-black">
                         회원가입
                     </button>
                 </div>
