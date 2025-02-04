@@ -24,28 +24,20 @@ function LibraryManagementItem({
                     alt="book"
                     className="h-[13.375rem] w-[8.375rem] rounded-[0.9375rem] transition-opacity duration-300 group-hover:opacity-50"
                 />
-                <div className="absolute bottom-3 right-3 flex items-center justify-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <div className="absolute bottom-4 right-4 flex items-center justify-center gap-2.5 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                     <button
                         type="button"
                         onClick={() => handleSearchBook(pid)}
-                        className="h-[0.82125rem] w-[0.98125rem] group-hover:opacity-100"
+                        className="group-hover:opacity-100"
                         aria-label="Search Book">
-                        <img
-                            src={read}
-                            alt="book icon"
-                            className="h-full w-full"
-                        />
+                        <img src={read} alt="book icon" className="h-5" />
                     </button>
                     <button
                         type="button"
                         onClick={() => handleDeleteBook(pid)}
-                        className="h-[1.0625rem] w-[0.855rem] group-hover:opacity-100"
+                        className="group-hover:opacity-100"
                         aria-label="Delete Book">
-                        <img
-                            src={bin}
-                            alt="delete icon"
-                            className="h-full w-full"
-                        />
+                        <img src={bin} alt="delete icon" className="h-5" />
                     </button>
                 </div>
             </div>

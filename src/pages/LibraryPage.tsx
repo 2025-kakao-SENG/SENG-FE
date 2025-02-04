@@ -1,4 +1,4 @@
-import bookTest from '@/assets/images/bookTest.svg';
+import logo from '@/assets/images/logo.svg';
 import LibraryItem from '@/components/library/LibraryItem';
 import {setDisplayBookInfo} from '@/redux/slice/displayBookSlice';
 import {
@@ -111,7 +111,7 @@ function LibraryPage() {
                     <LibraryItem
                         key={book.pid}
                         pid={Number(book.pid)}
-                        image={bookTest}
+                        image={logo}
                         handleSearchBook={handleSearchBook}
                         handleDeleteBook={() =>
                             setOpenDeleteCheck(Number(book.pid))
