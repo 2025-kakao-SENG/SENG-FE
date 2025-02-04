@@ -72,7 +72,7 @@ function LeafCharge({onClose}: {onClose: () => void}) {
 
     return (
         <div
-            className={`relative flex h-full max-w-[43.375rem] items-start justify-center rounded-lg px-[5.9375rem] py-[2.8125rem] shadow transition-colors duration-300 ${
+            className={`relative flex h-full max-w-[55rem] items-start justify-center rounded-lg px-[6rem] py-[6rem] shadow transition-colors duration-300 ${
                 isDarkMode ? 'bg-[#1b1b1b]' : 'bg-[#F3F3F3]'
             }`}>
             {/* border */}
@@ -81,21 +81,21 @@ function LeafCharge({onClose}: {onClose: () => void}) {
                     isDarkMode ? 'border-[#D1D1D1]' : 'border-[#b6b6b6]' // 수정됨
                 }`}>
                 {/* 가운데 border 기준 - 왼쪽 */}
-                <div className="flex flex-col p-[1.0625rem]">
+                <div className="flex flex-col p-[2rem]">
                     <div className="">
                         <img
                             src={isDarkMode ? leafWhite : leafGray}
                             alt=""
-                            className="w-[1.5625rem]"
+                            className="w-[2rem]"
                         />
                     </div>
 
-                    <div className="mb-[0.3125rem] mt-[0.1875rem] flex items-end gap-0.5">
+                    <div className="my-[0.5rem] flex items-end gap-0.5">
                         <p className="text-3xl font-medium text-[#FAC453]">
                             1,000원
                         </p>
                         <p
-                            className={`text-[0.6875rem] ${
+                            className={`text-[1rem] ${
                                 isDarkMode ? 'text-[#939393]' : 'text-[#b6b6b6]'
                             }`}>
                             10개
@@ -104,7 +104,7 @@ function LeafCharge({onClose}: {onClose: () => void}) {
 
                     <div className="">
                         <p
-                            className={`text-[0.6875rem] leading-[1.125rem] ${
+                            className={`text-[0.8rem] leading-[1.125rem] ${
                                 isDarkMode ? 'text-[#D8D8D8]' : 'text-black' // 수정됨
                             }`}>
                             리프는 책을 뽑을 때 사용하는 아이템이에요! 한 번
@@ -112,10 +112,10 @@ function LeafCharge({onClose}: {onClose: () => void}) {
                         </p>
                     </div>
 
-                    <div className="mb-[1.4375rem] mt-2.5 flex items-center justify-center">
+                    <div className="my-[1.4375rem] flex items-center justify-center">
                         <button
                             type="button"
-                            className={`h-[1.8125rem] w-full rounded-full border text-[0.5rem] transition-colors hover:border-none hover:bg-[#FAC453] hover:text-black active:bg-[#ffc240] ${
+                            className={`h-[1.8125rem] w-full rounded-full border text-[0.8rem] transition-colors hover:border-none hover:bg-[#FAC453] hover:text-black active:bg-[#ffc240] ${
                                 isDarkMode
                                     ? 'border-[#D1D1D1] text-[#D8D8D8]'
                                     : 'border-[#b6b6b6] text-[#FAC453]' // 수정됨
@@ -126,7 +126,7 @@ function LeafCharge({onClose}: {onClose: () => void}) {
                     </div>
 
                     <ul
-                        className={`mb-4 flex list-disc flex-col pl-2 text-[0.5rem] leading-5 ${
+                        className={`mb-4 flex list-disc flex-col pl-2 text-[0.9rem] leading-7 ${
                             isDarkMode ? 'text-[#D8D8D8]' : 'text-black' // 수정됨
                         }`}>
                         <li className="">구매 내용: 리프 10개 제공</li>
@@ -157,38 +157,38 @@ function LeafCharge({onClose}: {onClose: () => void}) {
                 />
 
                 {/* 가운데 border 기준 - 오른쪽 */}
-                <div className="flex flex-col p-[1.0625rem]">
-                    <div className="flex items-end gap-1.5">
-                        <img src={leafGold} alt="" className="w-[1.5625rem]" />
-                        <div className="flex items-center gap-0.5">
+                <div className="flex flex-col p-[2rem]">
+                    <div className="flex items-end gap-3">
+                        <img src={leafGold} alt="" className="w-[2rem]" />
+                        <div className="flex items-center gap-1">
                             <img
                                 src={isDarkMode ? leafGray : leafGray} // 수정됨
                                 alt=""
-                                className="w-2"
+                                className="w-4"
                             />
                             <p
-                                className={`text-[0.4375rem] font-medium ${
+                                className={`text-[0.7rem] font-medium ${
                                     isDarkMode
                                         ? 'text-[#BBBBBB]'
-                                        : 'text-[#b6b6b6]' // 수정됨
+                                        : 'text-[#b6b6b6]'
                                 }`}>
                                 x 100
                             </p>
                         </div>
                     </div>
 
-                    <div className="mb-[0.3125rem] mt-[0.1875rem] flex items-end gap-[0.3125rem]">
+                    <div className="my-[0.5rem] flex items-end gap-[0.3125rem]">
                         <p className="text-3xl font-medium text-[#FAC453]">
                             10,000원
                         </p>
-                        <p className="text-[0.6875rem] text-[#FAC453]">
+                        <p className="text-[1rem] text-[#FAC453]">
                             골든 리프 1개
                         </p>
                     </div>
 
                     <div className="">
                         <p
-                            className={`text-[0.6875rem] leading-[1.125rem] ${
+                            className={`text-[0.8rem] leading-[1.125rem] ${
                                 isDarkMode ? 'text-[#D8D8D8]' : 'text-black' // 수정됨
                             }`}>
                             골든 리프는 책을 뽑을 때 사용하는 아이템이에요! 한
@@ -196,10 +196,10 @@ function LeafCharge({onClose}: {onClose: () => void}) {
                         </p>
                     </div>
 
-                    <div className="mb-[1.4375rem] mt-2.5 flex items-center justify-center">
+                    <div className="my-[1.4375rem] flex items-center justify-center">
                         <button
                             type="button"
-                            className={`h-[1.8125rem] w-full rounded-full border text-[0.5rem] transition-colors hover:border-none hover:bg-[#FAC453] hover:text-black active:bg-[#ffc240] ${
+                            className={`h-[1.8125rem] w-full rounded-full border text-[0.8rem] transition-colors hover:border-none hover:bg-[#FAC453] hover:text-black active:bg-[#ffc240] ${
                                 isDarkMode
                                     ? 'border-[#D1D1D1] text-[#D8D8D8]'
                                     : 'border-[#b6b6b6] text-[#FAC453]' // 수정됨
@@ -210,7 +210,7 @@ function LeafCharge({onClose}: {onClose: () => void}) {
                     </div>
 
                     <ul
-                        className={`mb-4 flex list-disc flex-col pl-2 text-[0.5rem] leading-5 ${
+                        className={`mb-4 flex list-disc flex-col pl-2 text-[0.9rem] leading-7 ${
                             isDarkMode ? 'text-[#D8D8D8]' : 'text-black' // 수정됨
                         }`}>
                         <li className="">
