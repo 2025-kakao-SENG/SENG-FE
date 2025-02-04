@@ -173,8 +173,8 @@ function LoginPage({
                         onChange={handleEmailChange}
                         className={`h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] ${
                             isDarkMode
-                                ? 'border-[#9C9C9C] bg-[#1B1B1B] text-[#9C9C9C]'
-                                : 'border-gray-300 bg-white text-black'
+                                ? 'border-[#9C9C9C] bg-[#1B1B1B] text-[#9C9C9C] focus:bg-[#1B1B1B]'
+                                : 'border-gray-300 bg-white text-black focus:bg-white'
                         } px-3 text-[0.875rem] placeholder-gray-400 transition-colors duration-300 focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none`}
                     />
                     <input
@@ -185,8 +185,8 @@ function LoginPage({
                         onChange={handlePasswordChange}
                         className={`h-[3rem] w-[19.5rem] rounded-[0.1875rem] border-[1px] ${
                             isDarkMode
-                                ? 'border-[#9C9C9C] bg-[#1B1B1B] text-[#9C9C9C]'
-                                : 'border-gray-300 bg-white text-black'
+                                ? 'border-[#9C9C9C] bg-[#1B1B1B] text-[#9C9C9C] focus:bg-[#1B1B1B]'
+                                : 'border-gray-300 bg-white text-black focus:bg-white'
                         } px-3 text-[0.875rem] placeholder-gray-400 transition-colors duration-300 focus:border-[#EEB02F] focus:placeholder-[#EEB02F] focus:outline-none`}
                     />
                 </form>
