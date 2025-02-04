@@ -1,5 +1,6 @@
 import LibraryManagementItem from '@/components/library/LibraryManagementItem';
 import bookTest from '@/assets/images/bookTest.svg';
+import bookTestDark from '@/assets/images/bookTestDark.svg';
 import useSearchBooksApi from '@/hooks/apis/library/useSearchBooksApi';
 import {useEffect, useState} from 'react';
 import {
@@ -130,7 +131,7 @@ function LibraryManagementPage() {
                             <LibraryManagementItem
                                 key={book.pid}
                                 pid={Number(book.pid)}
-                                image={bookTest}
+                                image={isDarkMode ? bookTest : bookTestDark}
                                 createdAt={book.created_at}
                                 handleSearchBook={handleSearchBook}
                                 handleDeleteBook={() =>
