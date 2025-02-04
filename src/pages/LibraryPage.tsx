@@ -169,19 +169,19 @@ function LibraryPage() {
                             <button
                                 type="button"
                                 onClick={() => {
-                                    setOpenDeleteCheck(null);
-                                }}
-                                className="rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]">
-                                취소
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => {
                                     setDeleteNumber(openDeleteCheck);
                                     setOpenDeleteCheck(null);
                                 }}
                                 className="rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]">
                                 확인
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setOpenDeleteCheck(null);
+                                }}
+                                className="rounded bg-[#DBAC4A] px-4 py-2 text-sm font-semibold text-black hover:bg-[#b88a3a]">
+                                취소
                             </button>
                         </div>
                     </div>

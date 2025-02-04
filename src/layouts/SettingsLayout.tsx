@@ -60,7 +60,7 @@ function SettingLayout({backgroundLocation}: SettingLayoutProps) {
         },
         {
             name: 'libraryManagement',
-            label: '도서 관리',
+            label: '도서관리',
             icon: books,
             activeIcon: booksYellow,
             path: '/settings/libraryManagement',
